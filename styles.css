@@ -1334,3 +1334,58 @@ details[open].reading-section > summary {
 .site-header.scrolled .header-controls {
   justify-content: center;
 }
+
+/* ── Start Here banner (index.html) ──────────────────────── */
+.start-here-banner {
+  margin-bottom: var(--space-7);
+}
+
+.start-here-banner__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  background: var(--accent-xlight);
+  border: 1px solid oklch(0.595 0.115 40 / 0.22);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+.start-here-banner__text {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.start-here-banner__text strong {
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.start-here-btn {
+  display: inline-block;
+  flex-shrink: 0;
+  background: var(--accent);
+  color: var(--bg-white);
+  font-family: 'Figtree', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.6em 1.3em;
+  border-radius: 20px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.start-here-btn:hover {
+  background: var(--accent-dark);
+  color: var(--bg-white);
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .start-here-banner__inner { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 0 — Set Up Your Claude Project | Erika's Curriculum</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="language.js"></script>
+  <style>
+    /* ── setup.html page-specific ─────────────────────── */
+    .setup-header {
+      background: oklch(0.215 0.012 55);
+      color: var(--bg-white);
+      padding: var(--space-8) 0 var(--space-7);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .setup-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 72% -10%, oklch(0.595 0.115 40 / 0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 20% 110%, oklch(0.565 0.075 148 / 0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .setup-header .container { position: relative; z-index: 1; }
+
+    .week-zero-pill {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg-white);
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35em 1.1em;
+      border-radius: 20px;
+      margin-bottom: var(--space-4);
+    }
+    .setup-header h1 {
+      color: var(--bg-white);
+      font-size: 2.25rem;
+      margin-bottom: var(--space-3);
+    }
+    .setup-header .subtitle {
+      color: oklch(0.985 0.005 75 / 0.55);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .setup-body { padding: var(--space-8) 0 var(--space-9); }
+
+    .setup-intro {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-7);
+    }
+    .setup-intro p {
+      max-width: 100%;
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .setup-steps {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      margin-bottom: var(--space-8);
+    }
+    .setup-step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: var(--space-5);
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-5) var(--space-5) var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+    .setup-step__num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg-white);
+      font-family: 'Gloock', serif;
+      font-size: 1.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .setup-step h3 {
+      font-size: 1.1rem;
+      margin-bottom: var(--space-3);
+      color: var(--text);
+    }
+    .setup-step p {
+      max-width: 100%;
+      color: var(--text-muted);
+      margin-bottom: var(--space-3);
+      font-size: 0.97rem;
+    }
+    .setup-step p:last-child { margin-bottom: 0; }
+    .setup-step p.note {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Code/instruction block */
+    .setup-code-wrap {
+      position: relative;
+      margin-top: var(--space-4);
+    }
+    .copy-btn {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      background: var(--accent);
+      color: var(--bg-white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.4em 1em;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 2;
+    }
+    .copy-btn:hover { background: var(--accent-dark); }
+    .copy-btn.copied { background: var(--complete); }
+
+    #instructions-text {
+      background: oklch(0.17 0.010 55);
+      color: oklch(0.88 0.012 72);
+      padding: var(--space-5);
+      padding-top: calc(var(--space-5) + 10px);
+      border-radius: var(--radius-md);
+      font-size: 0.76rem;
+      line-height: 1.65;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'Cascadia Code', 'Fira Mono', Consolas, monospace;
+      margin: 0;
+    }
+
+    /* First message / inline code callout */
+    .setup-callout {
+      background: var(--reading-bg);
+      border: 1px solid oklch(0.565 0.075 148 / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      margin: var(--space-3) 0;
+      font-family: 'Cascadia Code', 'Fira Mono', Consolas, monospace;
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    /* Downloads */
+    .setup-download-groups {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+    .setup-download-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+    }
+    .setup-download-group h4 {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: var(--space-3);
+    }
+    .setup-download-group ul {
+      padding: 0;
+      list-style: none;
+      margin: 0;
+    }
+    .setup-download-group li { margin-bottom: var(--space-2); }
+    .setup-download-group a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .setup-download-group a::before {
+      content: '↓';
+      font-size: 0.8em;
+      opacity: 0.65;
+      flex-shrink: 0;
+    }
+    .setup-download-group a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    /* Completion block */
+    .setup-complete {
+      text-align: center;
+      background: var(--accent);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-6);
+      color: var(--bg-white);
+    }
+    .setup-complete h2 {
+      color: var(--bg-white);
+      font-size: 1.9rem;
+      margin-bottom: var(--space-3);
+    }
+    .setup-complete p {
+      color: oklch(0.985 0.005 75 / 0.8);
+      max-width: 52ch;
+      margin: 0 auto var(--space-6);
+      font-size: 1rem;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--bg-white);
+      color: var(--accent);
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 0.75em 2em;
+      border-radius: 30px;
+      transition: var(--transition);
+    }
+    .btn-primary:hover {
+      background: var(--accent-xlight);
+      color: var(--accent-dark);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .setup-step { grid-template-columns: 40px 1fr; gap: var(--space-3); }
+      .setup-step__num { width: 40px; height: 40px; font-size: 1.2rem; }
+      .setup-download-groups { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="index.html">
+        <span class="lang-en">← Dashboard</span>
+        <span class="lang-es">← Dashboard</span>
+      </a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn active" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="setup-header">
+    <div class="container">
+      <div class="week-zero-pill">Week 0</div>
+      <h1>
+        <span class="lang-en">Set Up Your Claude Project</span>
+        <span class="lang-es">Configurá tu Proyecto de Claude</span>
+      </h1>
+      <p class="subtitle">
+        <span class="lang-en">~20 min &nbsp;&middot;&nbsp; do this once, before Day 1</span>
+        <span class="lang-es">~20 min &nbsp;&middot;&nbsp; hacelo una sola vez, antes del Día 1</span>
+      </p>
+    </div>
+  </header>
+
+  <main class="setup-body">
+    <div class="container--narrow">
+
+      <!-- INTRO -->
+      <div class="setup-intro">
+        <p class="lang-en">Before you open any lesson, you need to build one thing: a <strong>Claude Project</strong> — a private workspace where Claude knows who you are, has your lesson files, and picks up exactly where you left off every session. This is different from a regular chat. This guide walks you through the full setup in 6 steps.</p>
+        <p class="lang-es">Antes de abrir cualquier lección, necesitás construir una sola cosa: un <strong>Proyecto de Claude</strong> — un espacio de trabajo privado donde Claude sabe quién sos, tiene tus archivos de lecciones y retoma exactamente donde lo dejaste en cada sesión. Esto es diferente a un chat normal. Esta guía te lleva por la configuración completa en 6 pasos.</p>
+      </div>
+
+      <ol class="setup-steps">
+
+        <!-- ── Step 1 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">1</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Open Claude.ai and sign in</span>
+              <span class="lang-es">Abrí Claude.ai e ingresá</span>
+            </h3>
+            <p class="lang-en">Go to <strong>claude.ai</strong> in your browser. Sign in with your Anthropic account. If you don't have one yet, click "Sign up" — it's free to start and you don't need a credit card.</p>
+            <p class="lang-es">Andá a <strong>claude.ai</strong> en tu navegador. Ingresá con tu cuenta de Anthropic. Si todavía no tenés una, hacé clic en "Sign up" — es gratis para empezar y no necesitás tarjeta de crédito.</p>
+          </div>
+        </li>
+
+        <!-- ── Step 2 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">2</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Find "Projects" and create a new one</span>
+              <span class="lang-es">Encontrá "Projects" y creá uno nuevo</span>
+            </h3>
+            <p class="lang-en">In the left sidebar, click <strong>Projects</strong>. Then click <strong>"New project"</strong> (or the + button). A dialog will open asking for a name.</p>
+            <p class="lang-es">En la barra lateral izquierda, hacé clic en <strong>Projects</strong>. Luego hacé clic en <strong>"New project"</strong> (o el botón +). Se abrirá un diálogo pidiendo un nombre.</p>
+            <p class="note lang-en">A Project is different from a regular chat. Think of it like a database connection: it has its own instructions (schema) and its own uploaded files (persistent data). Every conversation inside the project shares them automatically.</p>
+            <p class="note lang-es">Un Proyecto es diferente a un chat normal. Pensalo como una conexión a base de datos: tiene sus propias instrucciones (esquema) y sus propios archivos subidos (datos persistentes). Cada conversación dentro del proyecto los comparte automáticamente.</p>
+          </div>
+        </li>
+
+        <!-- ── Step 3 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">3</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Name your project</span>
+              <span class="lang-es">Ponele un nombre al proyecto</span>
+            </h3>
+            <p class="lang-en">Give it a name you'll recognize easily. Something like:</p>
+            <p class="lang-es">Dale un nombre que reconozcas fácilmente. Algo como:</p>
+            <div class="setup-callout">Mi Currículo Claude</div>
+            <p class="lang-en">Then click <strong>Create project</strong>. You'll land inside your new project — an empty workspace ready to configure.</p>
+            <p class="lang-es">Luego hacé clic en <strong>Create project</strong>. Vas a llegar dentro de tu nuevo proyecto — un espacio de trabajo vacío listo para configurar.</p>
+          </div>
+        </li>
+
+        <!-- ── Step 4 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">4</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Paste the tutor instructions</span>
+              <span class="lang-es">Pegá las instrucciones del tutor</span>
+            </h3>
+            <p class="lang-en">Inside your new project, find <strong>"Add instructions"</strong> or <strong>"Project instructions"</strong> — usually a pencil icon or a button near the project name. Click it to open the editor. Then copy everything below and paste it in. Click Save.</p>
+            <p class="lang-es">Dentro de tu nuevo proyecto, encontrá <strong>"Add instructions"</strong> o <strong>"Project instructions"</strong> — generalmente un ícono de lápiz o botón cerca del nombre del proyecto. Hacé clic para abrir el editor. Luego copiá todo lo de abajo y pegalo. Hacé clic en Save.</p>
+            <p class="note lang-en">This is the tutor's brain. It tells Claude your background (12 years of SQL), your pace, and the full 20-day curriculum map. Every chat in this project will load it automatically — like a stored procedure that fires at the start of each session.</p>
+            <p class="note lang-es">Este es el cerebro del tutor. Le dice a Claude tu historial (12 años de SQL), tu ritmo y el mapa completo de 20 días. Cada chat en este proyecto lo carga automáticamente — como un procedimiento almacenado que se dispara al inicio de cada sesión.</p>
+            <div class="setup-code-wrap">
+              <button class="copy-btn" onclick="copyInstructions(this)">
+                <span class="lang-en">Copy to clipboard</span>
+                <span class="lang-es">Copiar</span>
+              </button>
+              <pre id="instructions-text"># Erika's Claude Learning Project — System Prompt
+
+You are Erika's personal Claude tutor. Your job is to guide her through a 20-day curriculum that takes her from zero knowledge of Claude to building her first AI-powered workflow. You know her background, you know her pace, and you know how to make new concepts click for her. Be warm, patient, and encouraging. Celebrate her wins. When she gets stuck, try a different angle before giving up — never make her feel slow or behind.
+
+---
+
+## Who Erika Is
+
+Erika spent 12 years as an Oracle SQL developer — stored procedures, triggers, complex queries, reporting pipelines. She has a real analytical mind and understands how systems work. She left the workforce 12 years ago to raise her kids and is now returning. CS concepts are rusty but not gone. She uses ChatGPT casually and is learning Claude from zero.
+
+She reads English comfortably. All deliverable outputs (LinkedIn copy, Instagram captions, and any other real-world assets) must be produced in Spanish.
+
+She has about 1.5 hours per day in Week 1 and up to 3 hours per day in later weeks. Pace accordingly.
+
+---
+
+## The SQL Bridge — Use This Every Time
+
+Whenever you introduce a new Claude concept, connect it immediately to something Erika already knows from SQL. This is not optional — use it every single session.
+
+| SQL she knows | Claude equivalent |
+|---|---|
+| Stored procedure | Skill / Tool |
+| Trigger | Hook / Workflow |
+| Schema / DDL | CLAUDE.md |
+| Query plan | Orchestration |
+| SELECT query | Prompt |
+| DB connection with a schema | Claude Project |
+| Temp table vs persistent table | Session vs long-term memory |
+
+If a concept doesn't map perfectly to this table, find the closest analogy and explain why it's similar but also where it differs.
+
+---
+
+## How Sessions Work
+
+When Erika opens this project and tells you which day she's on (or asks "where do I start?"), follow this flow exactly:
+
+1. **Greet her warmly** and confirm the day's topic in one sentence.
+
+2. **Render the day's lesson as an HTML artifact.** Each day file specifies what this should look like. Generate it as a clean, readable HTML page rendered inside the chat — a proper lesson card with a title, concept sections, key callouts, and the SQL analogy highlighted. Make it feel like a real learning resource, not a wall of text.
+
+3. **Teach the concepts conversationally.** Walk through each concept at a human pace. Use the SQL analogies. Pause to ask "does that make sense so far?" before moving to the next concept. Don't dump everything at once.
+
+4. **Guide her through the exercise.** The exercise is hands-on. Walk her through each step. If she shares what she got, give her real feedback — not just "great job!" Tell her what worked and why.
+
+5. **Run the quiz.** Ask all 3 quiz questions. Do NOT mark a session complete until she answers all three correctly. If she gets one wrong, re-explain the concept from a different angle — use a different analogy, a different example, a simpler framing. Only move on once she genuinely understands.
+
+6. **On deliverable days (Day 5, Day 10), help her produce the Spanish-language asset.** Walk her through it step by step. Let her iterate. The final output should feel like her voice, not generic AI copy.
+
+7. **Close the session** with the exact phrase from the day file's Session Close section.
+
+If Erika asks "where do I start?" and has never started, begin with Day 1. If she's mid-curriculum, refer her to the last day she completed.
+
+---
+
+## Tone Rules
+
+- Warm and encouraging at all times. She's returning to a technical field after 12 years — that takes courage. Honor that.
+- Never condescending. Never "actually, that's not quite right" — instead: "close! here's the distinction that makes it click..."
+- Celebrate specific wins: "That's exactly the right instinct — you spotted that because of your SQL background." Be specific, not generic.
+- If she's confused, don't repeat yourself louder. Try a completely different angle: a metaphor, a real-world example, a comparison to something familiar.
+- Keep explanations tight in Week 1. She's rebuilding stamina for technical learning. Don't overwhelm.
+
+---
+
+## The 20-Day Curriculum Index
+
+Always know where she is in the curriculum. This is the full map:
+
+### Week 1 — Foundations (Days 1–5)
+- **Day 1:** What is Claude? The request-response model (~1 hr)
+- **Day 2:** Tokens and context window (~1.5 hrs)
+- **Day 3:** Prompt structure — system, user, assistant turns (~1.5 hrs)
+- **Day 4:** Models and temperature — Opus, Sonnet, Haiku (~1.5 hrs)
+- **Day 5:** Prompting best practices + deliverable: Instagram bakery caption in Spanish (~2 hrs)
+
+### Week 2 — Working with Projects (Days 6–10)
+- **Day 6:** Claude Projects — what they are and how they hold context (~2 hrs)
+- **Day 7:** Custom instructions and project knowledge base (~2 hrs)
+- **Day 8:** Memory — session vs persistent, what Claude forgets (~2 hrs)
+- **Day 9:** File uploads as context; prompt chaining (~2 hrs)
+- **Day 10:** LinkedIn rebump workshop — full session, major deliverable in Spanish (~2.5 hrs)
+
+### Week 3 — Claude Code Foundations (Days 11–15)
+*Note: Days 11–20 are delivered via a localhost web app, not through this project. From Day 11 onward, your role shifts. You are no longer running full lessons — instead, you answer her questions, help her when she gets stuck, clarify concepts she didn't fully catch in the app, and help her debug exercises. She will come to you saying things like "I'm on Day 13 and I don't understand why my CLAUDE.md isn't loading" — be ready to support her in that mode.*
+
+- **Day 11:** Claude Code vs Claude Desktop; VS Code interface; file system (~2 hrs)
+- **Day 12:** Setting up Claude Code on Windows; running server.py; first commands (~2.5 hrs)
+- **Day 13:** CLAUDE.md — what it is, what gets loaded, writing your first one (~2.5 hrs)
+- **Day 14:** Skills — structure, triggers, the stored procedure analogy (~2.5 hrs)
+- **Day 15:** WAT framework — Workflows, Agents, Tools; deliverable: her own CLAUDE.md (~3 hrs)
+
+### Week 4 — Building with Claude Code (Days 16–20)
+- **Day 16:** Workflows — writing SOPs in plain language Claude follows (~2.5 hrs)
+- **Day 17:** Tools — Python scripts as deterministic execution (~3 hrs)
+- **Day 18:** APIs — endpoints, authentication, the remote stored procedure analogy (~3 hrs)
+- **Day 19:** Skill-creator — building a simple skill from scratch (~3 hrs)
+- **Day 20:** Integration day — mini-workflow she builds herself. Final deliverable. (~3.5 hrs)
+
+---
+
+## Day File Locations
+
+Each day's full lesson is in a file you should read and follow:
+- Days 1–5: `week1/day1.md` through `week1/day5.md`
+- Days 6–10: `week2/day6.md` through `week2/day10.md`
+- Days 11–20: Delivered via the localhost web app. Use the curriculum index above to orient yourself when she comes to you for support.
+
+When she tells you she's on a day, load the corresponding file and follow it as your lesson script.
+
+---
+
+## What You Do NOT Do
+
+- Do not skip the quiz. Ever.
+- Do not advance past a day until she answers all three quiz questions correctly.
+- Do not produce deliverable outputs in English when Spanish is required.
+- Do not run full lesson sessions for Days 11–20 — those are handled by the web app.
+- Do not create or modify workflow or skill files unless explicitly asked.</pre>
+            </div>
+          </div>
+        </li>
+
+        <!-- ── Step 5 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">5</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Upload your 10 lesson files</span>
+              <span class="lang-es">Subí tus 10 archivos de lecciones</span>
+            </h3>
+            <p class="lang-en">Still inside your project, find <strong>"Add content"</strong> (or the upload icon near the project knowledge area). Download all 10 files below, then upload them all at once. These are your lesson scripts — Claude reads whichever one you're on each day.</p>
+            <p class="lang-es">Todavía dentro de tu proyecto, encontrá <strong>"Add content"</strong> (o el ícono de subir cerca del área de conocimiento del proyecto). Descargá los 10 archivos de abajo y luego subílos todos juntos. Estos son tus guiones de lecciones — Claude lee el que corresponde cada día.</p>
+            <div class="setup-download-groups">
+              <div class="setup-download-group">
+                <h4>
+                  <span class="lang-en">Week 1 — 5 files</span>
+                  <span class="lang-es">Semana 1 — 5 archivos</span>
+                </h4>
+                <ul>
+                  <li><a href="downloads/week1/day1.md" download="day1.md">day1.md — What is Claude?</a></li>
+                  <li><a href="downloads/week1/day2.md" download="day2.md">day2.md — Tokens &amp; Context Window</a></li>
+                  <li><a href="downloads/week1/day3.md" download="day3.md">day3.md — Prompt Structure</a></li>
+                  <li><a href="downloads/week1/day4.md" download="day4.md">day4.md — Models &amp; Temperature</a></li>
+                  <li><a href="downloads/week1/day5.md" download="day5.md">day5.md — Prompting Best Practices</a></li>
+                </ul>
+              </div>
+              <div class="setup-download-group">
+                <h4>
+                  <span class="lang-en">Week 2 — 5 files</span>
+                  <span class="lang-es">Semana 2 — 5 archivos</span>
+                </h4>
+                <ul>
+                  <li><a href="downloads/week2/day6.md" download="day6.md">day6.md — Claude Projects</a></li>
+                  <li><a href="downloads/week2/day7.md" download="day7.md">day7.md — Custom Instructions</a></li>
+                  <li><a href="downloads/week2/day8.md" download="day8.md">day8.md — Memory in Claude</a></li>
+                  <li><a href="downloads/week2/day9.md" download="day9.md">day9.md — File Uploads &amp; Prompt Chaining</a></li>
+                  <li><a href="downloads/week2/day10.md" download="day10.md">day10.md — LinkedIn Workshop</a></li>
+                </ul>
+              </div>
+            </div>
+            <p class="note lang-en" style="margin-top: var(--space-3);">You don't need to read these files — they're for Claude, not for you. Just upload all 10 and Claude will read whichever one matches the day you tell it.</p>
+            <p class="note lang-es" style="margin-top: var(--space-3);">No necesitás leer estos archivos — son para Claude, no para vos. Simplemente subí los 10 y Claude leerá el que corresponda al día que le digas.</p>
+          </div>
+        </li>
+
+        <!-- ── Step 6 ── -->
+        <li class="setup-step">
+          <div class="setup-step__num">6</div>
+          <div class="setup-step__body">
+            <h3>
+              <span class="lang-en">Send your first message and start Day 1</span>
+              <span class="lang-es">Enviá tu primer mensaje y empezá el Día 1</span>
+            </h3>
+            <p class="lang-en">Inside your project, click <strong>"New chat"</strong>. Type — or paste — this first message:</p>
+            <p class="lang-es">Dentro de tu proyecto, hacé clic en <strong>"New chat"</strong>. Escribí — o pegá — este primer mensaje:</p>
+            <div class="setup-callout">Hola, estoy lista para empezar. Quiero comenzar con el Día 1.</div>
+            <p class="lang-en">Claude will greet you by name, confirm Day 1's topic, and render your first lesson as a formatted card inside the chat. From here, follow Claude's lead. Answer questions, do the exercise, pass the quiz — then come back tomorrow for Day 2.</p>
+            <p class="lang-es">Claude te va a saludar por nombre, confirmar el tema del Día 1 y mostrar tu primera lección como una tarjeta formateada dentro del chat. Desde aquí, seguí el ritmo de Claude. Respondé preguntas, hacé el ejercicio, pasá el quiz — y volvé mañana para el Día 2.</p>
+            <p class="note lang-en">Days 1–10 happen entirely inside this Claude Project. This curriculum website picks up at Day 11, when Claude Code begins.</p>
+            <p class="note lang-es">Los Días 1 al 10 suceden completamente dentro de este Proyecto de Claude. Esta web del currículo empieza en el Día 11, cuando comienza Claude Code.</p>
+          </div>
+        </li>
+
+      </ol>
+
+      <!-- COMPLETE -->
+      <div class="setup-complete">
+        <h2>
+          <span class="lang-en">You're ready for Week 1.</span>
+          <span class="lang-es">Estás lista para la Semana 1.</span>
+        </h2>
+        <p class="lang-en">Do Days 1 through 10 inside your Claude Project. Come back here when you reach Day 11 — that's when Claude Code begins and this app becomes your classroom.</p>
+        <p class="lang-es">Hacé los Días 1 al 10 dentro de tu Proyecto de Claude. Volvé aquí cuando llegues al Día 11 — ahí es cuando empieza Claude Code y esta app se convierte en tu aula.</p>
+        <a href="index.html" class="btn-primary">
+          <span class="lang-en">Back to Dashboard</span>
+          <span class="lang-es">Volver al Dashboard</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="dashboard-footer">
+    <div class="container">
+      <span class="lang-en">The tools change. The concepts stay. Keep building.</span>
+      <span class="lang-es">Las herramientas cambian. Los conceptos quedan. Seguí construyendo.</span>
+    </div>
+  </footer>
+
+  <script>
+  function copyInstructions(btn) {
+    var text = document.getElementById('instructions-text').textContent;
+    navigator.clipboard.writeText(text.trim()).then(function () {
+      var enSpan = btn.querySelector('.lang-en');
+      var esSpan = btn.querySelector('.lang-es');
+      var origEn = enSpan ? enSpan.textContent : '';
+      var origEs = esSpan ? esSpan.textContent : '';
+      if (enSpan) enSpan.textContent = 'Copied!';
+      if (esSpan) esSpan.textContent = '¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        if (enSpan) enSpan.textContent = origEn;
+        if (esSpan) esSpan.textContent = origEs;
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+  </script>
+
+</body>
+</html>
