@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 15 — The WAT Framework</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 3</span>
+          <span>Day 15 of 20 &nbsp;&nbsp; ★ Deliverable Day</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 3</span>
+        <span class="badge badge--day">Day 15</span>
+        <span class="badge badge--deliverable">★ Deliverable</span>
+      </div>
+      <h1>The WAT Framework — Workflows, Agents, Tools</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. The full WAT picture</span><span class="lang-es">1. El panorama completo de WAT</span></h3>
+          <div class="lang-en">
+            <p><strong>WAT stands for Workflows, Agents, Tools.</strong> It's an architecture for building reliable AI-powered systems by separating what AI does well (reasoning, decision-making) from what code does well (deterministic execution).</p>
+            <ul>
+              <li><strong>Workflow</strong> — a plain-language SOP (Standard Operating Procedure) stored as a Markdown file in <code>workflows/</code>. It describes what to accomplish, in what order, using which tools, and how to handle edge cases. Written like a briefing document.</li>
+              <li><strong>Agent</strong> — that's Claude. It reads the workflow and makes intelligent decisions about how to execute it: which tool to call, what to do when something fails, when to ask a clarifying question.</li>
+              <li><strong>Tools</strong> — Python scripts in <code>tools/</code> that do exactly one thing reliably. API calls, data transformations, file operations. No reasoning — just execution.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p><strong>WAT = Workflows, Agents, Tools</strong> (Flujos de trabajo, Agentes, Herramientas). Workflow = un SOP (procedimiento operativo estándar) en lenguaje simple almacenado como archivo markdown en <code>workflows/</code>. Describe qué hacer, en qué orden y con qué herramientas. Agent = Claude mismo — lee el workflow y toma decisiones inteligentes sobre la ejecución. Tools = scripts de Python en <code>tools/</code> que hacen una cosa específica de manera confiable.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>WAT is a <strong>three-tier architecture</strong> — the same pattern you know from enterprise Oracle applications: the <strong>presentation layer</strong> (workflow = what the user wants), the <strong>application layer</strong> (agent = Claude making decisions), and the <strong>database layer</strong> (tools = deterministic execution). You've built systems like this. The vocabulary is different; the structure is the same.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>WAT es una arquitectura de tres capas — exactamente como las aplicaciones empresariales de bases de datos: la capa de presentación (workflow = lo que el usuario quiere), la capa de aplicación (agente = Claude tomando decisiones), y la capa de base de datos (herramientas = ejecución determinística). Ella ya construyó sistemas así — solo con vocabulario diferente.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Why the separation matters</span><span class="lang-es">2. Por qué importa la separación</span></h3>
+          <div class="lang-en">
+            <p>When AI tries to do everything — reason AND execute AND handle errors AND manage state — accuracy drops fast. The math is unforgiving:</p>
+            <ul>
+              <li>1 step at 90% accuracy = 90% success</li>
+              <li>2 steps at 90% each = 81% success</li>
+              <li>5 steps at 90% each = <strong>59% success</strong></li>
+              <li>10 steps at 90% each = <strong>35% success</strong></li>
+            </ul>
+            <p>By offloading execution to deterministic Python scripts (always 100% predictable for a given input), you keep Claude focused on what it does well: reasoning, interpreting ambiguous situations, making judgment calls. The tools handle the parts that shouldn't involve probability.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cuando la IA intenta hacer TODO (razonar + ejecutar + manejar errores + gestionar estado), la precisión cae rápido. Cinco pasos al 90% de precisión = 59% de éxito en total. Al separar el razonamiento (Claude) de la ejecución (scripts de Python), ambas capas se mantienen confiables.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>A Python script that calls an API either works or it doesn't — there's no 90% about it. By using tools for execution and Claude for reasoning, you get the best of both: intelligent decision-making and reliable execution. That's what makes WAT different from just prompting Claude to do everything.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>La separación es lo que hace que el sistema sea confiable. Claude razona bien. Los scripts de Python ejecutan de manera confiable. Juntos son mejores que cualquiera por separado.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. How this project is already WAT</span><span class="lang-es">3. Por qué este proyecto ya es WAT</span></h3>
+          <div class="lang-en">
+            <p>Look at the erika project with fresh eyes:</p>
+            <ul>
+              <li><code>CLAUDE.md</code> — sets the agent's context and operating rules</li>
+              <li><code>skills/</code> — specialized instruction sets (like workflows for specific tasks)</li>
+              <li><code>curriculum/web/server.py</code> — a tool you've already run</li>
+              <li><code>workflows/</code> (once you create it) — the SOP layer</li>
+              <li><code>tools/</code> (as you build them) — Python scripts for execution</li>
+            </ul>
+            <p>You've been living inside a WAT project all week. Now you know its name.</p>
+          </div>
+          <div class="lang-es">
+            <p>Ahora sabe suficiente para entender cada capa de este proyecto. El CLAUDE.md establece el contexto. La carpeta skills/ tiene su skill-creator. La carpeta workflow/ (una vez creada) tendrá los SOPs. La carpeta tools/ tendrá los scripts.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- DELIVERABLE EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise — Your Deliverable (~90 minutes)</span><span class="lang-es">Ejercicio — Tu Entregable (~90 min)</span></summary>
+        <p style="margin-bottom: 1.25rem; color: var(--text-muted); font-size: 0.92rem;">
+          <span class="lang-en">This is a real deliverable — a small but complete Claude Code project you're building from scratch.</span>
+          <span class="lang-es">Este es un entregable real — un proyecto pequeño pero completo de Claude Code que vas a construir desde cero.</span>
+        </p>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">In VS Code, create a new project folder. Call it <code>mi-taller-code</code>. This is separate from the <code>mi-taller</code> folder you created on Day 13 — this one is your full Claude Code project with the WAT structure.</div>
+              <div class="lang-es">En VS Code, creá una nueva carpeta de proyecto. Llamala <code>mi-taller-code</code>. Es diferente a la carpeta <code>mi-taller</code> que creaste el Día 13 — esta es tu proyecto completo de Claude Code con la estructura WAT.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Inside <code>mi-taller-code</code>, create a <code>CLAUDE.md</code>. Build on the one you wrote in Day 13 — expand it. Add a section on how Claude should operate in this project (which tools to use eventually, the WAT approach, how to handle ambiguity). Make it feel like a real project brief.</div>
+              <div class="lang-es">Dentro de <code>mi-taller-code</code>, creá un <code>CLAUDE.md</code>. Basate en el que escribiste el Día 13 — expandilo. Agregá una sección sobre cómo debe operar Claude en este proyecto (qué herramientas usar eventualmente, el enfoque WAT, cómo manejar la ambigüedad). Que se sienta como un briefing de proyecto real.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Create a <code>workflows/</code> folder inside <code>mi-taller-code</code>.</div>
+              <div class="lang-es">Creá una carpeta <code>workflows/</code> dentro de <code>mi-taller-code</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Inside <code>workflows/</code>, create a file called <code>instagram_caption.md</code>. Write a plain-language workflow for generating Instagram captions. Your workflow should include:
+                <ul style="margin-top: 0.5rem;">
+                  <li><strong>Purpose:</strong> Generate Instagram captions for bakery/handmade content in Spanish</li>
+                  <li><strong>Required inputs:</strong> topic, image description, desired tone</li>
+                  <li><strong>Steps:</strong> at least 4 steps (research similar posts, draft 3 options, select best, add hashtags)</li>
+                  <li><strong>Expected output:</strong> final caption in Spanish, ready to post</li>
+                  <li><strong>Edge cases:</strong> what to do if the topic is unclear, or if the tone requested conflicts with brand guidelines</li>
+                </ul>
+              </div>
+              <div class="lang-es">Dentro de <code>workflows/</code>, creá un archivo llamado <code>instagram_caption.md</code>. Escribí un workflow en lenguaje simple para generar captions de Instagram. Tu workflow debe incluir:
+                <ul style="margin-top: 0.5rem;">
+                  <li><strong>Propósito:</strong> generar captions de Instagram para contenido de repostería/artesanías en español</li>
+                  <li><strong>Entradas requeridas:</strong> tema, descripción de la imagen, tono deseado</li>
+                  <li><strong>Pasos:</strong> al menos 4 pasos (investigar posts similares, borrador de 3 opciones, elegir el mejor, agregar hashtags)</li>
+                  <li><strong>Resultado esperado:</strong> caption final en español, listo para publicar</li>
+                  <li><strong>Casos límite:</strong> qué hacer si el tema no está claro, o si el tono pedido entra en conflicto con las pautas de la marca</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Open the terminal, navigate into <code>mi-taller-code</code>, and type <code>claude</code>. Ask Claude: "Based on the workflow in workflows/instagram_caption.md, write me a caption for a photo of freshly baked sourdough bread, warm and inviting tone." Observe: does Claude follow the workflow steps? Does the output match your expected format?</div>
+              <div class="lang-es">Abrí la terminal, navegá dentro de <code>mi-taller-code</code> y escribí <code>claude</code>. Preguntale a Claude: "Based on the workflow in workflows/instagram_caption.md, write me a caption for a photo of freshly baked sourdough bread, warm and inviting tone." Observá: ¿sigue Claude los pasos del workflow? ¿El resultado coincide con el formato que esperabas?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Save everything. Your deliverable is: a folder called <code>mi-taller-code</code> containing a <code>CLAUDE.md</code> and a <code>workflows/instagram_caption.md</code>. That's your first Claude Code project. It's small — but it's real, and it's yours.</div>
+              <div class="lang-es">Guardá todo. Tu entregable es: una carpeta llamada <code>mi-taller-code</code> que contiene un <code>CLAUDE.md</code> y un <code>workflows/instagram_caption.md</code>. Ese es tu primer proyecto de Claude Code. Es pequeño — pero es real, y es tuyo.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>Anthropic 101 — Module 4: "Putting It All Together"</strong></p>
+        <p><a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener">Anthropic Skilljar &rarr;</a></p>
+        <p>
+          <span class="lang-en">This is a great capstone for Week 3. You've now covered enough ground that this module should feel like confirmation of what you already know, not new information to absorb. Read it with that lens.</span>
+          <span class="lang-es">Este es un gran cierre para la Semana 3. Ya cubriste suficiente terreno como para que este módulo se sienta como una confirmación de lo que ya sabés, no como información nueva para absorber. Leélo con esa mirada.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What does WAT stand for, and what does each layer do?</span>
+            <span class="lang-es">¿Qué significa WAT y qué hace cada capa?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>W</strong>orkflows — plain-language SOPs (instructions stored as Markdown) that describe what to do.<br>
+            <strong>A</strong>gents — Claude, the decision-maker that reads workflows and orchestrates execution.<br>
+            <strong>T</strong>ools — Python scripts that perform deterministic execution (API calls, file operations).</div>
+            <div class="lang-es"><strong>W</strong>orkflows — SOPs en lenguaje simple (instrucciones guardadas como Markdown) que describen qué hacer.<br>
+            <strong>A</strong>gents — Claude, el tomador de decisiones que lee los workflows y orquesta la ejecución.<br>
+            <strong>T</strong>ools — scripts de Python que realizan ejecución determinística (llamadas a APIs, operaciones con archivos).</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Why is it better to separate reasoning from execution in an AI workflow?</span>
+            <span class="lang-es">¿Por qué es mejor separar el razonamiento de la ejecución en un flujo de trabajo de IA?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Compounding accuracy: if each AI step is 90% accurate, five steps in a row produce only 59% success. Deterministic Python scripts are 100% predictable, so moving execution out of Claude's hands keeps the system reliable. Claude stays focused on reasoning; tools handle execution.</div>
+            <div class="lang-es">Precisión acumulada: si cada paso de IA tiene un 90% de precisión, cinco pasos seguidos producen solo un 59% de éxito. Los scripts de Python determinísticos son 100% predecibles, así que sacar la ejecución de las manos de Claude mantiene el sistema confiable. Claude se mantiene enfocado en el razonamiento; las herramientas manejan la ejecución.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What software architecture does WAT resemble, and what maps to what?</span>
+            <span class="lang-es">¿A qué arquitectura de software se parece WAT y qué corresponde a qué?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>Three-tier architecture</strong> — the same pattern used in enterprise database applications:<br>
+            Presentation layer → Workflow (what the user wants)<br>
+            Application layer → Agent / Claude (business logic and decisions)<br>
+            Database layer → Tools (deterministic data execution)</div>
+            <div class="lang-es"><strong>Arquitectura de tres capas</strong> — el mismo patrón usado en aplicaciones empresariales de bases de datos:<br>
+            Capa de presentación → Workflow (lo que el usuario quiere)<br>
+            Capa de aplicación → Agente / Claude (lógica de negocio y decisiones)<br>
+            Capa de base de datos → Tools (ejecución determinística de datos)</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 15 Complete &amp; Finish Week 3</button>
+  </div>
+
+  <!-- FOOTER — last lesson of week 3, links to dashboard -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="../index.html">Back to dashboard — Week 4 starts next</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(15);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

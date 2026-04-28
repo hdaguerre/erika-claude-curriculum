@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 39 — Pipeline Rehearsal</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 8</span>
+          <span>Day 39 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 8</span>
+        <span class="badge badge--day">Day 39</span>
+      </div>
+      <h1>Pipeline Rehearsal</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What a "rehearsal" run is</span><span class="lang-es">1. Qué es una "ejecución de ensayo"</span></h3>
+
+          <div class="lang-en">
+            <p>A rehearsal means running the full pipeline end-to-end on fresh data, exactly as you would in production, to catch any remaining integration issues before the final run.</p>
+            <p>The difference between a <strong>test</strong> and a <strong>rehearsal</strong>: a test validates a single component in isolation. A rehearsal validates the entire sequence — does every output format feed correctly into the next input? Are column names consistent across tools? Do all tools run without crashing on real data?</p>
+            <p>Today is your dress rehearsal. Tomorrow is opening night.</p>
+          </div>
+          <div class="lang-es">
+            <p>Un ensayo significa ejecutar el pipeline completo de extremo a extremo sobre datos nuevos, exactamente como lo harías en producción, para encontrar cualquier problema de integración restante antes de la ejecución final.</p>
+            <p>La diferencia entre un <strong>test</strong> y un <strong>ensayo</strong>: un test valida un solo componente en aislamiento. Un ensayo valida la secuencia completa — ¿cada formato de salida alimenta correctamente la siguiente entrada? ¿Los nombres de columnas son consistentes entre las herramientas? ¿Todas las herramientas corren sin caerse con datos reales?</p>
+            <p>Hoy es tu ensayo general. Mañana es el estreno.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>This is like running a full database regression test suite before a major release. In Oracle, you'd run every stored procedure in sequence with representative data and verify the final result tables match expectations. Same principle here — you're running every tool in sequence and checking that the final output (Apollo contacts) matches what you'd expect from a clean run.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Esto es como ejecutar un conjunto completo de pruebas de regresión de base de datos antes de una versión importante. En Oracle, ejecutarías cada procedimiento almacenado en secuencia con datos representativos y verificarías que las tablas de resultados finales coincidan con las expectativas. Mismo principio aquí — estás ejecutando cada herramienta en secuencia y verificando que el resultado final (contactos en Apollo) coincida con lo esperado de una ejecución limpia.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Writing <code>workflows/gtm_pipeline.md</code></span><span class="lang-es">2. Escribiendo <code>workflows/gtm_pipeline.md</code></span></h3>
+
+          <div class="lang-en">
+            <p>This is the SOP — Standard Operating Procedure — for running the pipeline. It describes what the pipeline does, what inputs it needs, what each tool does and in what order, what to check at each step, and how to handle common errors.</p>
+            <p>You write this yourself. Not because Claude can't draft it — it can — but because the act of writing it proves you understand the system. If you can explain it clearly enough for a new person to follow, you understand it. If you can't, the gaps in your explanation reveal gaps in your understanding.</p>
+            <p>Claude will help you draft it. Then you edit it into your own words.</p>
+          </div>
+          <div class="lang-es">
+            <p>Este es el SOP — Procedimiento Operativo Estándar — para ejecutar el pipeline. Describe qué hace el pipeline, qué entradas necesita, qué hace cada herramienta y en qué orden, qué verificar en cada paso y cómo manejar errores comunes.</p>
+            <p>Lo escribís vos. No porque Claude no pueda hacerlo — puede — sino porque el acto de escribirlo demuestra que entendés el sistema. Si podés explicarlo con suficiente claridad para que una persona nueva lo siga, lo entendés. Si no podés, los vacíos en tu explicación revelan vacíos en tu comprensión.</p>
+            <p>Claude te va a ayudar a hacer un borrador. Después lo editás con tus propias palabras.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>The WAT framework again: the workflow is the instruction set that any agent — or any human — can follow to reproduce the same outcome. A pipeline without a workflow is fragile. With one, it's transferable. You've just made your work trainable.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>El framework WAT otra vez: el workflow es el conjunto de instrucciones que cualquier agente — o cualquier persona — puede seguir para reproducir el mismo resultado. Un pipeline sin un workflow es frágil. Con uno, es transferible. Acabás de hacer que tu trabajo sea enseñable.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~100 minutes)</span><span class="lang-es">Ejercicio (~100 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Get a fresh CSV of 20 rows from Hernan</strong> (or generate a new sample). This should be clean raw data — company names, domains, maybe job titles. Nothing enriched yet.</div>
+              <div class="lang-es"><strong>Obtené un CSV nuevo de 20 filas de Hernan</strong> (o generá un nuevo sample). Deberían ser datos crudos limpios — nombres de empresas, dominios, quizás títulos de trabajo. Nada enriquecido todavía.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run the full pipeline from scratch, in sequence:</strong>
+                <ol style="margin-top: 0.5rem;">
+                  <li><code>python tools/clean_leads.py</code></li>
+                  <li><code>python tools/enrich_list.py</code></li>
+                  <li><code>python tools/fetch_tech_stack.py</code> (for 5–10 rows)</li>
+                  <li><code>python tools/score_leads.py</code></li>
+                  <li><code>python tools/push_to_apollo.py</code> (qualified rows only)</li>
+                </ol>
+              </div>
+              <div class="lang-es"><strong>Ejecutá el pipeline completo desde cero, en secuencia:</strong>
+                <ol style="margin-top: 0.5rem;">
+                  <li><code>python tools/clean_leads.py</code></li>
+                  <li><code>python tools/enrich_list.py</code></li>
+                  <li><code>python tools/fetch_tech_stack.py</code> (para 5-10 filas)</li>
+                  <li><code>python tools/score_leads.py</code></li>
+                  <li><code>python tools/push_to_apollo.py</code> (solo filas calificadas)</li>
+                </ol>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Note any errors or friction points.</strong> Did a tool fail? Did column names not match between steps? Did any step need a manual adjustment? Write these down — they go into the workflow's error-handling section.</div>
+              <div class="lang-es"><strong>Anotá los errores o puntos de fricción.</strong> ¿Falló alguna herramienta? ¿Los nombres de columnas no coincidían entre pasos? ¿Algún paso necesitó un ajuste manual? Escribilos — van a la sección de manejo de errores del workflow.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Claude Code to draft the workflow:</strong> "Help me write workflows/gtm_pipeline.md — a step-by-step SOP for running this pipeline. Include: objective, required inputs (.env keys needed, input CSV format), each tool in order with what it does and what to check, how to handle common errors, expected outputs at each step."</div>
+              <div class="lang-es"><strong>Pedile a Claude Code que haga el borrador del workflow:</strong> "Help me write workflows/gtm_pipeline.md — a step-by-step SOP for running this pipeline. Include: objective, required inputs (.env keys needed, input CSV format), each tool in order with what it does and what to check, how to handle common errors, expected outputs at each step."</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Edit the workflow in your own words.</strong> Read the draft Claude generates. Rewrite any parts that feel unclear or don't reflect how you actually ran it. Add the error cases you encountered in step 3. This document should read like something you wrote, not something Claude wrote.</div>
+              <div class="lang-es"><strong>Editá el workflow con tus propias palabras.</strong> Leé el borrador que generó Claude. Reescribí las partes que se sientan confusas o que no reflejen cómo lo ejecutaste realmente. Agregá los casos de error que encontraste en el paso 3. Este documento debería leerse como algo que escribiste vos, no Claude.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>The SOP you just wrote.</strong> Read <code>workflows/gtm_pipeline.md</code> as if you're a new person who has never seen the pipeline before. Does every step make sense? Could someone follow it without asking you a question? If not — fix it now, before the final run tomorrow.</span>
+          <span class="lang-es"><strong>El SOP que acabás de escribir.</strong> Leé <code>workflows/gtm_pipeline.md</code> como si fueras una persona nueva que nunca vio el pipeline. ¿Tiene sentido cada paso? ¿Podría alguien seguirlo sin preguntarte nada? Si no — arreglalo ahora, antes de la ejecución final de mañana.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the difference between a test and a rehearsal?</span>
+            <span class="lang-es">¿Cuál es la diferencia entre un test y un ensayo?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A test validates one component in isolation — does this script run without errors? A rehearsal runs the full pipeline end-to-end on real data — does the entire sequence produce the right output, with every tool's output correctly feeding the next tool's input?</div>
+            <div class="lang-es">Un test valida un componente en aislamiento — ¿este script corre sin errores? Un ensayo ejecuta el pipeline completo de extremo a extremo con datos reales — ¿toda la secuencia produce el resultado correcto, con la salida de cada herramienta alimentando correctamente la entrada de la siguiente?</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What should <code>workflows/gtm_pipeline.md</code> contain?</span>
+            <span class="lang-es">¿Qué debería contener <code>workflows/gtm_pipeline.md</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Objective, required inputs (what .env keys are needed, what the input CSV should look like), each tool in order with what it does and what to check at each step, how to handle common errors, and expected outputs at the end of each stage.</div>
+            <div class="lang-es">Objetivo, entradas requeridas (qué claves .env se necesitan, cómo debería verse el CSV de entrada), cada herramienta en orden con lo que hace y qué verificar en cada paso, cómo manejar errores comunes, y resultados esperados al final de cada etapa.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Why does Erika write the workflow herself instead of just using what Claude generated?</span>
+            <span class="lang-es">¿Por qué Erika escribe el workflow ella misma en vez de usar solo lo que generó Claude?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Writing it herself proves she understands the system. If she can document it clearly enough for a new person to follow, she can reproduce it, fix it, and train someone else on it. Claude's draft is a starting point — the final document needs to reflect her actual experience running it.</div>
+            <div class="lang-es">Escribirlo ella misma demuestra que entiende el sistema. Si puede documentarlo con suficiente claridad para que una persona nueva lo siga, puede reproducirlo, arreglarlo y entrentar a alguien más en él. El borrador de Claude es un punto de partida — el documento final necesita reflejar su experiencia real ejecutándolo.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 39 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day40.html">Next: Day 40 — Graduation Day</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(39);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

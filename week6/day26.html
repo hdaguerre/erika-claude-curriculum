@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 26 — Apify &amp; the Actor Model</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 6</span>
+          <span>Day 26 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 6</span>
+        <span class="badge badge--day">Day 26</span>
+      </div>
+      <h1>Apify &amp; the Actor Model</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What Apify is and why it exists</span><span class="lang-es">1. Qué es Apify y por qué existe</span></h3>
+
+          <div class="lang-en">
+            <p>The web has no public API for most data. Apify solves this: it hosts pre-built scrapers called <strong>Actors</strong> that run headless browsers, extract data from any website, and return structured JSON. Think of it as a library of stored procedures written by strangers — you call them with inputs, they return a result set.</p>
+            <p>The <strong>Apify console</strong> at <code>console.apify.com</code> lets you browse thousands of Actors, test them with a UI, see their input schema and output format, and run them manually before ever writing code. It is the catalog for this library of scrapers.</p>
+          </div>
+          <div class="lang-es">
+            <p>La web no tiene una API pública para la mayoría de los datos. Apify resuelve esto: aloja scrapers pre-construidos llamados <strong>Actors</strong> que ejecutan navegadores headless, extraen datos de cualquier sitio web y devuelven JSON estructurado. Pensalo como una biblioteca de stored procedures escritos por otros — los llamás con inputs y te devuelven un result set.</p>
+            <p>La <strong>consola de Apify</strong> en <code>console.apify.com</code> te permite navegar miles de Actors, probarlos con una interfaz gráfica, ver su esquema de input y formato de output, y ejecutarlos manualmente antes de escribir una sola línea de código.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>An Apify Actor is a <strong>vendor-hosted stored procedure</strong>. You pass it parameters (a list of URLs or search terms), it runs on Apify's infrastructure, and returns results in JSON. You don't maintain the scraper — just the call. Same pattern as calling a package owned by another team: you know the signature, not the internals.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Un Apify Actor es un <strong>stored procedure hosteado por un tercero</strong>. Le pasás parámetros (una lista de URLs o términos de búsqueda), corre en la infraestructura de Apify, y devuelve resultados en JSON. No mantenés el scraper — solo la llamada. El mismo patrón que llamar a un package de otro equipo: conocés la firma, no los internos.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. The Built With Actor — your first real enrichment signal</span><span class="lang-es">2. El Actor Built With — tu primera señal de enriquecimiento real</span></h3>
+
+          <div class="lang-en">
+            <p>BuiltWith tells you what technology stack a website is running: CRM, marketing tools, analytics, e-commerce platform. A company running HubSpot + Webflow is different from one running Salesforce + Marketo — these are <strong>ICP signals</strong>.</p>
+            <p>You search for the "Built With" or "tech stack checker" Actor in the Apify console, run it on a domain, and get back a JSON object listing every technology category detected. This becomes your <code>tech_stack</code> enrichment column.</p>
+          </div>
+          <div class="lang-es">
+            <p>BuiltWith te dice qué stack tecnológico usa un sitio web: CRM, herramientas de marketing, analytics, plataforma de e-commerce. Una empresa que usa HubSpot + Webflow es diferente a una que usa Salesforce + Marketo — estas son <strong>señales de ICP</strong>.</p>
+            <p>Buscás el Actor "Built With" o "tech stack checker" en la consola de Apify, lo ejecutás en un dominio, y obtenés un objeto JSON con todas las categorías de tecnología detectadas. Esto se convierte en tu columna de enriquecimiento <code>tech_stack</code>.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Knowing someone's tech stack before you reach out is like knowing their database schema before you query it — it tells you what they care about and what they're probably missing.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Saber el stack tecnológico de alguien antes de contactarlo es como conocer su esquema de base de datos antes de consultarla — te dice qué les importa y qué probablemente les falta.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~70 minutes)</span><span class="lang-es">Ejercicio (~70 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Go to <strong>apify.com</strong> and create a free account. Confirm your email address when prompted.</div>
+              <div class="lang-es">Andá a <strong>apify.com</strong> y creá una cuenta gratuita. Confirmá tu dirección de email cuando te lo pidan.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">In the Apify console, use the search bar to find the <strong>"Built With"</strong> or <strong>"tech stack checker"</strong> Actor. Click into its page and read its input schema and output format before running it.</div>
+              <div class="lang-es">En la consola de Apify, usá la barra de búsqueda para encontrar el Actor <strong>"Built With"</strong> o <strong>"tech stack checker"</strong>. Entrá a su página y leé su esquema de input y formato de output antes de ejecutarlo.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run the Actor manually on <strong>3 target domains</strong> you choose. Pick B2B companies — for example: <code>hubspot.com</code>, <code>drift.com</code>, <code>gong.io</code>. Click "Start" and wait for it to finish.</div>
+              <div class="lang-es">Ejecutá el Actor manualmente en <strong>3 dominios objetivo</strong> que elijas. Elegí empresas B2B — por ejemplo: <code>hubspot.com</code>, <code>drift.com</code>, <code>gong.io</code>. Hacé clic en "Start" y esperá que termine.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Look at the JSON output for each domain. Identify the technology <strong>categories</strong> — CRM, analytics, advertising, e-commerce, CDN. Notice which fields are most consistent across runs.</div>
+              <div class="lang-es">Mirá el output JSON de cada dominio. Identificá las <strong>categorías</strong> de tecnología — CRM, analytics, publicidad, e-commerce, CDN. Fijate qué campos son más consistentes entre ejecuciones.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"What does this JSON output tell me about this company from a GTM perspective? What signals would I look for?"</em> Paste in one of your outputs. Read Claude's analysis.</div>
+              <div class="lang-es">Preguntale a Claude: <em>"¿Qué me dice este output JSON sobre esta empresa desde una perspectiva GTM? ¿Qué señales buscaría?"</em> Pegá uno de tus outputs. Leé el análisis de Claude.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Explore <strong>2 other Actors</strong> in the Apify console — any category interests you. Note their names and what data they return. You're building a mental catalog of available signals.</div>
+              <div class="lang-es">Explorá <strong>2 Actors más</strong> en la consola de Apify — cualquier categoría que te interese. Anotá sus nombres y qué datos devuelven. Estás construyendo un catálogo mental de señales disponibles.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>"What is web scraping?"</strong></p>
+        <p><a href="https://docs.apify.com/academy/web-scraping-for-beginners" target="_blank" rel="noopener"><span class="lang-en">Apify Academy — free at docs.apify.com &rarr;</span><span class="lang-es">Apify Academy — gratis en docs.apify.com &rarr;</span></a></p>
+        <p>
+          <span class="lang-en">This is a practical intro to what web scraping is, how headless browsers work, and why structured data extraction matters. It will ground tomorrow's Python work in the right mental model.</span>
+          <span class="lang-es">Esta es una introducción práctica a qué es el web scraping, cómo funcionan los navegadores headless y por qué importa la extracción de datos estructurados. Va a cimentar el trabajo de Python de mañana en el modelo mental correcto.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is an Apify Actor?</span>
+            <span class="lang-es">¿Qué es un Apify Actor?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A pre-built scraper hosted on Apify's infrastructure — you call it with inputs and it returns structured JSON, like a vendor-hosted stored procedure.</div>
+            <div class="lang-es">Un scraper pre-construido hosteado en la infraestructura de Apify — lo llamás con inputs y devuelve JSON estructurado, como un stored procedure hosteado por un tercero.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What does the BuiltWith Actor return?</span>
+            <span class="lang-es">¿Qué devuelve el Actor BuiltWith?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The technology stack of a website — what CRM, marketing tools, analytics platforms the company uses.</div>
+            <div class="lang-es">El stack tecnológico de un sitio web — qué CRM, herramientas de marketing y plataformas de analytics usa la empresa.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Why is tech stack data valuable for GTM work?</span>
+            <span class="lang-es">¿Por qué los datos del stack tecnológico son valiosos para el trabajo GTM?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">It reveals buying intent and ICP fit — a company using HubSpot likely has different needs than one using Salesforce, and knowing that before outreach makes your message sharper.</div>
+            <div class="lang-es">Revela intención de compra y fit con el ICP — una empresa que usa HubSpot probablemente tiene necesidades diferentes a una que usa Salesforce, y saberlo antes del outreach hace tu mensaje más preciso.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 26 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day27.html">Next: Day 27 — Apify from Python</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(26);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

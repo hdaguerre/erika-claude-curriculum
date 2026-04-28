@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 19 — The Skill Creator | Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 4</span>
+          <span>Day 19 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 4</span>
+        <span class="badge badge--day">Day 19</span>
+        <span class="badge badge--deliverable">Build Day</span>
+      </div>
+      <h1>The Skill Creator — Building a Skill from Scratch</h1>
+      <div class="lesson-header__meta">Estimated time: 3 hours</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- Concepts Section -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. The skill-creator in practice</span><span class="lang-es">1. El skill-creator en la práctica</span></h3>
+          <div class="lang-en">
+            <p>The <code>skill-creator</code> is a skill that helps you build other skills. It's a meta-skill — a skill whose job is to produce more skills. Every project has it as standard infrastructure.</p>
+            <p>You run it by typing <code>/skill-creator</code> in a Claude Code session inside the erika project. It walks you through a structured process: capturing what the skill should do, writing the <code>SKILL.md</code>, creating test cases (<code>evals.json</code>), and validating the result. By the end, you have a working skill file you didn't have to write by hand.</p>
+          </div>
+          <div class="lang-es">
+            <p>El <code>skill-creator</code> es una habilidad que ayuda a construir otras habilidades. Es una meta-habilidad — una habilidad cuyo trabajo es producir más habilidades. Todos los proyectos la tienen como infraestructura estándar.</p>
+            <p>La ejecutás escribiendo <code>/skill-creator</code> en una sesión de Claude Code dentro del proyecto erika. Te guía a través de un proceso estructurado: capturar qué debe hacer la habilidad, escribir el <code>SKILL.md</code>, crear casos de prueba (<code>evals.json</code>) y validar el resultado. Al final, tenés un archivo de habilidad que funciona sin tener que escribirlo a mano.</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>The skill-creator is a <strong>code generator — like a wizard in SQL Developer</strong> that scaffolds a stored procedure template based on your inputs. You tell it the procedure name, the parameters, and the logic you want. It generates the structure. You still review and edit it, but the boilerplate is built for you. Same idea here: describe the skill, and the scaffold appears.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>El skill-creator es un generador de código — como un asistente en SQL Developer que crea el scaffolding de una plantilla de procedimiento almacenado basándose en tus entradas. Vos igual la editás, pero la estructura ya está construida.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Skill anatomy — revisited with context</span><span class="lang-es">2. Anatomía de una habilidad — revisitada con contexto</span></h3>
+          <div class="lang-en">
+            <p>Now that you've seen workflows and tools, the skill concept clicks differently. A skill is like a <em>mini-workflow for how Claude behaves</em> in a specific context. It's triggered by your request, loaded into Claude's working context, and followed as instructions for that session.</p>
+            <p>Skills live in <code>skills/[skill-name]/SKILL.md</code>. The file has two parts:</p>
+            <ul>
+              <li><strong>YAML front matter</strong> — the <code>name</code> and <code>description</code> fields. This is the skill's identity and its trigger.</li>
+              <li><strong>SKILL.md body</strong> — the actual instructions Claude follows when the skill is active. Process steps, tone guidance, output format.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>Ahora que viste workflows y herramientas, el concepto de habilidad encaja de otra manera. Una habilidad es como un <em>mini-workflow sobre cómo se comporta Claude</em> en un contexto específico. Se activa con tu solicitud, se carga en el contexto de Claude y se sigue como instrucciones para esa sesión.</p>
+            <p>Las habilidades viven en <code>skills/[nombre-habilidad]/SKILL.md</code>. El archivo tiene dos partes:</p>
+            <ul>
+              <li><strong>Encabezado YAML</strong> — los campos <code>name</code> y <code>description</code>. Esta es la identidad de la habilidad y su disparador.</li>
+              <li><strong>Cuerpo del SKILL.md</strong> — las instrucciones reales que Claude sigue cuando la habilidad está activa. Pasos del proceso, guía de tono, formato de salida.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. What makes a good skill description</span><span class="lang-es">3. Qué hace que una descripción de habilidad sea buena</span></h3>
+          <div class="lang-en">
+            <p>The <code>description</code> field in the YAML header is the most important part of any skill. It's the trigger mechanism — it tells Claude when to load and follow this skill. If it's vague, Claude won't know when to use it. If it's precise, it triggers reliably.</p>
+            <p>Compare these two:</p>
+            <ul>
+              <li><strong>Bad:</strong> "Use for writing."</li>
+              <li><strong>Good:</strong> "Use when the user wants to write an Instagram caption for food or bakery content in Spanish — includes caption body, hashtag set, and tone guidance for a warm, personal bakery brand voice."</li>
+            </ul>
+            <p>The good version names: the action (write a caption), the content type (food/bakery), the language (Spanish), and the key output elements. Claude can match that to almost any bakery-related request. The bad version could match anything — so it matches nothing reliably.</p>
+          </div>
+          <div class="lang-es">
+            <p>El campo <code>description</code> en el encabezado YAML es la parte más importante de cualquier habilidad. Es el mecanismo disparador — le dice a Claude cuándo cargar y seguir esta habilidad. Si es vago, Claude no va a saber cuándo usarlo. Si es preciso, se activa de forma confiable.</p>
+            <p>Compará estos dos:</p>
+            <ul>
+              <li><strong>Malo:</strong> "Usar para escribir."</li>
+              <li><strong>Bueno:</strong> "Usar cuando la usuaria quiere escribir un caption de Instagram para contenido de comida o repostería en español — incluye cuerpo del caption, conjunto de hashtags y guía de tono para una voz de marca de panadería cálida y personal."</li>
+            </ul>
+            <p>La versión buena nombra: la acción (escribir un caption), el tipo de contenido (comida/repostería), el idioma (español) y los elementos clave de salida. Claude puede vincular eso con casi cualquier solicitud relacionada con la panadería. La versión mala puede coincidir con cualquier cosa — así que no coincide con nada de forma confiable.</p>
+          </div>
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Write the description as if you're briefing a new assistant who has never met you. They need to know: what kind of request triggers this, what they should do, and what the output should look like. Specific is kind. Vague is useless.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea clave</div>
+            <p>Escribí la descripción como si le estuvieras explicando a un asistente nuevo que nunca te conoció. Necesitan saber: qué tipo de solicitud activa esto, qué deben hacer y cómo debe verse el resultado. Lo específico es amable. Lo vago es inútil.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Exercise Section -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 to 60 minutes)</span><span class="lang-es">Ejercicio (~45 a 60 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open Claude Code in the erika project.</strong> In your terminal:
+              <br /><code>cd /Users/hdaguerre/Desktop/claude-projects/erika &amp;&amp; claude</code></div>
+              <div class="lang-es"><strong>Abrí Claude Code en el proyecto erika.</strong> En tu terminal:
+              <br /><code>cd /Users/hdaguerre/Desktop/claude-projects/erika &amp;&amp; claude</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Type <code>/skill-creator</code> and press Enter.</strong> The skill-creator will start and ask you questions. Answer them thoughtfully — your answers are what make the skill good.</div>
+              <div class="lang-es"><strong>Escribí <code>/skill-creator</code> y presioná Enter.</strong> El skill-creator va a arrancar y hacerte preguntas. Respondelas con cuidado — tus respuestas son las que hacen que la habilidad sea buena.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>You're building a skill called <code>bakery-caption</code>.</strong> When the skill-creator asks what the skill should do, describe it like this:<br /><br />
+              <em>"This skill is for writing Instagram captions for my bakery, Mi Taller. The captions are in Spanish, warm and personal, and highlight handmade quality. The output includes a caption body, 5–8 relevant hashtags in Spanish and English, and an optional emoji suggestion. It should feel like it was written by a person who loves what she makes — not a marketing bot."</em>
+              <br /><br />
+              Use your own words, but be that specific.</div>
+              <div class="lang-es"><strong>Estás construyendo una habilidad llamada <code>bakery-caption</code>.</strong> Cuando el skill-creator pregunte qué debe hacer la habilidad, describila así:<br /><br />
+              <em>"Esta habilidad es para escribir captions de Instagram para mi panadería, Mi Taller. Los captions están en español, son cálidos y personales, y destacan la calidad artesanal. El resultado incluye el cuerpo del caption, 5–8 hashtags relevantes en español e inglés, y una sugerencia de emoji opcional. Debe sentirse como si lo hubiera escrito una persona que ama lo que hace — no un bot de marketing."</em>
+              <br /><br />
+              Usá tus propias palabras, pero sé así de específica.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Let the skill-creator guide you through the rest:</strong> the full description, the SKILL.md body, and the test cases. When it proposes something you don't like, say so. This is a conversation, not a form.</div>
+              <div class="lang-es"><strong>Dejá que el skill-creator te guíe por el resto:</strong> la descripción completa, el cuerpo del SKILL.md y los casos de prueba. Cuando proponga algo que no te guste, decilo. Esto es una conversación, no un formulario.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>When the skill is created, find it:</strong> <code>skills/bakery-caption/SKILL.md</code><br />
+              Open the file. Read the description field in the YAML header. Ask yourself: "If someone described a photo of my alfajores in a new chat session, would this description be specific enough to trigger the skill?" If not, edit it until it is.</div>
+              <div class="lang-es"><strong>Cuando la habilidad esté creada, encontrala:</strong> <code>skills/bakery-caption/SKILL.md</code><br />
+              Abrí el archivo. Leé el campo de descripción en el encabezado YAML. Preguntate: "Si alguien describiera una foto de mis alfajores en una nueva sesión de chat, ¿sería esta descripción lo suficientemente específica para activar la habilidad?" Si no, editala hasta que lo sea.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Quick test:</strong> In a new Claude Code message (still in the erika project), describe a baked good and ask for a caption. Did the bakery-caption skill activate? Did the output sound like you? If not, open the SKILL.md and refine the instructions.</div>
+              <div class="lang-es"><strong>Prueba rápida:</strong> En un nuevo mensaje de Claude Code (todavía en el proyecto erika), describí un producto de panadería y pedí un caption. ¿Se activó la habilidad bakery-caption? ¿El resultado sonó como vos? Si no, abrí el SKILL.md y refiná las instrucciones.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- Reading Section -->
+      <details class="reading-section">
+        <summary><span class="lang-en">No Reading Tonight</span><span class="lang-es">Sin Lectura Esta Noche</span></summary>
+        <p>
+          <span class="lang-en">This is a building day. Tomorrow is integration day — you'll bring everything together. Tonight, review what you built. Does the skill feel like you? Does it produce captions you'd actually post? If you have time, make one small edit to improve it.</span>
+          <span class="lang-es">Este es un día de construcción. Mañana es el día de integración — vas a unir todo. Esta noche, revisá lo que construiste. ¿La habilidad se siente como vos? ¿Produce captions que realmente publicarías? Si tenés tiempo, hacé una pequeña edición para mejorarla.</span>
+        </p>
+      </details>
+
+      <!-- Quiz Section -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">How do you invoke the skill-creator?</span>
+            <span class="lang-es">¿Cómo invocás el skill-creator?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Type <code>/skill-creator</code> in a Claude Code session inside the erika project folder. The project must be the active context — the skill-creator is project infrastructure, not a global command.</div>
+            <div class="lang-es">Escribí <code>/skill-creator</code> en una sesión de Claude Code dentro de la carpeta del proyecto erika. El proyecto debe ser el contexto activo — el skill-creator es infraestructura del proyecto, no un comando global.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the most important field in a skill's YAML header, and why?</span>
+            <span class="lang-es">¿Cuál es el campo más importante en el encabezado YAML de una habilidad, y por qué?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The <strong><code>description</code> field</strong>. It's the trigger mechanism — it determines when Claude loads and follows the skill. A vague description means Claude won't know when to activate it. A specific, context-rich description means reliable triggering. This field is the difference between a skill that works and a skill that sits unused.</div>
+            <div class="lang-es">El <strong>campo <code>description</code></strong>. Es el mecanismo disparador — determina cuándo Claude carga y sigue la habilidad. Una descripción vaga significa que Claude no va a saber cuándo activarla. Una descripción específica y rica en contexto significa activación confiable. Este campo es la diferencia entre una habilidad que funciona y una que no se usa nunca.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the skill-creator equivalent to in SQL terms?</span>
+            <span class="lang-es">¿A qué equivale el skill-creator en términos de SQL?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <strong>code generator / wizard</strong> — like the stored procedure scaffolding tool in SQL Developer or Oracle SQL Developer. You describe what you want, it generates the structure. You still review and refine it, but the boilerplate is done for you.</div>
+            <div class="lang-es">Un <strong>generador de código / asistente</strong> — como la herramienta de scaffolding de procedimientos almacenados en SQL Developer. Describís lo que querés, genera la estructura. Vos igual lo revisás y refinás, pero el código repetitivo ya está hecho.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div><!-- /.container--narrow -->
+  </div>
+
+  <!-- Complete Button -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 19 Complete</button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lesson-footer">
+    <div class="container">
+      <a href="day20.html">Up next: Day 20 — Integration Day, your final deliverable</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(19);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 24 — First Enrichment Pipeline</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 5</span>
+          <span>Day 24 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 5</span>
+        <span class="badge badge--day">Day 24</span>
+      </div>
+      <h1>First Enrichment Pipeline</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours &nbsp;·&nbsp; Brand Kit Day 1</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What enrichment means in GTM work</span><span class="lang-es">1. Qué significa enriquecimiento en el trabajo GTM</span></h3>
+
+          <div class="lang-en">
+            <p>You start with a CSV of names and domains. <strong>Enrichment</strong> means making API calls to add more columns — company size, tech stack, hiring signals, revenue estimates, industry. Each API call "enriches" one row with data you didn't have before.</p>
+            <p>The result is a more complete picture of each lead: instead of just a name and domain, you have enough context to decide whether to reach out, how to personalize the message, and what offer makes sense.</p>
+            <p>The enrichment loop:</p>
+            <ol>
+              <li>Load the cleaned CSV into a DataFrame</li>
+              <li>For each row, make an API call using the domain as the lookup key</li>
+              <li>Parse the JSON response and extract the fields you want</li>
+              <li>Write the result back to a new column in that row</li>
+              <li>Move to the next row</li>
+              <li>Export the enriched CSV when done</li>
+            </ol>
+          </div>
+          <div class="lang-es">
+            <p>Comenzás con un CSV de nombres y dominios. <strong>Enriquecimiento</strong> significa hacer llamadas a APIs para agregar más columnas — tamaño de empresa, stack tecnológico, señales de contratación, estimaciones de ingresos, industria. Cada llamada a la API "enriquece" una fila con datos que antes no tenías.</p>
+            <p>El resultado es una imagen más completa de cada lead: en lugar de solo un nombre y un dominio, tenés suficiente contexto para decidir si contactar, cómo personalizar el mensaje, y qué oferta tiene sentido.</p>
+            <p>El bucle de enriquecimiento:</p>
+            <ol>
+              <li>Cargar el CSV limpio en un DataFrame</li>
+              <li>Para cada fila, hacer una llamada a la API usando el dominio como clave de búsqueda</li>
+              <li>Parsear la respuesta JSON y extraer los campos que querés</li>
+              <li>Escribir el resultado de vuelta a una nueva columna en esa fila</li>
+              <li>Pasar a la siguiente fila</li>
+              <li>Exportar el CSV enriquecido cuando terminés</li>
+            </ol>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Enrichment is a <strong>JOIN against a remote API instead of a local table</strong>. The concept is identical to: <code>UPDATE leads SET company_size = api_result WHERE domain = lead.domain</code> — except you're executing this row by row using a Python for loop, calling an external HTTP endpoint instead of querying a local table. The API is your remote data source.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>El enriquecimiento es un <strong>JOIN contra una API remota en lugar de una tabla local</strong>. El concepto es idéntico a: <code>UPDATE leads SET company_size = api_result WHERE domain = lead.domain</code> — excepto que lo estás ejecutando fila por fila usando un bucle for en Python, llamando a un endpoint HTTP externo en lugar de consultar una tabla local. La API es tu fuente de datos remota.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Building <code>tools/enrich_list.py</code></span><span class="lang-es">2. Construyendo <code>tools/enrich_list.py</code></span></h3>
+
+          <div class="lang-en">
+            <p>The structure of every enrichment script follows the same pattern:</p>
+            <ol>
+              <li>Load the cleaned CSV: <code>df = pd.read_csv("tools/cleaned_leads.csv")</code></li>
+              <li>Loop through each row: <code>for index, row in df.iterrows():</code></li>
+              <li>Make the API call using the domain: <code>response = requests.get(url + row["domain"], headers=headers)</code></li>
+              <li>Extract the field from JSON: <code>company_size = response.json().get("metrics", {}).get("employees")</code></li>
+              <li>Write back: <code>df.at[index, "company_size"] = company_size</code></li>
+            </ol>
+            <p>After the loop, export: <code>df.to_csv("tools/enriched_leads.csv", index=False)</code></p>
+            <p>Today you write the <strong>happy path</strong> — assuming the API always returns data. Tomorrow you add error handling for the real world.</p>
+          </div>
+          <div class="lang-es">
+            <p>La estructura de cada script de enriquecimiento sigue el mismo patrón:</p>
+            <ol>
+              <li>Cargar el CSV limpio: <code>df = pd.read_csv("tools/cleaned_leads.csv")</code></li>
+              <li>Iterar por cada fila: <code>for index, row in df.iterrows():</code></li>
+              <li>Hacer la llamada a la API usando el dominio: <code>response = requests.get(url + row["domain"], headers=headers)</code></li>
+              <li>Extraer el campo del JSON: <code>company_size = response.json().get("metrics", {}).get("employees")</code></li>
+              <li>Escribir de vuelta: <code>df.at[index, "company_size"] = company_size</code></li>
+            </ol>
+            <p>Después del bucle, exportar: <code>df.to_csv("tools/enriched_leads.csv", index=False)</code></p>
+            <p>Hoy escribís el <strong>happy path</strong> — asumiendo que la API siempre devuelve datos. Mañana agregás el manejo de errores para el mundo real.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Brand Kit — Day 1</div>
+            <p>Today you also start your Personal Brand Kit. Open a new Claude Code session and create a file <code>brand-kit/CLAUDE.md</code>. Write three things: (1) who you are in one paragraph, (2) your brand voice — 3 adjectives that describe how you want to sound on LinkedIn, (3) topics you care about and have something real to say about. This is the foundation Claude will use every time you ask it to write in your voice. Take 20 minutes. Write something true.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Brand Kit — Día 1</div>
+            <p>Hoy también empezás tu Brand Kit Personal. Abrí una nueva sesión de Claude Code y creá un archivo <code>brand-kit/CLAUDE.md</code>. Escribí tres cosas: (1) quién sos en un párrafo, (2) tu voz de marca — 3 adjetivos que describan cómo querés sonar en LinkedIn, (3) temas que te importan y sobre los que tenés algo real que decir. Esta es la base que Claude va a usar cada vez que le pidas que escriba con tu voz. Tomá 20 minutos. Escribí algo verdadero.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code to create <code>tools/enrich_list.py</code> that reads <code>tools/cleaned_leads.csv</code> and for each row makes a GET request to <code>https://company.clearbit.com/v1/companies/find?domain={domain}</code>. Tell Claude you'll need a free Clearbit API key — you can sign up at clearbit.com, or ask Claude to create a mock version first.</div>
+              <div class="lang-es">Pedile a Claude Code que cree <code>tools/enrich_list.py</code> que lea <code>tools/cleaned_leads.csv</code> y para cada fila haga una petición GET a <code>https://company.clearbit.com/v1/companies/find?domain={domain}</code>. Decile a Claude que vas a necesitar una API key gratuita de Clearbit — podés registrarte en clearbit.com, o pedile a Claude que cree primero una versión con datos simulados.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">If you don't have an API key yet: ask Claude to create a <strong>mock version</strong> — a function that returns fake company_size values so you can test the pipeline logic without real credentials. This is good engineering practice: test the structure first, swap in the real API later.</div>
+              <div class="lang-es">Si aún no tenés una API key: pedile a Claude que cree una <strong>versión simulada</strong> — una función que devuelva valores falsos de company_size para que puedas probar la lógica del pipeline sin credenciales reales. Esta es una buena práctica de ingeniería: primero probás la estructura, después reemplazás con la API real.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run it on a 5-row test file. Open the output CSV — confirm the new <code>company_size</code> column exists and has values.</div>
+              <div class="lang-es">Ejecutalo en un archivo de prueba de 5 filas. Abrí el CSV de salida — confirmá que existe la nueva columna <code>company_size</code> y tiene valores.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Brand Kit work (20 min):</strong> Open a new Claude Code session and create <code>brand-kit/CLAUDE.md</code> with: (1) a one-paragraph bio in your voice, (2) 3 adjectives describing your brand tone on LinkedIn, (3) a list of 3–5 topics you genuinely care about and have something real to say about.</div>
+              <div class="lang-es"><strong>Trabajo de Brand Kit (20 min):</strong> Abrí una nueva sesión de Claude Code y creá <code>brand-kit/CLAUDE.md</code> con: (1) una bio de un párrafo en tu voz, (2) 3 adjetivos que describan tu tono de marca en LinkedIn, (3) una lista de 3 a 5 temas que genuinamente te importan y sobre los que tenés algo real que decir.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"Outline the standard pattern for enriching a lead list with Python — what are the steps every enrichment script needs?"</em> Keep the outline — you'll use it as a checklist on future projects.</div>
+              <div class="lang-es">Preguntale a Claude: <em>"Describí el patrón estándar para enriquecer una lista de leads con Python — ¿cuáles son los pasos que necesita cada script de enriquecimiento?"</em> Guardá el outline — lo vas a usar como checklist en proyectos futuros.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">How to enrich a lead list with Python</span><span class="lang-es">Cómo enriquecer una lista de leads con Python</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Outline the standard pattern for enriching a lead list with Python. What are the key steps, what are the common failure points, and what does a production-ready enrichment script look like compared to a first draft?"</em></span>
+          <span class="lang-es">Preguntale a Claude: <em>"Describí el patrón estándar para enriquecer una lista de leads con Python. ¿Cuáles son los pasos clave, cuáles son los puntos de falla comunes, y cómo se ve un script de enriquecimiento listo para producción comparado con un primer borrador?"</em></span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">In lead enrichment, what is the equivalent of a SQL JOIN?</span>
+            <span class="lang-es">En el enriquecimiento de leads, ¿cuál es el equivalente de un SQL JOIN?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The API call — you're joining against a remote table via HTTP instead of a local one. The domain is the JOIN key, the API response is the remote "table" being joined, and the fields you extract become new columns in your result set.</div>
+            <div class="lang-es">La llamada a la API — estás haciendo un join contra una tabla remota via HTTP en lugar de una local. El dominio es la clave del JOIN, la respuesta de la API es la "tabla" remota que se une, y los campos que extraés se convierten en nuevas columnas en tu conjunto de resultados.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What's the main risk when calling an API inside a for loop with many rows?</span>
+            <span class="lang-es">¿Cuál es el principal riesgo al llamar a una API dentro de un bucle for con muchas filas?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Rate limiting — hitting the API too many times too fast causes 429 errors. The API throttles you for exceeding its call limits. Add a <code>time.sleep(0.5)</code> between calls to stay under the rate limit, and add error handling for when it happens anyway (tomorrow's lesson).</div>
+            <div class="lang-es">El límite de tasa — llamar a la API demasiadas veces demasiado rápido causa errores 429. La API te limita por exceder sus límites de llamadas. Agregá un <code>time.sleep(0.5)</code> entre llamadas para mantenerte bajo el límite de tasa, y agregá manejo de errores para cuando suceda igual (lección de mañana).</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What goes in a brand <code>CLAUDE.md</code>?</span>
+            <span class="lang-es">¿Qué va en un <code>CLAUDE.md</code> de marca?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Your voice, your tone adjectives (how you want to sound), and the topics you care about and have something real to say about. This is the context file Claude reads before writing anything in your voice — the more honest and specific it is, the better the output.</div>
+            <div class="lang-es">Tu voz, tus adjetivos de tono (cómo querés sonar), y los temas que te importan y sobre los que tenés algo real que decir. Este es el archivo de contexto que Claude lee antes de escribir cualquier cosa con tu voz — cuanto más honesto y específico sea, mejor será el output.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 24 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day25.html">Next: Day 25 — Error Handling &amp; .env</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(24);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

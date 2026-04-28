@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 25 — Error Handling &amp; .env</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 5</span>
+          <span>Day 25 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 5</span>
+        <span class="badge badge--day">Day 25</span>
+        <span class="badge badge--deliverable">Deliverable</span>
+      </div>
+      <h1>Error Handling &amp; .env</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours &nbsp;·&nbsp; Week 5 Deliverable</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Why scripts fail on real data — and how to handle it</span><span class="lang-es">1. Por qué los scripts fallan con datos reales — y cómo manejarlo</span></h3>
+
+          <div class="lang-en">
+            <p>The 20-row sample file you built this week was clean. Real lead lists are not. You'll encounter:</p>
+            <ul>
+              <li>Missing domain values — the cell is blank</li>
+              <li>Invalid domains — "gmail.com", "n/a", a phone number in the domain column</li>
+              <li>API timeouts — the request never returns</li>
+              <li>API rate limits — 429 errors mid-loop</li>
+              <li>Unexpected JSON structure — the field you're looking for isn't in the response</li>
+            </ul>
+            <p>Without error handling, any of these stops your entire script. One bad row out of 500 kills the whole run.</p>
+            <p>The pattern is simple: wrap the risky call in a <code>try/except</code> block, log what failed, and <code>continue</code> to the next row:</p>
+            <pre><code>for index, row in df.iterrows():
+    try:
+        response = requests.get(url + row["domain"], headers=headers)
+        company_size = response.json()["metrics"]["employees"]
+        df.at[index, "company_size"] = company_size
+    except Exception as e:
+        print(f"Skipped row {index}: {e}")
+        failed_rows.append(row)
+        continue</code></pre>
+            <p>After the loop, write the failures to a file: <code>pd.DataFrame(failed_rows).to_csv("tools/failed_rows.csv", index=False)</code>. Now you can review what was skipped and decide whether to retry or remove those rows.</p>
+          </div>
+          <div class="lang-es">
+            <p>El archivo de muestra de 20 filas que construiste esta semana estaba limpio. Las listas de leads reales no lo están. Te vas a encontrar con:</p>
+            <ul>
+              <li>Valores de dominio faltantes — la celda está en blanco</li>
+              <li>Dominios inválidos — "gmail.com", "n/a", un número de teléfono en la columna de dominio</li>
+              <li>Timeouts de API — la petición nunca devuelve respuesta</li>
+              <li>Límites de tasa de API — errores 429 a mitad del bucle</li>
+              <li>Estructura JSON inesperada — el campo que buscás no está en la respuesta</li>
+            </ul>
+            <p>Sin manejo de errores, cualquiera de estos detiene todo el script. Una fila mala de 500 mata toda la ejecución.</p>
+            <p>El patrón es simple: envolvé la llamada riesgosa en un bloque <code>try/except</code>, registrá qué falló, y usá <code>continue</code> para pasar a la siguiente fila:</p>
+            <pre><code>for index, row in df.iterrows():
+    try:
+        response = requests.get(url + row["domain"], headers=headers)
+        company_size = response.json()["metrics"]["employees"]
+        df.at[index, "company_size"] = company_size
+    except Exception as e:
+        print(f"Fila {index} omitida: {e}")
+        failed_rows.append(row)
+        continue</code></pre>
+            <p>Después del bucle, escribí las fallas en un archivo: <code>pd.DataFrame(failed_rows).to_csv("tools/failed_rows.csv", index=False)</code>. Ahora podés revisar qué se omitió y decidir si reintentar o eliminar esas filas.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Oracle's <code>EXCEPTION WHEN NO_DATA_FOUND THEN NULL</code> is the same idea as Python's <code>try/except</code> — don't crash the whole procedure when one row fails. In PL/SQL you'd use <code>EXCEPTION</code> blocks inside a cursor loop. In Python you use <code>try/except</code> inside a for loop. Same intent, same structure, different syntax.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>El <code>EXCEPTION WHEN NO_DATA_FOUND THEN NULL</code> de Oracle es la misma idea que el <code>try/except</code> de Python — no rompas todo el procedimiento cuando falla una fila. En PL/SQL usarías bloques <code>EXCEPTION</code> dentro de un bucle de cursor. En Python usás <code>try/except</code> dentro de un bucle for. Misma intención, misma estructura, sintaxis diferente.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Storing credentials safely with <code>.env</code> files</span><span class="lang-es">2. Guardando credenciales de forma segura con archivos <code>.env</code></span></h3>
+
+          <div class="lang-en">
+            <p>Never hardcode API keys directly in your scripts. If you share the file with anyone, push it to GitHub, or email it — your key is exposed. Even a "private" repo has been accidentally made public before.</p>
+            <p>The safe pattern uses a <code>.env</code> file:</p>
+            <ol>
+              <li>Create a file named <code>.env</code> at your project root</li>
+              <li>Add your key: <code>CLEARBIT_API_KEY=your_actual_key_here</code></li>
+              <li>Add <code>.env</code> to your <code>.gitignore</code> file so it never gets committed</li>
+              <li>In your script, load it: <code>from dotenv import load_dotenv; import os; load_dotenv(); key = os.getenv("CLEARBIT_API_KEY")</code></li>
+            </ol>
+            <p>Now the key lives only in the <code>.env</code> file on your machine. The script just reads it at runtime. You can share the script freely — it won't work without the <code>.env</code> file, which stays local.</p>
+          </div>
+          <div class="lang-es">
+            <p>Nunca pongas API keys directamente en tus scripts. Si compartís el archivo con alguien, lo subís a GitHub o lo enviás por email — tu clave queda expuesta. Incluso un repositorio "privado" se ha hecho público accidentalmente antes.</p>
+            <p>El patrón seguro usa un archivo <code>.env</code>:</p>
+            <ol>
+              <li>Creá un archivo llamado <code>.env</code> en la raíz de tu proyecto</li>
+              <li>Agregá tu clave: <code>CLEARBIT_API_KEY=tu_clave_real_aqui</code></li>
+              <li>Agregá <code>.env</code> a tu archivo <code>.gitignore</code> para que nunca se commitee</li>
+              <li>En tu script, cargala: <code>from dotenv import load_dotenv; import os; load_dotenv(); key = os.getenv("CLEARBIT_API_KEY")</code></li>
+            </ol>
+            <p>Ahora la clave solo vive en el archivo <code>.env</code> en tu máquina. El script simplemente la lee en tiempo de ejecución. Podés compartir el script libremente — no va a funcionar sin el archivo <code>.env</code>, que se queda local.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>A <code>.env</code> file is like Oracle's wallet or <code>tnsnames.ora</code> — it stores connection credentials outside the code, so the code itself is safe to share. This is not optional. Every professional Python project that touches an API uses this pattern.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Un archivo <code>.env</code> es como el wallet de Oracle o el <code>tnsnames.ora</code> — guarda las credenciales de conexión fuera del código, para que el código en sí sea seguro de compartir. Esto no es opcional. Todo proyecto Python profesional que toca una API usa este patrón.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~75 minutes)</span><span class="lang-es">Ejercicio (~75 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Please add error handling to <code>tools/enrich_list.py</code> — wrap the API call in a try/except block, and log any failures to <code>tools/failed_rows.csv</code> instead of crashing."</em></div>
+              <div class="lang-es">Pedile a Claude Code: <em>"Por favor agregá manejo de errores a <code>tools/enrich_list.py</code> — envolvé la llamada a la API en un bloque try/except, y registrá cualquier falla en <code>tools/failed_rows.csv</code> en lugar de crashear."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Test the error handling:</strong> Manually edit your sample CSV to include one row with a completely blank domain. Run the script. Confirm it completes without crashing and that the bad row appears in <code>tools/failed_rows.csv</code>.</div>
+              <div class="lang-es"><strong>Probá el manejo de errores:</strong> Editá manualmente tu CSV de muestra para incluir una fila con el dominio completamente en blanco. Ejecutá el script. Confirmá que termina sin crashear y que la fila problemática aparece en <code>tools/failed_rows.csv</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Create a <code>.env</code> file at the project root with a placeholder: <code>CLEARBIT_API_KEY=placeholder</code>. Do this manually in VS Code — create a new file, name it <code>.env</code>, add that one line.</div>
+              <div class="lang-es">Creá un archivo <code>.env</code> en la raíz del proyecto con un placeholder: <code>CLEARBIT_API_KEY=placeholder</code>. Hacé esto manualmente en VS Code — creá un nuevo archivo, nombralo <code>.env</code>, agregá esa línea.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"Please add <code>.env</code> to the <code>.gitignore</code> file in this project. If there's no <code>.gitignore</code> yet, create one."</em></div>
+              <div class="lang-es">Pedile a Claude: <em>"Por favor agregá <code>.env</code> al archivo <code>.gitignore</code> en este proyecto. Si todavía no hay un <code>.gitignore</code>, creá uno."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude to update <code>enrich_list.py</code> to load the API key from <code>.env</code> using <code>python-dotenv</code>. Run <code>pip install python-dotenv</code> first if needed.</div>
+              <div class="lang-es">Pedile a Claude que actualice <code>enrich_list.py</code> para cargar la API key desde <code>.env</code> usando <code>python-dotenv</code>. Primero ejecutá <code>pip install python-dotenv</code> si es necesario.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run the full pipeline:</strong> First run <code>python tools/clean_leads.py</code>, then run <code>python tools/enrich_list.py</code>. The only things that should stop are individual bad rows — the pipeline itself should complete every time. Show the final output CSV and the <code>failed_rows.csv</code> to Hernan.</div>
+              <div class="lang-es"><strong>Ejecutá el pipeline completo:</strong> Primero ejecutá <code>python tools/clean_leads.py</code>, luego ejecutá <code>python tools/enrich_list.py</code>. Las únicas cosas que deberían detenerse son las filas individuales problemáticas — el pipeline en sí debería completarse siempre. Mostrá el CSV de salida final y el <code>failed_rows.csv</code> a Hernan.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">12-Factor App: Config</span><span class="lang-es">App de 12 Factores: Configuración</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Summarize the '12-Factor App' principle on Config (Factor III) — the one about storing credentials in environment variables. Why does it matter in production systems? Keep the explanation practical and under 5 minutes to read."</em></span>
+          <span class="lang-es">Preguntale a Claude: <em>"Resumí el principio de la 'App de 12 Factores' sobre Config (Factor III) — el que habla de guardar credenciales en variables de entorno. ¿Por qué importa en sistemas de producción? Mantené la explicación práctica y que se lea en menos de 5 minutos."</em></span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">Why should you never hardcode API keys directly in a Python script?</span>
+            <span class="lang-es">¿Por qué nunca deberías poner API keys directamente en un script Python?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">If you share the file, push it to a git repo (even a private one), or send it by email — the key is exposed. A leaked API key can be used by anyone who finds it, running up charges on your account or accessing data you don't want shared. Use <code>.env</code> files and keep them off version control.</div>
+            <div class="lang-es">Si compartís el archivo, lo subís a un repositorio git (incluso uno privado), o lo enviás por email — la clave queda expuesta. Una API key filtrada puede ser usada por cualquiera que la encuentre, generando cargos en tu cuenta o accediendo a datos que no querés compartir. Usá archivos <code>.env</code> y mantelos fuera del control de versiones.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What Python construct prevents a script from crashing when one row fails?</span>
+            <span class="lang-es">¿Qué construcción de Python evita que un script crashee cuando falla una fila?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>try/except</code> — wrap the risky operation in a <code>try</code> block, handle the error in <code>except</code>, and use <code>continue</code> to skip to the next row. Always log what was skipped so you can investigate later. Never silently swallow errors.</div>
+            <div class="lang-es"><code>try/except</code> — envolvé la operación riesgosa en un bloque <code>try</code>, manejá el error en <code>except</code>, y usá <code>continue</code> para saltar a la siguiente fila. Siempre registrá qué se omitió para poder investigar después. Nunca silencies los errores sin registrarlos.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is <code>python-dotenv</code> used for?</span>
+            <span class="lang-es">¿Para qué se usa <code>python-dotenv</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Loading environment variables from a <code>.env</code> file into your script at runtime. You call <code>load_dotenv()</code> at the top of the script, then use <code>os.getenv("KEY_NAME")</code> to read each value. This lets you keep credentials out of your code entirely.</div>
+            <div class="lang-es">Cargar variables de entorno de un archivo <code>.env</code> a tu script en tiempo de ejecución. Llamás a <code>load_dotenv()</code> al principio del script, luego usás <code>os.getenv("NOMBRE_CLAVE")</code> para leer cada valor. Esto te permite mantener las credenciales completamente fuera de tu código.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 25 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="../week6/day26.html">Next: Day 26 — Apify &amp; the Actor Model</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(25);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

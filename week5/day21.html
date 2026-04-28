@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 21 — Python for SQL Devs</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 5</span>
+          <span>Day 21 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 5</span>
+        <span class="badge badge--day">Day 21</span>
+      </div>
+      <h1>Python for SQL Devs</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Python syntax crash course for SQL developers</span><span class="lang-es">1. Curso intensivo de sintaxis Python para desarrolladores SQL</span></h3>
+
+          <div class="lang-en">
+            <p>You already know how to think like a programmer — you've been doing it in Oracle for years. Python just uses different keywords. Here's the direct translation:</p>
+            <ul>
+              <li><strong>Variables = column values you store temporarily.</strong> <code>name = "Erika"</code> is the same as <code>DECLARE @name VARCHAR := 'Erika'</code> in PL/SQL. You name a slot, put a value in it, use it later.</li>
+              <li><strong>Lists = result sets.</strong> <code>leads = ["company1", "company2", "company3"]</code> is like a single-column SELECT result — an ordered set of values you can loop through.</li>
+              <li><strong>Dictionaries = rows.</strong> <code>lead = {"name": "Acme", "domain": "acme.com"}</code> is exactly a row with named columns. <code>lead["name"]</code> is like referencing a column by name in a SELECT.</li>
+              <li><strong>For loops = CURSOR FOR LOOP.</strong> <code>for row in rows:</code> is the same pattern as <code>FOR rec IN cursor LOOP</code> in PL/SQL — step through each item, do something with it, move to the next.</li>
+              <li><strong>Functions = stored procedures you call by name.</strong> <code>def clean_email(email):</code> defines a reusable block of logic, just like a stored procedure — pass in a value, get a result back.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>Ya sabés pensar como programadora — lo estuviste haciendo en Oracle durante años. Python solo usa palabras clave diferentes. Acá está la traducción directa:</p>
+            <ul>
+              <li><strong>Variables = valores de columna que guardás temporalmente.</strong> <code>name = "Erika"</code> es lo mismo que <code>DECLARE @name VARCHAR := 'Erika'</code> en PL/SQL. Nombrás un espacio, le ponés un valor, lo usás después.</li>
+              <li><strong>Listas = conjuntos de resultados.</strong> <code>leads = ["company1", "company2", "company3"]</code> es como el resultado de un SELECT de una sola columna — un conjunto ordenado de valores por los que podés iterar.</li>
+              <li><strong>Diccionarios = filas.</strong> <code>lead = {"name": "Acme", "domain": "acme.com"}</code> es exactamente una fila con columnas nombradas. <code>lead["name"]</code> es como referenciar una columna por nombre en un SELECT.</li>
+              <li><strong>Bucles for = CURSOR FOR LOOP.</strong> <code>for row in rows:</code> es el mismo patrón que <code>FOR rec IN cursor LOOP</code> en PL/SQL — pasás por cada ítem, hacés algo con él, seguís al próximo.</li>
+              <li><strong>Funciones = stored procedures que llamás por nombre.</strong> <code>def clean_email(email):</code> define un bloque de lógica reutilizable, igual que un stored procedure — pasás un valor, recibís un resultado.</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Python is Oracle PL/SQL — but for <em>anything</em>, not just databases. The concepts map 1:1. Variables, loops, functions, conditionals — you already know how to think this way. You're not learning a new mental model, you're learning a new dialect.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Python es Oracle PL/SQL — pero para <em>cualquier cosa</em>, no solo bases de datos. Los conceptos se mapean 1:1. Variables, bucles, funciones, condicionales — ya sabés pensar de esta manera. No estás aprendiendo un nuevo modelo mental, estás aprendiendo un nuevo dialecto.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. How to run a Python file from the terminal</span><span class="lang-es">2. Cómo ejecutar un archivo Python desde la terminal</span></h3>
+
+          <div class="lang-en">
+            <p>Running a Python script is one command: <code>python filename.py</code>. Open your terminal, navigate to the folder where the file lives, and type it. The script runs top to bottom, just like a PL/SQL anonymous block executing in SQL*Plus.</p>
+            <p>If your system has both Python 2 and Python 3, you may need to use <code>python3 filename.py</code>. Run <code>python --version</code> first to see which you have.</p>
+          </div>
+          <div class="lang-es">
+            <p>Ejecutar un script Python es un solo comando: <code>python filename.py</code>. Abrí tu terminal, navegá a la carpeta donde está el archivo, y escribilo. El script corre de arriba a abajo, igual que un bloque anónimo PL/SQL ejecutando en SQL*Plus.</p>
+            <p>Si tu sistema tiene Python 2 y Python 3, puede que necesites usar <code>python3 filename.py</code>. Primero ejecutá <code>python --version</code> para ver cuál tenés.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Claude Code can write and run Python for you. Today you learn to <em>read</em> it. Tomorrow you'll run it. The goal right now is recognition — when you see a for loop or a dictionary, you know exactly what it's doing.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Claude Code puede escribir y ejecutar Python por vos. Hoy aprendés a <em>leerlo</em>. Mañana lo vas a ejecutar. El objetivo ahora mismo es reconocimiento — cuando veas un bucle for o un diccionario, sabés exactamente qué está haciendo.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~60 minutes)</span><span class="lang-es">Ejercicio (~60 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open VS Code</strong> and open your erika project folder.</div>
+              <div class="lang-es"><strong>Abrí VS Code</strong> y abrí tu carpeta del proyecto erika.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">In the terminal, type <code>python --version</code> (or <code>python3 --version</code>) to confirm Python is installed. You should see a version number like <code>Python 3.11.0</code>.</div>
+              <div class="lang-es">En la terminal, escribí <code>python --version</code> (o <code>python3 --version</code>) para confirmar que Python está instalado. Deberías ver un número de versión como <code>Python 3.11.0</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Please create a file <code>tools/hello_leads.py</code> that creates a list of 3 fake lead dictionaries — each with keys: name, domain, company_size — and prints each one in a readable format."</em></div>
+              <div class="lang-es">Pedile a Claude Code: <em>"Por favor creá un archivo <code>tools/hello_leads.py</code> que cree una lista de 3 diccionarios de leads falsos — cada uno con las claves: name, domain, company_size — e imprima cada uno en un formato legible."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read the file Claude creates.</strong> Find and identify: the list (starts with <code>[</code>), the for loop (starts with <code>for</code>), and the print function (<code>print(...)</code>). Write down what each part does in your own words.</div>
+              <div class="lang-es"><strong>Leé el archivo que Claude crea.</strong> Encontrá e identificá: la lista (empieza con <code>[</code>), el bucle for (empieza con <code>for</code>), y la función print (<code>print(...)</code>). Anotá con tus propias palabras qué hace cada parte.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run it: <code>python tools/hello_leads.py</code>. You should see 3 leads printed in the terminal.</div>
+              <div class="lang-es">Ejecutalo: <code>python tools/hello_leads.py</code>. Deberías ver 3 leads impresos en la terminal.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"Please add a 4th lead to the list in hello_leads.py."</em> Re-run the file and confirm 4 leads appear.</div>
+              <div class="lang-es">Preguntale a Claude: <em>"Por favor agregá un 4to lead a la lista en hello_leads.py."</em> Volvé a ejecutar el archivo y confirmá que aparecen 4 leads.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">"Python for Data Analysis" — Chapter 1 Summary</span><span class="lang-es">"Python para Análisis de Datos" — Resumen del Capítulo 1</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Summarize Chapter 1 of 'Python for Data Analysis' by Wes McKinney for a developer who already knows Oracle SQL and PL/SQL. Focus on why Python matters for data work and how it compares to working in a database environment."</em> Read Claude's response and note 2–3 things that surprise you.</span>
+          <span class="lang-es">Preguntale a Claude: <em>"Resumí el Capítulo 1 de 'Python for Data Analysis' de Wes McKinney para una desarrolladora que ya conoce Oracle SQL y PL/SQL. Enfocate en por qué Python importa para el trabajo con datos y cómo se compara con trabajar en un entorno de base de datos."</em> Leé la respuesta de Claude y anotá 2 o 3 cosas que te sorprendan.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the Python equivalent of a SQL cursor FOR loop?</span>
+            <span class="lang-es">¿Cuál es el equivalente en Python de un cursor FOR LOOP de SQL?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <code>for</code> loop: <code>for item in list:</code> — it steps through every element in a list exactly the way <code>FOR rec IN cursor LOOP</code> steps through every row in a cursor result.</div>
+            <div class="lang-es">Un bucle <code>for</code>: <code>for item in list:</code> — pasa por cada elemento de una lista exactamente de la misma manera que <code>FOR rec IN cursor LOOP</code> pasa por cada fila en el resultado de un cursor.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What Python data structure is most like a SQL row with named columns?</span>
+            <span class="lang-es">¿Qué estructura de datos de Python se parece más a una fila SQL con columnas nombradas?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A dictionary — <code>{"name": "Acme", "domain": "acme.com"}</code>. Each key is a column name, each value is the column value for that row. You access values with <code>row["column_name"]</code>, just like referencing a column in SQL.</div>
+            <div class="lang-es">Un diccionario — <code>{"name": "Acme", "domain": "acme.com"}</code>. Cada clave es un nombre de columna, cada valor es el valor de esa columna para esa fila. Accedés a los valores con <code>row["column_name"]</code>, igual que referenciar una columna en SQL.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">How do you run a Python file from the terminal?</span>
+            <span class="lang-es">¿Cómo ejecutás un archivo Python desde la terminal?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>python filename.py</code> — navigate to the folder the file is in, then run that command. If you need Python 3 specifically: <code>python3 filename.py</code>.</div>
+            <div class="lang-es"><code>python filename.py</code> — navegá a la carpeta donde está el archivo, luego ejecutá ese comando. Si necesitás Python 3 específicamente: <code>python3 filename.py</code>.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 21 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day22.html">Next: Day 22 — Pandas &amp; Lead Cleaning</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(21);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

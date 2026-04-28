@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glossary — Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="progress.js"></script>
+  <script src="language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="index.html">
+        <span class="lang-en">Back to Dashboard</span>
+        <span class="lang-es">Volver al Dashboard</span>
+      </a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="glossary-header">
+    <div class="container">
+      <h1>
+        <span class="lang-en">Glossary</span>
+        <span class="lang-es">Glosario</span>
+      </h1>
+      <p class="glossary-subtitle lang-en">The vocabulary of Claude, AI, and the external tools that connect everything. Platform entries include step-by-step key setup.</p>
+      <p class="glossary-subtitle lang-es">El vocabulario de Claude, la IA y las herramientas externas que conectan todo. Las entradas de plataformas incluyen pasos para obtener claves API.</p>
+    </div>
+  </header>
+
+  <!-- CONTROLS -->
+  <div class="glossary-controls-wrap">
+    <div class="container">
+      <input type="search" id="glossary-search" class="glossary-search"
+             placeholder="Search terms… / Buscar términos…" autocomplete="off" />
+      <div class="cat-tabs" id="cat-tabs">
+        <button class="cat-tab active" data-cat="all">
+          <span class="lang-en">All terms</span><span class="lang-es">Todos</span>
+        </button>
+        <button class="cat-tab" data-cat="claude">
+          <span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span>
+        </button>
+        <button class="cat-tab" data-cat="platform">
+          <span class="lang-en">Platforms</span><span class="lang-es">Plataformas</span>
+        </button>
+        <button class="cat-tab" data-cat="technical">
+          <span class="lang-en">Technical</span><span class="lang-es">Técnico</span>
+        </button>
+        <button class="cat-tab" data-cat="gtm">
+          <span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span>
+        </button>
+        <button class="cat-tab" data-cat="content">
+          <span class="lang-en">Content</span><span class="lang-es">Contenido</span>
+        </button>
+      </div>
+      <div class="glossary-count" id="glossary-count"></div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="glossary-body">
+    <div class="container">
+      <div class="glossary-grid" id="glossary-grid">
+
+        <!-- .env File -->
+        <div class="glossary-card" data-cat="technical" data-search=".env file archivo env credentials secrets api keys environment variables dotenv gitignore">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">.env File</span><span class="lang-es">Archivo .env</span></h3>
+          <p class="glossary-card__def lang-en">A plain-text file that stores secret credentials — API keys, passwords, tokens — outside your code. Python scripts load it using the <code>python-dotenv</code> library. Never commit this file to git; add it to <code>.gitignore</code>.</p>
+          <p class="glossary-card__def lang-es">Un archivo de texto plano que almacena credenciales secretas — claves API, contraseñas, tokens — fuera de tu código. Los scripts de Python lo cargan usando <code>python-dotenv</code>. Nunca subas este archivo a git; agregalo al <code>.gitignore</code>.</p>
+        </div>
+
+        <!-- ABM -->
+        <div class="glossary-card" data-cat="gtm" data-search="abm account based marketing target accounts enterprise hyper personalized b2b sales marketing aligned">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">ABM</span><span class="lang-es">ABM</span></h3>
+          <p class="glossary-card__def lang-en">Account-Based Marketing. Treating a specific target account as its own market — coordinating personalized outreach across sales and marketing. Used for high-value enterprise deals where winning one account justifies deep investment.</p>
+          <p class="glossary-card__def lang-es">Account-Based Marketing. Tratar una cuenta objetivo específica como un mercado propio — coordinando alcance personalizado entre ventas y marketing. Se usa en deals enterprise donde ganar una cuenta justifica la inversión.</p>
+        </div>
+
+        <!-- Agent -->
+        <div class="glossary-card" data-cat="claude" data-search="agent agente ai reasoning orchestration wat framework claude code decision">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Agent</span><span class="lang-es">Agente</span></h3>
+          <p class="glossary-card__def lang-en">An AI that reasons and takes actions, not just responds. In the WAT framework, Claude Code is the agent: it reads the workflow, decides which tools to call, handles errors, and orchestrates execution. You are its director.</p>
+          <p class="glossary-card__def lang-es">Una IA que razona y toma acciones, no solo responde. En el framework WAT, Claude Code es el agente: lee el workflow, decide qué herramientas llamar, maneja errores y orquesta la ejecución. Vos sos su directora.</p>
+        </div>
+
+        <!-- Agentic Workflow -->
+        <div class="glossary-card" data-cat="claude" data-search="agentic workflow ai agent decision making non deterministic multi step autonomous orchestration traditional automation zapier">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Agentic Workflow</span><span class="lang-es">Workflow Agéntico</span></h3>
+          <p class="glossary-card__def lang-en">A workflow where an AI agent makes decisions at each step rather than following a fixed script. Unlike traditional automation (if → then), an agentic workflow adapts: the agent reads context, decides what to do next, and handles exceptions. The WAT framework is an agentic architecture.</p>
+          <p class="glossary-card__def lang-es">Un workflow donde un agente de IA toma decisiones en cada paso en lugar de seguir un script fijo. A diferencia de la automatización tradicional (si → entonces), un workflow agéntico se adapta: el agente lee el contexto, decide qué hacer a continuación y maneja excepciones. El framework WAT es una arquitectura agéntica.</p>
+        </div>
+
+        <!-- AIDA -->
+        <div class="glossary-card" data-cat="content" data-search="aida attention interest desire action copywriting framework marketing email linkedin post sequence structure">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">AIDA</span><span class="lang-es">AIDA</span></h3>
+          <p class="glossary-card__def lang-en">A classic copywriting framework: <strong>A</strong>ttention → <strong>I</strong>nterest → <strong>D</strong>esire → <strong>A</strong>ction. Grab them with a hook, keep them with why it matters to them, build wanting by showing the transformation, then tell them exactly what to do next with one clear CTA.</p>
+          <p class="glossary-card__def lang-es">Un clásico framework de copywriting: <strong>A</strong>tención → <strong>I</strong>nterés → <strong>D</strong>eseo → <strong>A</strong>cción. Atrapá su atención, sostené el interés con por qué les importa, generá el deseo mostrando la transformación, luego deciles exactamente qué hacer con un CTA claro.</p>
+        </div>
+
+        <!-- Anthropic Console -->
+        <div class="glossary-card" data-cat="platform" data-search="anthropic console api key claude billing tokens usage sk-ant">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Anthropic Console</span><span class="lang-es">Consola de Anthropic</span></h3>
+          <p class="glossary-card__def lang-en">The developer portal at <strong>console.anthropic.com</strong>. Where you generate API keys to call Claude programmatically, monitor token usage, and manage billing. This is your key source for Claude API access.</p>
+          <p class="glossary-card__def lang-es">El portal de desarrolladores en <strong>console.anthropic.com</strong>. Donde generás claves API para llamar a Claude programáticamente, monitoreás el uso de tokens y gestionás la facturación.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>console.anthropic.com</strong></li>
+                <li>Sign up or log in</li>
+                <li>Click <strong>API Keys</strong> in the left sidebar</li>
+                <li>Click <strong>Create Key</strong> and give it a name</li>
+                <li>Copy the key immediately — shown only once</li>
+                <li>Add to .env: <code>ANTHROPIC_API_KEY=sk-ant-...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>console.anthropic.com</strong></li>
+                <li>Creá una cuenta o iniciá sesión</li>
+                <li>Hacé clic en <strong>API Keys</strong> en la barra lateral izquierda</li>
+                <li>Hacé clic en <strong>Create Key</strong> y dale un nombre</li>
+                <li>Copiá la clave inmediatamente — se muestra una sola vez</li>
+                <li>Agregá al .env: <code>ANTHROPIC_API_KEY=sk-ant-...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Apollo -->
+        <div class="glossary-card" data-cat="platform" data-search="apollo contacts crm outreach b2b leads sequences api push">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Apollo</span><span class="lang-es">Apollo</span></h3>
+          <p class="glossary-card__def lang-en">A B2B data and outreach platform at <strong>app.apollo.io</strong> (~275M contacts, ~60M companies). Used to store leads, search for ICP contacts by criteria, and run email sequences. The API lets you push contacts programmatically.</p>
+          <p class="glossary-card__def lang-es">Una plataforma de datos y alcance B2B en <strong>app.apollo.io</strong> (~275M contactos, ~60M empresas). Se usa para almacenar leads, buscar contactos de ICP y ejecutar secuencias de email. La API permite subir contactos programáticamente.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>app.apollo.io</strong> and log in</li>
+                <li>Click your profile icon → <strong>Settings</strong></li>
+                <li>Navigate to <strong>Integrations → API</strong></li>
+                <li>Click <strong>Create API Key</strong></li>
+                <li>Copy the key</li>
+                <li>Add to .env: <code>APOLLO_API_KEY=...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>app.apollo.io</strong> e iniciá sesión</li>
+                <li>Hacé clic en tu ícono de perfil → <strong>Configuración</strong></li>
+                <li>Navegá a <strong>Integraciones → API</strong></li>
+                <li>Hacé clic en <strong>Crear clave API</strong></li>
+                <li>Copiá la clave</li>
+                <li>Agregá al .env: <code>APOLLO_API_KEY=...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- API -->
+        <div class="glossary-card" data-cat="technical" data-search="api application programming interface http request response json dblink rest">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">API</span><span class="lang-es">API</span></h3>
+          <p class="glossary-card__def lang-en">Application Programming Interface. A defined way for two systems to talk. You send a structured request (HTTP) and get a structured response (JSON). Like a DBLINK to a system you don't own — you call a remote endpoint and get data back.</p>
+          <p class="glossary-card__def lang-es">Application Programming Interface. Una forma definida para que dos sistemas se comuniquen. Enviás una solicitud HTTP y obtenés una respuesta JSON. Como un DBLINK a un sistema que no es tuyo — llamás a un endpoint remoto y obtenés datos.</p>
+        </div>
+
+        <!-- API Key -->
+        <div class="glossary-card" data-cat="technical" data-search="api key token secret authentication credentials password env settings developer">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">API Key</span><span class="lang-es">Clave API</span></h3>
+          <p class="glossary-card__def lang-en">A secret string that authenticates you with a service's API — like a password for your code. Always store it in <code>.env</code>, never hardcode it in scripts. Found in Settings → API (or Developer or Integrations) on any platform console.</p>
+          <p class="glossary-card__def lang-es">Una cadena secreta que te autentica con la API de un servicio — como una contraseña para tu código. Siempre guardala en <code>.env</code>, nunca en los scripts. Se encuentra en Configuración → API (o Desarrollador o Integraciones) en cualquier consola.</p>
+        </div>
+
+        <!-- Apify -->
+        <div class="glossary-card" data-cat="platform" data-search="apify actors scraping web scraper built with linkedin jobs tech stack apify_api">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Apify</span><span class="lang-es">Apify</span></h3>
+          <p class="glossary-card__def lang-en">A platform at <strong>apify.com</strong> hosting pre-built web scrapers called Actors. You call an Actor with inputs (URLs, search terms) and get structured JSON back — like calling a vendor-hosted stored procedure. Thousands of Actors available; free tier included.</p>
+          <p class="glossary-card__def lang-es">Una plataforma en <strong>apify.com</strong> que aloja scrapers web prearmados llamados Actors. Llamás a un Actor con entradas y obtenés JSON estructurado — como llamar a un procedimiento almacenado hospedado por un proveedor. Miles de Actors; nivel gratuito incluido.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>console.apify.com</strong> and sign up</li>
+                <li>Click your profile icon → <strong>Settings</strong></li>
+                <li>Go to the <strong>Integrations</strong> tab</li>
+                <li>Copy your <strong>Personal API token</strong></li>
+                <li>Add to .env: <code>APIFY_API_KEY=apify_api_...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>console.apify.com</strong> y creá una cuenta</li>
+                <li>Hacé clic en tu ícono de perfil → <strong>Configuración</strong></li>
+                <li>Andá a la pestaña <strong>Integraciones</strong></li>
+                <li>Copiá tu <strong>Token de API personal</strong></li>
+                <li>Agregá al .env: <code>APIFY_API_KEY=apify_api_...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Artifact -->
+        <div class="glossary-card" data-cat="claude" data-search="artifact claude output rendered panel html code document preview right side screen weeks 1 2 lesson format">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Artifact</span><span class="lang-es">Artifact</span></h3>
+          <p class="glossary-card__def lang-en">In Claude.ai, the rendered output panel on the right side of the screen — HTML pages, code files, and documents Claude generates. Artifacts persist across the conversation and can be edited in place. Weeks 1–2 of this curriculum use artifacts as the lesson format.</p>
+          <p class="glossary-card__def lang-es">En Claude.ai, el panel de salida renderizada en el lado derecho — páginas HTML, archivos de código y documentos que genera Claude. Los artifacts persisten durante la conversación y se pueden editar en el lugar. Las semanas 1–2 de este plan de estudio usan artifacts como formato de lección.</p>
+        </div>
+
+        <!-- BAB -->
+        <div class="glossary-card" data-cat="content" data-search="bab before after bridge copywriting framework transformation pain present state future state product marketing">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">BAB</span><span class="lang-es">BAB</span></h3>
+          <p class="glossary-card__def lang-en">A copywriting framework: <strong>B</strong>efore → <strong>A</strong>fter → <strong>B</strong>ridge. Paint the painful current state, describe the ideal future state, then show your offer as the path between them. Highly effective for product-led and outbound messaging.</p>
+          <p class="glossary-card__def lang-es">Un framework de copywriting: <strong>A</strong>ntes → <strong>D</strong>espués → <strong>P</strong>uente. Pintá el estado actual doloroso, describí el estado futuro ideal y mostrá tu oferta como el camino entre ambos. Muy efectivo para mensajes de producto y outbound.</p>
+        </div>
+
+        <!-- BANT -->
+        <div class="glossary-card" data-cat="gtm" data-search="bant budget authority need timeline qualification framework sales qualified lead decision maker criteria">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">BANT</span><span class="lang-es">BANT</span></h3>
+          <p class="glossary-card__def lang-en">A sales qualification framework: <strong>B</strong>udget (can they afford it?), <strong>A</strong>uthority (are you talking to the decision-maker?), <strong>N</strong>eed (do they have the problem you solve?), <strong>T</strong>imeline (are they ready now?). If any of the four is missing, the opportunity is unqualified.</p>
+          <p class="glossary-card__def lang-es">Un framework de calificación: <strong>B</strong>udget (¿pueden pagarlo?), <strong>A</strong>uthority (¿hablás con quien decide?), <strong>N</strong>eed (¿tienen el problema que resolvés?), <strong>T</strong>imeline (¿están listos ahora?). Si falta alguno de los cuatro, la oportunidad está descalificada.</p>
+        </div>
+
+        <!-- CLAUDE.md -->
+        <div class="glossary-card" data-cat="claude" data-search="claude.md markdown file project instructions schema ddl session startup rules">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">CLAUDE.md</span><span class="lang-es">CLAUDE.md</span></h3>
+          <p class="glossary-card__def lang-en">A special Markdown file Claude Code reads at the start of every session. Defines the project's purpose, rules, file structure, and how Claude should behave. Like a database schema — it tells Claude what's here and how to work with it.</p>
+          <p class="glossary-card__def lang-es">Un archivo Markdown especial que Claude Code lee al inicio de cada sesión. Define el propósito del proyecto, las reglas, la estructura de archivos y cómo debe comportarse Claude. Como un esquema de base de datos — le dice a Claude qué hay aquí y cómo trabajar con ello.</p>
+        </div>
+
+        <!-- Claude Project -->
+        <div class="glossary-card" data-cat="claude" data-search="claude project container custom instructions knowledge files conversations persistent session memory desktop weeks 1 2">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Claude Project</span><span class="lang-es">Proyecto de Claude</span></h3>
+          <p class="glossary-card__def lang-en">A named container in Claude.ai that holds custom instructions, uploaded knowledge files, and conversation history. Everything you configure in a Project persists across conversations — Claude remembers it without re-explaining. Weeks 1–2 of this curriculum are delivered through a Claude Project.</p>
+          <p class="glossary-card__def lang-es">Un contenedor con nombre en Claude.ai que contiene instrucciones personalizadas, archivos de conocimiento y historial de conversaciones. Todo lo que configurás en un Proyecto persiste entre conversaciones — Claude lo recuerda sin que lo re-expliques. Las semanas 1–2 de este plan de estudio se entregan a través de un Proyecto de Claude.</p>
+        </div>
+
+        <!-- CLI -->
+        <div class="glossary-card" data-cat="technical" data-search="cli command line interface terminal sqlplus text commands claude code vs code">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">CLI</span><span class="lang-es">CLI (Línea de Comandos)</span></h3>
+          <p class="glossary-card__def lang-en">Command Line Interface. A text-based way to interact with your computer by typing commands instead of clicking. Claude Code runs in the CLI — you type into a terminal and the system executes. Like SQL*Plus but for everything on your machine.</p>
+          <p class="glossary-card__def lang-es">Command Line Interface (Interfaz de Línea de Comandos). Una forma basada en texto de interactuar con tu computadora escribiendo comandos. Claude Code corre en la CLI — escribís en una terminal y el sistema ejecuta. Como SQL*Plus pero para todo.</p>
+        </div>
+
+        <!-- Completion -->
+        <div class="glossary-card" data-cat="claude" data-search="completion output response generation model returns answer text result prompt response pair api term">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Completion</span><span class="lang-es">Completion</span></h3>
+          <p class="glossary-card__def lang-en">The text an AI model generates in response to your prompt. Every AI interaction is a prompt/completion pair: you send input, the model returns a completion. "Completion" is the API term; in the chat UI it simply appears as Claude's reply.</p>
+          <p class="glossary-card__def lang-es">El texto que genera un modelo de IA en respuesta a tu prompt. Cada interacción de IA es un par prompt/completion: enviás una entrada, el modelo devuelve una completion. "Completion" es el término de la API; en la interfaz de chat aparece simplemente como la respuesta de Claude.</p>
+        </div>
+
+        <!-- Connector -->
+        <div class="glossary-card" data-cat="claude" data-search="connector mcp server implementation bridge external tool integration figma gmail notion claude code specific service">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Connector (MCP)</span><span class="lang-es">Conector (MCP)</span></h3>
+          <p class="glossary-card__def lang-en">An MCP server implementation for a specific service. MCP is the protocol; a Connector is the concrete bridge. The Figma Connector lets Claude read design files; the Gmail Connector lets Claude draft emails. Each Connector exposes a set of actions Claude can call mid-conversation.</p>
+          <p class="glossary-card__def lang-es">Una implementación de servidor MCP para un servicio específico. MCP es el protocolo; un Connector es el puente concreto. El Connector de Figma permite a Claude leer archivos de diseño; el de Gmail permite redactar correos. Cada Connector expone acciones que Claude puede llamar durante una conversación.</p>
+        </div>
+
+        <!-- Content Strategy -->
+        <div class="glossary-card" data-cat="content" data-search="content strategy plan posts articles videos publishing topics audience brand voice linkedin marketing calendar">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Content Strategy</span><span class="lang-es">Estrategia de Contenido</span></h3>
+          <p class="glossary-card__def lang-en">The deliberate plan for what to publish, when, on which channels, and why — designed to attract, educate, and convert a specific audience. Includes topic pillars, publishing cadence, and voice guidelines. Your LinkedIn personal brand has a content strategy.</p>
+          <p class="glossary-card__def lang-es">El plan deliberado sobre qué publicar, cuándo, en qué canales y por qué — diseñado para atraer, educar y convertir a una audiencia específica. Incluye pilares temáticos, cadencia de publicación y guías de voz. Tu marca personal en LinkedIn tiene una estrategia de contenido.</p>
+        </div>
+
+        <!-- Context Window -->
+        <div class="glossary-card" data-cat="claude" data-search="context window tokens memory limit conversation buffer overflow oldest">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Context Window</span><span class="lang-es">Ventana de Contexto</span></h3>
+          <p class="glossary-card__def lang-en">The maximum text a model can process at once. Your messages, Claude's responses, uploaded files, and instructions all count toward this limit (measured in tokens). When full, the model can no longer "see" the oldest content.</p>
+          <p class="glossary-card__def lang-es">El máximo de texto que un modelo puede procesar a la vez. Tus mensajes, las respuestas de Claude, los archivos cargados e instrucciones cuentan hacia este límite (medido en tokens). Cuando se llena, el modelo ya no puede "ver" el contenido más antiguo.</p>
+        </div>
+
+        <!-- Copywriting Framework -->
+        <div class="glossary-card" data-cat="content" data-search="copywriting framework aida pas bab structure persuasive writing email post ad hook cta narrative reusable">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Copywriting Framework</span><span class="lang-es">Framework de Copywriting</span></h3>
+          <p class="glossary-card__def lang-en">A reusable structure for persuasive writing. Common frameworks: AIDA, PAS, BAB. The framework handles the narrative architecture so you focus on the specifics — the pain, the offer, the CTA. Most effective email sequences and LinkedIn posts follow one of these.</p>
+          <p class="glossary-card__def lang-es">Una estructura reutilizable para escritura persuasiva. Frameworks comunes: AIDA, PAS, BAB. El framework maneja la arquitectura narrativa para que vos te enfoques en los detalles — el dolor, la oferta, el CTA. La mayoría de las secuencias de email efectivas y posts de LinkedIn siguen uno de estos.</p>
+        </div>
+
+        <!-- Credit -->
+        <div class="glossary-card" data-cat="claude" data-search="credit billing payment tokens consumed api cost ki openrouter top up">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Credit</span><span class="lang-es">Crédito</span></h3>
+          <p class="glossary-card__def lang-en">The billing unit on API platforms like kie.ai or OpenRouter. You top up your account with credits and spend them as you make API calls. Consumed based on tokens processed — not per message, not per minute.</p>
+          <p class="glossary-card__def lang-es">La unidad de facturación en plataformas como kie.ai u OpenRouter. Recargás tu cuenta con créditos y los gastás al hacer llamadas API. Se consumen según los tokens procesados — no por mensaje, no por minuto.</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="glossary-card" data-cat="content" data-search="cta call to action next step reply book call click action marketing outreach one ask email linkedin">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">CTA</span><span class="lang-es">CTA</span></h3>
+          <p class="glossary-card__def lang-en">Call to Action. The specific next step you ask the reader to take — "reply to this email," "book a 15-minute call," "click the link." Every piece of outreach should have exactly one CTA. Multiple CTAs dilute each other.</p>
+          <p class="glossary-card__def lang-es">Call to Action. El próximo paso específico que le pedís al lector que haga — "respondé este email", "agendá una llamada de 15 minutos", "hacé clic en el enlace". Cada pieza de outreach debe tener exactamente un CTA. Múltiples CTAs se diluyen entre sí.</p>
+        </div>
+
+        <!-- Cron / Routine -->
+        <div class="glossary-card" data-cat="technical" data-search="cron routine scheduled task periodic run every day hour week automated job background timer interval claude code">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Cron / Routine</span><span class="lang-es">Cron / Rutina</span></h3>
+          <p class="glossary-card__def lang-en">A scheduled task that runs automatically at a defined interval — "every Monday at 9am," "daily at midnight." In Claude Code, hooks and scheduling enable this. Cron is the Unix name; "routine" is the plain-English equivalent.</p>
+          <p class="glossary-card__def lang-es">Una tarea programada que se ejecuta automáticamente a intervalos definidos — "cada lunes a las 9am", "diariamente a medianoche". En Claude Code, los hooks y la programación habilitan esto. Cron es el nombre Unix; "rutina" es el equivalente en lenguaje simple.</p>
+        </div>
+
+        <!-- Data Enrichment -->
+        <div class="glossary-card" data-cat="gtm" data-search="data enrichment lead record add missing info company size tech stack email linkedin phone apify http api csv">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Data Enrichment</span><span class="lang-es">Enriquecimiento de Datos</span></h3>
+          <p class="glossary-card__def lang-en">Adding missing information to a lead record using external data sources — take a CSV with company names, run each through Apify or an API, get back tech stack, employee count, LinkedIn URL. Enriched leads score better and convert faster.</p>
+          <p class="glossary-card__def lang-es">Agregar información faltante a un registro de lead usando fuentes de datos externas — tomás un CSV con nombres de empresas, los corrés a través de Apify o una API, obtenés tech stack, cantidad de empleados, URL de LinkedIn. Los leads enriquecidos puntúan mejor y convierten más rápido.</p>
+        </div>
+
+        <!-- Deterministic vs Non-deterministic -->
+        <div class="glossary-card" data-cat="claude" data-search="deterministic non deterministic predictable random same input output python script claude llm reliability wat tools separation">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Deterministic vs Non-deterministic</span><span class="lang-es">Determinista vs No Determinista</span></h3>
+          <p class="glossary-card__def lang-en"><strong>Deterministic:</strong> same input always produces the same output — Python scripts, SQL queries. <strong>Non-deterministic:</strong> output varies each run — LLMs like Claude. The WAT framework separates these on purpose: Claude handles decisions (non-deterministic); Python tools handle execution (deterministic).</p>
+          <p class="glossary-card__def lang-es"><strong>Determinista:</strong> la misma entrada siempre produce la misma salida — scripts Python, consultas SQL. <strong>No determinista:</strong> la salida varía en cada ejecución — LLMs como Claude. El framework WAT los separa a propósito: Claude maneja las decisiones; las herramientas Python manejan la ejecución.</p>
+        </div>
+
+        <!-- Endpoint -->
+        <div class="glossary-card" data-cat="technical" data-search="endpoint url api path post contacts get companies stored procedure route">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Endpoint</span><span class="lang-es">Endpoint</span></h3>
+          <p class="glossary-card__def lang-en">A specific URL that accepts API requests and performs one operation. <code>POST /contacts</code> creates a contact; <code>GET /companies</code> lists companies. Like a stored procedure name — call the right one for the operation you need.</p>
+          <p class="glossary-card__def lang-es">Una URL específica que acepta solicitudes API y realiza una operación. <code>POST /contacts</code> crea un contacto; <code>GET /companies</code> lista empresas. Como el nombre de un procedimiento almacenado — llamás al correcto para la operación que necesitás.</p>
+        </div>
+
+        <!-- Extended Thinking -->
+        <div class="glossary-card" data-cat="claude" data-search="extended thinking effort thinking tokens reasoning budget before answering complex hard tasks planning claude opus toggle">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Extended Thinking</span><span class="lang-es">Pensamiento Extendido</span></h3>
+          <p class="glossary-card__def lang-en">A mode where Claude reasons step-by-step before producing its final answer — using a hidden reasoning process that costs extra tokens. Enabled via the "effort" setting or extended thinking API parameter. Produces noticeably better results on hard reasoning, math, and complex planning.</p>
+          <p class="glossary-card__def lang-es">Un modo en el que Claude razona paso a paso antes de producir su respuesta final — usando un proceso de razonamiento oculto que consume tokens adicionales. Se activa mediante la configuración de "esfuerzo" o el parámetro de thinking en la API. Produce resultados notablemente mejores en tareas complejas de razonamiento y planificación.</p>
+        </div>
+
+        <!-- Figma -->
+        <div class="glossary-card" data-cat="platform" data-search="figma design ui mockup mcp brand assets colors fonts components prototype">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Figma</span><span class="lang-es">Figma</span></h3>
+          <p class="glossary-card__def lang-en">A browser-based design tool at <strong>figma.com</strong> for UI mockups, brand assets, and prototypes. The Figma MCP server lets Claude Code read design files, extract colors and fonts, and generate code — without manual export.</p>
+          <p class="glossary-card__def lang-es">Una herramienta de diseño en <strong>figma.com</strong> para maquetas de UI, activos de marca y prototipos. El servidor MCP de Figma permite a Claude Code leer archivos de diseño, extraer colores y fuentes y generar código — sin exportación manual.</p>
+        </div>
+
+        <!-- Firecrawl -->
+        <div class="glossary-card" data-cat="platform" data-search="firecrawl scraping web pages markdown structured data content extraction fc-">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Firecrawl</span><span class="lang-es">Firecrawl</span></h3>
+          <p class="glossary-card__def lang-en">A web scraping API at <strong>firecrawl.dev</strong> that converts any webpage into clean Markdown or structured data. Simpler than Apify for general-purpose scraping. Use Apify for specialized actors (job listings, tech stacks); use Firecrawl when you just need page content.</p>
+          <p class="glossary-card__def lang-es">Una API de scraping en <strong>firecrawl.dev</strong> que convierte páginas web en Markdown limpio o datos estructurados. Más simple que Apify para scraping general. Usá Apify para actores especializados; usá Firecrawl cuando solo necesitás el contenido de una página.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>firecrawl.dev</strong> and sign up</li>
+                <li>Open your <strong>Dashboard</strong></li>
+                <li>Copy the <strong>API Key</strong> shown on the dashboard</li>
+                <li>Add to .env: <code>FIRECRAWL_API_KEY=fc-...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>firecrawl.dev</strong> y creá una cuenta</li>
+                <li>Abrí tu <strong>Dashboard</strong></li>
+                <li>Copiá la <strong>API Key</strong> que aparece ahí</li>
+                <li>Agregá al .env: <code>FIRECRAWL_API_KEY=fc-...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Front Matter -->
+        <div class="glossary-card" data-cat="claude" data-search="front matter yaml metadata skill claude.md name description type delimiters ---">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Front Matter</span><span class="lang-es">Front Matter (Metadatos)</span></h3>
+          <p class="glossary-card__def lang-en">Structured metadata at the top of a Markdown file, written between <code>---</code> delimiters in YAML format. Used in skills and memory files to define <code>name</code>, <code>description</code>, <code>type</code>. Claude reads this first to decide whether to load the full file.</p>
+          <p class="glossary-card__def lang-es">Metadatos estructurados al comienzo de un archivo Markdown, escritos entre delimitadores <code>---</code> en formato YAML. Se usa en skills y archivos de memoria para definir <code>name</code>, <code>description</code>, <code>type</code>. Claude lee esto primero para decidir si carga el archivo completo.</p>
+        </div>
+
+        <!-- GET / POST -->
+        <div class="glossary-card" data-cat="technical" data-search="get post http methods select stored procedure retrieve send data request">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">GET / POST</span><span class="lang-es">GET / POST</span></h3>
+          <p class="glossary-card__def lang-en">The two most common HTTP methods. GET retrieves data (like SELECT). POST sends data or triggers an action (like calling a stored procedure with parameters). Most API calls you'll make are one of these two.</p>
+          <p class="glossary-card__def lang-es">Los dos métodos HTTP más comunes. GET recupera datos (como SELECT). POST envía datos o dispara una acción (como llamar a un procedimiento almacenado con parámetros). La mayoría de las llamadas API que harás serán uno de estos dos.</p>
+        </div>
+
+        <!-- GitHub -->
+        <div class="glossary-card" data-cat="technical" data-search="github git repository version control code hosting push pull branch commit vercel deploy web project">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">GitHub</span><span class="lang-es">GitHub</span></h3>
+          <p class="glossary-card__def lang-en">A platform at <strong>github.com</strong> for storing and versioning code. You commit changes locally → push to GitHub → Vercel (or other platforms) detects the push and auto-deploys. Essential for any web project you want to share or deploy.</p>
+          <p class="glossary-card__def lang-es">Una plataforma en <strong>github.com</strong> para almacenar y versionar código. Hacés commits localmente → los subís a GitHub → Vercel (u otras plataformas) detecta el push y despliega automáticamente. Esencial para cualquier proyecto web que quieras compartir o publicar.</p>
+        </div>
+
+        <!-- Global vs Project Skill -->
+        <div class="glossary-card" data-cat="claude" data-search="global skill project specific scope local claude code skills folder installation available everywhere ~/.claude">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Global vs Project Skill</span><span class="lang-es">Skill Global vs Skill de Proyecto</span></h3>
+          <p class="glossary-card__def lang-en">Global skills live in <code>~/.claude/skills/</code> and are available in every Claude Code session. Project-specific skills live inside a project's <code>skills/</code> folder and load only in that project. Use project skills for things tied to one codebase; global skills for tools you use everywhere.</p>
+          <p class="glossary-card__def lang-es">Las skills globales viven en <code>~/.claude/skills/</code> y están disponibles en cada sesión de Claude Code. Las skills de proyecto viven dentro de la carpeta <code>skills/</code> del proyecto y cargan solo ahí. Usá skills de proyecto para cosas de un código base; skills globales para herramientas que usás en todos lados.</p>
+        </div>
+
+        <!-- Google Cloud Console -->
+        <div class="glossary-card" data-cat="platform" data-search="google cloud console gcp apis services enable credentials sheets gmail drive calendar oauth">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Google Cloud Console</span><span class="lang-es">Google Cloud Console</span></h3>
+          <p class="glossary-card__def lang-en">The developer portal at <strong>console.cloud.google.com</strong>. Where you enable Google APIs (Search, Gmail, Sheets, Drive, Calendar) and generate credentials. Every Google API must be activated here before you can call it — even for simple Sheets access.</p>
+          <p class="glossary-card__def lang-es">El portal de desarrolladores en <strong>console.cloud.google.com</strong>. Donde activás las APIs de Google (Search, Gmail, Sheets, Drive, Calendar) y generás credenciales. Cada API de Google debe activarse aquí antes de poder llamarla — incluso para acceder a Sheets.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to enable an API &rsaquo;</span><span class="lang-es">Cómo activar una API &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>console.cloud.google.com</strong> and sign in</li>
+                <li>Create a new project (top bar → dropdown → New Project)</li>
+                <li>Go to <strong>APIs &amp; Services → Library</strong></li>
+                <li>Search for the API you need and click <strong>Enable</strong></li>
+                <li>Go to <strong>APIs &amp; Services → Credentials</strong></li>
+                <li>Click <strong>Create Credentials</strong> → API Key or OAuth 2.0</li>
+                <li>Copy the key and add it to your .env</li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>console.cloud.google.com</strong> e iniciá sesión</li>
+                <li>Creá un proyecto nuevo (barra superior → desplegable → Proyecto nuevo)</li>
+                <li>Andá a <strong>APIs y Servicios → Biblioteca</strong></li>
+                <li>Buscá la API que necesitás y hacé clic en <strong>Habilitar</strong></li>
+                <li>Andá a <strong>APIs y Servicios → Credenciales</strong></li>
+                <li>Hacé clic en <strong>Crear credenciales</strong> → Clave API u OAuth 2.0</li>
+                <li>Copiá la clave y agregala a tu .env</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Google Workspace APIs -->
+        <div class="glossary-card" data-cat="platform" data-search="google workspace apis gmail drive sheets calendar docs gcp programmatic automation">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Google Workspace APIs</span><span class="lang-es">APIs de Google Workspace</span></h3>
+          <p class="glossary-card__def lang-en">The programmatic interface to Google's suite — Gmail, Drive, Sheets, Calendar, Docs. All enabled via Google Cloud Console. Use these to read/write Sheets as a live database, automate email, or sync documents — from Python scripts or Claude Code.</p>
+          <p class="glossary-card__def lang-es">La interfaz programática de la suite de Google — Gmail, Drive, Sheets, Calendar, Docs. Todas se activan vía Google Cloud Console. Usalas para leer/escribir Sheets como base de datos, automatizar email o sincronizar documentos — desde scripts Python o Claude Code.</p>
+        </div>
+
+        <!-- GTM (Go-to-Market) -->
+        <div class="glossary-card" data-cat="gtm" data-search="gtm go to market strategy segments channels messaging target market sell position product plan">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">GTM (Go-to-Market)</span><span class="lang-es">GTM (Go-to-Market)</span></h3>
+          <p class="glossary-card__def lang-en">The plan for how a company brings a product to customers — which segments to target, which channels to use, what message resonates, and how to price. GTM strategy defines whether you lead with inbound, outbound, partnerships, or a combination.</p>
+          <p class="glossary-card__def lang-es">El plan sobre cómo una empresa lleva un producto a los clientes — qué segmentos apuntar, qué canales usar, qué mensaje resuena y cómo fijar precios. La estrategia GTM define si liderás con inbound, outbound, partnerships o una combinación.</p>
+        </div>
+
+        <!-- GTM Engineering -->
+        <div class="glossary-card" data-cat="gtm" data-search="gtm engineering automation code api pipeline leads enrichment scoring outreach programmatic sales signals tools python">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">GTM Engineering</span><span class="lang-es">GTM Engineering</span></h3>
+          <p class="glossary-card__def lang-en">Using code, APIs, and automation to do the research, enrichment, and outreach that GTM teams used to do manually. A GTM engineer builds pipelines: scrape signals → enrich leads → score ICP fit → push to CRM. The goal of this curriculum's Month 2.</p>
+          <p class="glossary-card__def lang-es">Usar código, APIs y automatización para hacer la investigación, enriquecimiento y alcance que los equipos GTM solían hacer manualmente. Un ingeniero GTM construye pipelines: scrapeá señales → enriquecé leads → puntuá el fit con el ICP → subí al CRM. El objetivo del Mes 2 de este plan de estudio.</p>
+        </div>
+
+        <!-- Hook -->
+        <div class="glossary-card" data-cat="claude" data-search="hook trigger event claude code before after tool session file change automatic">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Hook</span><span class="lang-es">Hook (Disparador)</span></h3>
+          <p class="glossary-card__def lang-en">A trigger in Claude Code that fires automatically when a specific event occurs — before a tool runs, after a session starts, when a file changes. Like a database trigger: define the condition once, and the action executes without you asking.</p>
+          <p class="glossary-card__def lang-es">Un disparador en Claude Code que se activa automáticamente cuando ocurre un evento específico — antes de que una herramienta corra, después de que inicie una sesión, cuando cambia un archivo. Como un trigger de base de datos: definís la condición una vez y la acción se ejecuta sola.</p>
+        </div>
+
+        <!-- Hallucination -->
+        <div class="glossary-card" data-cat="claude" data-search="hallucination confabulation wrong answer incorrect confident false made up llm error reliability verify fact check">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Hallucination</span><span class="lang-es">Alucinación</span></h3>
+          <p class="glossary-card__def lang-en">When an LLM states something incorrect with full confidence — invented facts, wrong URLs, fake citations. Not lying, just pattern-completing without knowing what's true. Always verify factual claims from Claude against a real source, especially names, numbers, and URLs.</p>
+          <p class="glossary-card__def lang-es">Cuando un LLM afirma algo incorrecto con total confianza — hechos inventados, URLs incorrectas, citas falsas. No es mentira, solo completar patrones sin saber qué es verdad. Siempre verificá las afirmaciones factuales de Claude contra una fuente real, especialmente nombres, números y URLs.</p>
+        </div>
+
+        <!-- Hook (Marketing) -->
+        <div class="glossary-card" data-cat="content" data-search="hook marketing copywriting first line stop scroll attention grabbing opening sentence linkedin post email subject">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Hook (Marketing)</span><span class="lang-es">Hook (Marketing)</span></h3>
+          <p class="glossary-card__def lang-en">The opening line of a post, email, or ad designed to stop the scroll and make the reader want more. A good hook creates tension, provokes curiosity, or names a specific pain. <em>Different from a Claude Code hook</em>, which is a technical event trigger.</p>
+          <p class="glossary-card__def lang-es">La primera línea de un post, email o anuncio diseñada para detener el scroll y hacer que el lector quiera más. Un buen hook crea tensión, provoca curiosidad o nombra un dolor específico. <em>Distinto de un hook de Claude Code</em>, que es un disparador técnico de eventos.</p>
+        </div>
+
+        <!-- ICP -->
+        <div class="glossary-card" data-cat="gtm" data-search="icp ideal customer profile target company fit criteria scoring industry size revenue tech stack geography week 8">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">ICP</span><span class="lang-es">ICP</span></h3>
+          <p class="glossary-card__def lang-en">Ideal Customer Profile. A precise description of the type of company most likely to buy and succeed with your product — defined by industry, size, geography, tech stack, and hiring signals. Week 8 builds a scoring model that turns this description into a numeric score for every lead.</p>
+          <p class="glossary-card__def lang-es">Ideal Customer Profile. Una descripción precisa del tipo de empresa con más probabilidades de comprar y tener éxito con tu producto — definida por industria, tamaño, geografía, tech stack y señales de contratación. La Semana 8 construye un modelo de scoring que convierte esta descripción en un puntaje numérico para cada lead.</p>
+        </div>
+
+        <!-- Intent Signal -->
+        <div class="glossary-card" data-cat="gtm" data-search="intent signal buying intent job posting hiring funding tech install website visit trigger event apify scoring">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Intent Signal</span><span class="lang-es">Señal de Intención</span></h3>
+          <p class="glossary-card__def lang-en">An observable event suggesting a company may be in a buying window — hiring for a specific role, raising funding, switching tech stacks, or publishing about a relevant problem. High-intent signals move a lead to the top of the scoring model.</p>
+          <p class="glossary-card__def lang-es">Un evento observable que sugiere que una empresa puede estar en una ventana de compra — contratar para un rol específico, levantar funding, cambiar su tech stack o publicar sobre un problema relevante. Las señales de alta intención mueven un lead al tope del modelo de scoring.</p>
+        </div>
+
+        <!-- Iteration -->
+        <div class="glossary-card" data-cat="claude" data-search="iteration iterate refine prompt try again adjust rework improve output first draft not final multiple tries">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Iteration</span><span class="lang-es">Iteración</span></h3>
+          <p class="glossary-card__def lang-en">The process of refining output across multiple tries — you prompt, evaluate the result, adjust, and repeat. Expecting the first response to be final is the most common beginner mistake. Most good outputs emerge from the 3rd or 4th iteration.</p>
+          <p class="glossary-card__def lang-es">El proceso de refinar resultados a través de múltiples intentos — hacés un prompt, evaluás el resultado, ajustás y repetís. Esperar que la primera respuesta sea definitiva es el error más común del principiante. La mayoría de los buenos resultados emergen en la 3ra o 4ta iteración.</p>
+        </div>
+
+        <!-- JSON -->
+        <div class="glossary-card" data-cat="technical" data-search="json javascript object notation data format api response dictionary list key value">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">JSON</span><span class="lang-es">JSON</span></h3>
+          <p class="glossary-card__def lang-en">The universal format for API data exchange. Looks like a Python dictionary: <code>{"name": "Acme", "domain": "acme.com"}</code>. Arrays look like lists: <code>[{...}, {...}]</code>. If you can read a SQL result set, you can read JSON.</p>
+          <p class="glossary-card__def lang-es">El formato universal para el intercambio de datos en APIs. Se parece a un diccionario de Python: <code>{"name": "Acme", "domain": "acme.com"}</code>. Los arrays se ven como listas: <code>[{...}, {...}]</code>. Si podés leer un result set de SQL, podés leer JSON.</p>
+        </div>
+
+        <!-- JWT -->
+        <div class="glossary-card" data-cat="technical" data-search="jwt json web token authentication authorization bearer header session login app oauth signed expire identity">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">JWT</span><span class="lang-es">JWT</span></h3>
+          <p class="glossary-card__def lang-en">JSON Web Token. A signed, self-contained token an app issues after login to prove "this user is authenticated." Passed in request headers as <code>Bearer [token]</code>. Unlike API keys (static), JWTs expire and carry user identity. Common in OAuth flows.</p>
+          <p class="glossary-card__def lang-es">JSON Web Token. Un token firmado y autocontenido que una app emite tras el login para probar "este usuario está autenticado". Se pasa en los headers como <code>Bearer [token]</code>. A diferencia de las claves API (estáticas), los JWTs expiran y llevan identidad del usuario. Común en flujos OAuth.</p>
+        </div>
+
+        <!-- kie.ai -->
+        <div class="glossary-card" data-cat="platform" data-search="kie.ai kieai llm api multiple models gpt claude gemini credits low cost openai compatible image generation">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">kie.ai</span><span class="lang-es">kie.ai</span></h3>
+          <p class="glossary-card__def lang-en">An API platform at <strong>kie.ai</strong> giving you access to multiple LLMs (Claude, GPT-4, Gemini, and more) through one account at low cost. Also supports image generation models. Instead of subscribing to each AI separately, you top up credits and route calls to whichever model you need.</p>
+          <p class="glossary-card__def lang-es">Una plataforma API en <strong>kie.ai</strong> que te da acceso a múltiples LLMs (Claude, GPT-4, Gemini y más) a través de una sola cuenta a bajo costo. También soporta modelos de generación de imágenes. En lugar de suscribirte a cada IA por separado, recargás créditos y enrutás las llamadas al modelo que necesitás.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>kie.ai</strong> and create an account</li>
+                <li>Add credits (billing / top-up section)</li>
+                <li>Navigate to <strong>API Keys</strong> or <strong>Settings</strong></li>
+                <li>Generate a new key</li>
+                <li>Add to .env: <code>KIE_API_KEY=...</code></li>
+                <li>Note: use kie.ai's base URL when calling — request format matches the OpenAI API</li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>kie.ai</strong> y creá una cuenta</li>
+                <li>Agregá créditos (sección de facturación / recarga)</li>
+                <li>Navegá a <strong>API Keys</strong> o <strong>Configuración</strong></li>
+                <li>Generá una nueva clave</li>
+                <li>Agregá al .env: <code>KIE_API_KEY=...</code></li>
+                <li>Nota: usá la URL base de kie.ai al llamar — el formato de solicitud es igual al de la API de OpenAI</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Lead -->
+        <div class="glossary-card" data-cat="gtm" data-search="lead person company contact unqualified might buy pipeline outbound any contact name email list">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Lead</span><span class="lang-es">Lead</span></h3>
+          <p class="glossary-card__def lang-en">Any person or company that could potentially buy. Unqualified — just a name, email, or company in your list. A lead becomes a Prospect when you've decided it's worth pursuing, and an SQL when sales validates it as a real opportunity.</p>
+          <p class="glossary-card__def lang-es">Cualquier persona o empresa que podría comprar potencialmente. Sin calificar — solo un nombre, email o empresa en tu lista. Un lead se convierte en Prospecto cuando decidís que vale la pena seguir, y en SQL cuando ventas lo valida como una oportunidad real.</p>
+        </div>
+
+        <!-- Lead Scoring -->
+        <div class="glossary-card" data-cat="gtm" data-search="lead scoring model weighted score points icp fit signals criteria rank prioritize contact column csv week 8 python">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Lead Scoring</span><span class="lang-es">Scoring de Leads</span></h3>
+          <p class="glossary-card__def lang-en">Assigning a numeric score to each lead based on ICP fit and intent signals. High score = contact first. Week 8 builds a scoring model in Python that adds a <code>score</code> column to the enriched CSV, letting you rank leads by priority in seconds.</p>
+          <p class="glossary-card__def lang-es">Asignar un puntaje numérico a cada lead según el fit con el ICP y las señales de intención. Puntaje alto = contactar primero. La Semana 8 construye un modelo de scoring en Python que agrega una columna <code>score</code> al CSV enriquecido, permitiéndote ordenar leads por prioridad en segundos.</p>
+        </div>
+
+        <!-- LLM / SLM -->
+        <div class="glossary-card" data-cat="claude" data-search="llm large language model slm small language model gpt claude gemini artificial intelligence foundation model parameters ai">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">LLM / SLM</span><span class="lang-es">LLM / SLM</span></h3>
+          <p class="glossary-card__def lang-en"><strong>LLM</strong> = Large Language Model. An AI trained on massive text datasets to generate and understand language — Claude, GPT-4, and Gemini are all LLMs. <strong>SLM</strong> = Small Language Model — same concept, fewer parameters, faster and cheaper, suited for narrow tasks. "Model" is the informal shorthand for both.</p>
+          <p class="glossary-card__def lang-es"><strong>LLM</strong> = Large Language Model. Una IA entrenada en enormes conjuntos de texto para generar y comprender lenguaje — Claude, GPT-4 y Gemini son todos LLMs. <strong>SLM</strong> = Small Language Model — mismo concepto, menos parámetros, más rápido y barato, adecuado para tareas específicas. "Modelo" es el término informal para ambos.</p>
+        </div>
+
+        <!-- Markdown -->
+        <div class="glossary-card" data-cat="claude" data-search="markdown md file plain text headings bold lists claude.md skills workflows configuration">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Markdown / .md</span><span class="lang-es">Markdown / .md</span></h3>
+          <p class="glossary-card__def lang-en">A plain-text format for structured documents using simple symbols: <code>#</code> for headings, <code>**bold**</code>, <code>- list items</code>. All Claude Code configuration — CLAUDE.md, skills, workflows, memory files — is written in Markdown.</p>
+          <p class="glossary-card__def lang-es">Un formato de texto plano para documentos estructurados usando símbolos simples: <code>#</code> para títulos, <code>**negrita**</code>, <code>- elementos de lista</code>. Toda la configuración de Claude Code — CLAUDE.md, skills, workflows, archivos de memoria — está escrita en Markdown.</p>
+        </div>
+
+        <!-- MCP -->
+        <div class="glossary-card" data-cat="claude" data-search="mcp model context protocol server figma notion tools external connect dblink stored procedure">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">MCP</span><span class="lang-es">MCP (Protocolo de Contexto de Modelo)</span></h3>
+          <p class="glossary-card__def lang-en">Model Context Protocol. A standard that lets Claude connect to external tools and data sources mid-conversation. An MCP server exposes actions Claude calls directly — read a Figma file, search Notion, query a database — without copy-pasting. Like a DBLINK plus a stored procedure package.</p>
+          <p class="glossary-card__def lang-es">Model Context Protocol. Un estándar que permite a Claude conectarse a herramientas externas durante una conversación. Un servidor MCP expone acciones que Claude llama directamente — leer un archivo de Figma, buscar en Notion, consultar una base de datos — sin copiar y pegar nada.</p>
+        </div>
+
+        <!-- Model -->
+        <div class="glossary-card" data-cat="claude" data-search="model haiku sonnet opus version tier speed cost intelligence toggle settings">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Model</span><span class="lang-es">Modelo</span></h3>
+          <p class="glossary-card__def lang-en">The specific AI version in use. Claude's tiers: <strong>Haiku</strong> (fast, cheap, simple tasks), <strong>Sonnet</strong> (balanced — the everyday workhorse), <strong>Opus</strong> (most capable, complex reasoning). Toggle in Claude Code settings or specify in the API call.</p>
+          <p class="glossary-card__def lang-es">La versión específica de IA en uso. Los niveles de Claude: <strong>Haiku</strong> (rápido, económico, tareas simples), <strong>Sonnet</strong> (equilibrado — el caballo de batalla diario), <strong>Opus</strong> (más capaz, razonamiento complejo). Cambiás en la configuración de Claude Code o especificás en la llamada API.</p>
+        </div>
+
+        <!-- MQL -->
+        <div class="glossary-card" data-cat="gtm" data-search="mql marketing qualified lead showed interest clicked downloaded visited funnel stage warm not yet sales engaged">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">MQL</span><span class="lang-es">MQL</span></h3>
+          <p class="glossary-card__def lang-en">Marketing Qualified Lead. A lead that has shown interest through a marketing action — clicked an ad, downloaded content, opened 3+ emails, or visited a pricing page. Warmer than a raw lead; cooler than a SQL. Marketing passes MQLs to sales for follow-up.</p>
+          <p class="glossary-card__def lang-es">Marketing Qualified Lead. Un lead que mostró interés a través de una acción de marketing — hizo clic en un anuncio, descargó contenido, abrió 3+ emails o visitó una página de precios. Más cálido que un lead en bruto; más frío que un SQL. Marketing pasa los MQLs a ventas para seguimiento.</p>
+        </div>
+
+        <!-- Multi-channel -->
+        <div class="glossary-card" data-cat="gtm" data-search="multi channel outreach email linkedin phone ads simultaneous touch points sequence cadence reach same person">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Multi-channel</span><span class="lang-es">Multi-canal</span></h3>
+          <p class="glossary-card__def lang-en">Reaching the same prospect across multiple channels simultaneously — email, LinkedIn, phone, and retargeting ads. Multi-channel sequences consistently outperform single-channel because you meet buyers where they already are.</p>
+          <p class="glossary-card__def lang-es">Alcanzar al mismo prospecto a través de múltiples canales simultáneamente — email, LinkedIn, teléfono y anuncios de retargeting. Las secuencias multicanal superan consistentemente a las de un solo canal porque encontrás a los compradores donde ya están.</p>
+        </div>
+
+        <!-- Multimodal -->
+        <div class="glossary-card" data-cat="claude" data-search="multimodal model image text audio video input output vision multiple modality gpt-4o claude sonnet analyze">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Multimodal</span><span class="lang-es">Multimodal</span></h3>
+          <p class="glossary-card__def lang-en">A model that processes more than one type of input — text, images, audio, or video. GPT-4o and Claude Sonnet are multimodal: you can send an image and ask Claude to describe or analyze it. A text-only model is single-modal.</p>
+          <p class="glossary-card__def lang-es">Un modelo que procesa más de un tipo de entrada — texto, imágenes, audio o video. GPT-4o y Claude Sonnet son multimodales: podés enviar una imagen y pedirle a Claude que la describa o analice. Un modelo solo de texto es monomodal.</p>
+        </div>
+
+        <!-- n8n -->
+        <div class="glossary-card" data-cat="platform" data-search="n8n automation workflow zapier self-hosted nodes apps connect trigger action no-code">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">n8n</span><span class="lang-es">n8n</span></h3>
+          <p class="glossary-card__def lang-en">An open-source workflow automation platform at <strong>n8n.io</strong> — like Zapier but self-hostable and code-friendly. Connects hundreds of apps visually or via JSON. Good for recurring automations (notify Slack when a lead scores high, sync data between tools) without full scripts.</p>
+          <p class="glossary-card__def lang-es">Una plataforma de automatización de código abierto en <strong>n8n.io</strong> — como Zapier pero alojable por vos mismo y amigable con el código. Conecta cientos de aplicaciones visualmente o mediante JSON. Ideal para automatizaciones recurrentes sin escribir scripts completos.</p>
+        </div>
+
+        <!-- Notion -->
+        <div class="glossary-card" data-cat="platform" data-search="notion database db workspace notes wiki project management api token secret_">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Notion</span><span class="lang-es">Notion</span></h3>
+          <p class="glossary-card__def lang-en">A workspace tool at <strong>notion.so</strong> for notes, databases, wikis, and project management. A <strong>Notion Database</strong> is a structured table queryable via API. Useful for storing enriched leads, SOPs, or content calendars.</p>
+          <p class="glossary-card__def lang-es">Una herramienta de trabajo en equipo en <strong>notion.so</strong> para notas, bases de datos, wikis y gestión de proyectos. Una <strong>Base de Datos de Notion</strong> es una tabla estructurada consultable vía API. Útil para almacenar leads enriquecidos, SOPs o calendarios de contenido.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>notion.so</strong> and log in</li>
+                <li>Go to <strong>Settings &amp; Members → Connections</strong></li>
+                <li>Click <strong>Develop or manage integrations</strong></li>
+                <li>Click <strong>New integration</strong>, name it, select your workspace</li>
+                <li>Copy the <strong>Internal Integration Token</strong></li>
+                <li>Add to .env: <code>NOTION_API_KEY=secret_...</code></li>
+                <li>Share each Notion DB with the integration: open DB → Share → invite the integration</li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>notion.so</strong> e iniciá sesión</li>
+                <li>Andá a <strong>Configuración y Miembros → Conexiones</strong></li>
+                <li>Hacé clic en <strong>Desarrollar o gestionar integraciones</strong></li>
+                <li>Hacé clic en <strong>Nueva integración</strong>, dale un nombre, seleccioná tu espacio de trabajo</li>
+                <li>Copiá el <strong>Token de integración interna</strong></li>
+                <li>Agregá al .env: <code>NOTION_API_KEY=secret_...</code></li>
+                <li>Compartí cada BD de Notion con la integración: abrí la BD → Compartir → invitá la integración</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- OAuth -->
+        <div class="glossary-card" data-cat="technical" data-search="oauth oauth2 authorization protocol connect app login with google sign in permission grant access token google cloud handshake">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">OAuth</span><span class="lang-es">OAuth</span></h3>
+          <p class="glossary-card__def lang-en">An authorization protocol that lets you grant one app access to another without sharing your password. "Sign in with Google" uses OAuth. When you connect Notion or Gmail to Claude, OAuth handles the handshake. Google Cloud Console uses OAuth 2.0 for API credentials.</p>
+          <p class="glossary-card__def lang-es">Un protocolo de autorización que permite que una app acceda a otra sin compartir tu contraseña. "Iniciar sesión con Google" usa OAuth. Cuando conectás Notion o Gmail a Claude, OAuth maneja el handshake. Google Cloud Console usa OAuth 2.0 para credenciales de API.</p>
+        </div>
+
+        <!-- OpenAI Console -->
+        <div class="glossary-card" data-cat="platform" data-search="openai console gpt-4 gpt4o api key platform sk- usage limits billing">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">OpenAI Console</span><span class="lang-es">Consola de OpenAI</span></h3>
+          <p class="glossary-card__def lang-en">The developer portal at <strong>platform.openai.com</strong>. Where you generate keys, set usage limits, and monitor costs for GPT-4o and other OpenAI models. Use this when calling OpenAI directly, rather than through an aggregator like kie.ai.</p>
+          <p class="glossary-card__def lang-es">El portal de desarrolladores en <strong>platform.openai.com</strong>. Donde generás claves, configurás límites de uso y monitoreás costos para GPT-4o y otros modelos de OpenAI. Usá esto cuando llamás a OpenAI directamente, en lugar de usar un agregador como kie.ai.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>platform.openai.com</strong> and sign up / log in</li>
+                <li>Click your profile icon → <strong>API keys</strong></li>
+                <li>Click <strong>Create new secret key</strong></li>
+                <li>Copy immediately — shown only once</li>
+                <li>Add to .env: <code>OPENAI_API_KEY=sk-...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>platform.openai.com</strong> y creá una cuenta o iniciá sesión</li>
+                <li>Hacé clic en tu ícono de perfil → <strong>API keys</strong></li>
+                <li>Hacé clic en <strong>Crear nueva clave secreta</strong></li>
+                <li>Copiá inmediatamente — se muestra una sola vez</li>
+                <li>Agregá al .env: <code>OPENAI_API_KEY=sk-...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- OpenRouter -->
+        <div class="glossary-card" data-cat="platform" data-search="openrouter llm aggregator multiple models anthropic mistral meta one endpoint sk-or-">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">OpenRouter</span><span class="lang-es">OpenRouter</span></h3>
+          <p class="glossary-card__def lang-en">An API aggregator at <strong>openrouter.ai</strong> routing requests to multiple LLM providers (Anthropic, OpenAI, Mistral, Meta, and more) through one endpoint. Pay per token across providers. Similar to kie.ai — use whichever Hernan uses in the current project.</p>
+          <p class="glossary-card__def lang-es">Un agregador de API en <strong>openrouter.ai</strong> que enruta solicitudes a múltiples proveedores de LLM a través de un único endpoint. Pago por token. Similar a kie.ai — usá el que Hernan esté usando en el proyecto.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>openrouter.ai</strong> and sign up</li>
+                <li>Go to <strong>Keys</strong> in the top navigation</li>
+                <li>Click <strong>Create Key</strong></li>
+                <li>Copy the key</li>
+                <li>Add to .env: <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>openrouter.ai</strong> y creá una cuenta</li>
+                <li>Andá a <strong>Keys</strong> en la navegación superior</li>
+                <li>Hacé clic en <strong>Crear clave</strong></li>
+                <li>Copiá la clave</li>
+                <li>Agregá al .env: <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Opportunity -->
+        <div class="glossary-card" data-cat="gtm" data-search="opportunity deal qualified crm pipeline stage sql sales cycle revenue potential close won lost">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Opportunity</span><span class="lang-es">Oportunidad de Venta</span></h3>
+          <p class="glossary-card__def lang-en">A qualified deal in the sales pipeline — a lead validated as a real potential buyer with budget, authority, and fit. Tracked in a CRM with stage, estimated value, and expected close date. Opportunities move through stages: Discovery → Demo → Proposal → Closed Won/Lost.</p>
+          <p class="glossary-card__def lang-es">Un deal calificado en el pipeline de ventas — un lead validado como comprador potencial real con presupuesto, autoridad y encaje. Se sigue en un CRM con etapa, valor estimado y fecha de cierre esperada. Las oportunidades avanzan por etapas: Descubrimiento → Demo → Propuesta → Cerrado Ganado/Perdido.</p>
+        </div>
+
+        <!-- Orchestration -->
+        <div class="glossary-card" data-cat="claude" data-search="orchestration multi-agent coordination pipeline sequence tools steps query plan order execution complex task">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Orchestration</span><span class="lang-es">Orquestación</span></h3>
+          <p class="glossary-card__def lang-en">Coordinating multiple steps, tools, or agents to complete a complex task. The agent (Claude) is the orchestrator — it decides what to call, in what order, and how to handle results. Like a SQL query planner that decides which tables to hit and in what sequence.</p>
+          <p class="glossary-card__def lang-es">Coordinar múltiples pasos, herramientas o agentes para completar una tarea compleja. El agente (Claude) es el orquestador — decide qué llamar, en qué orden y cómo manejar los resultados. Como un planificador de consultas SQL que decide qué tablas consultar y en qué secuencia.</p>
+        </div>
+
+        <!-- Outbound vs Inbound -->
+        <div class="glossary-card" data-cat="gtm" data-search="outbound inbound sales marketing cold email sequence demo request content seo lead generation proactive reactive">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Outbound vs Inbound</span><span class="lang-es">Outbound vs Inbound</span></h3>
+          <p class="glossary-card__def lang-en"><strong>Outbound</strong>: you initiate contact — cold emails, LinkedIn messages, calls. You pick the target and reach out first. <strong>Inbound</strong>: the buyer finds you — via content, SEO, referrals, or ads. Outbound is faster to start but requires more effort per lead. Most GTM strategies use both.</p>
+          <p class="glossary-card__def lang-es"><strong>Outbound</strong>: vos iniciás el contacto — emails en frío, mensajes de LinkedIn, llamadas. Elegís el objetivo y te comunicás primero. <strong>Inbound</strong>: el comprador te encuentra — vía contenido, SEO, referencias o anuncios. El outbound es más rápido para empezar pero requiere más esfuerzo por lead.</p>
+        </div>
+
+        <!-- PAS -->
+        <div class="glossary-card" data-cat="content" data-search="pas problem agitate solution copywriting framework pain point emotional resonance copy structure">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">PAS Framework</span><span class="lang-es">Framework PAS</span></h3>
+          <p class="glossary-card__def lang-en"><strong>P</strong>roblem → <strong>A</strong>gitate → <strong>S</strong>olve. Name the problem your reader has, intensify the pain (why it matters, what it costs to ignore it), then introduce your solution. More emotionally charged than AIDA — works well for pain-driven audiences who already know they have a problem.</p>
+          <p class="glossary-card__def lang-es"><strong>P</strong>roblema → <strong>A</strong>gitar → <strong>S</strong>olución. Nombrás el problema de tu lector, intensificás el dolor (por qué importa, qué cuesta ignorarlo) y luego presentás tu solución. Más emocional que AIDA — funciona bien para audiencias motivadas por el dolor que ya saben que tienen un problema.</p>
+        </div>
+
+        <!-- Perplexity API -->
+        <div class="glossary-card" data-cat="platform" data-search="perplexity api search real-time web citations current news pplx- live data">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Perplexity API</span><span class="lang-es">API de Perplexity</span></h3>
+          <p class="glossary-card__def lang-en">An API at <strong>docs.perplexity.ai</strong> for AI-powered web search — returns answers with real-time citations. Useful when Claude needs current web data: recent company news, live pricing, or anything past its training cutoff.</p>
+          <p class="glossary-card__def lang-es">Una API en <strong>docs.perplexity.ai</strong> para búsqueda web con IA — devuelve respuestas con citas en tiempo real. Útil cuando Claude necesita datos actuales: noticias recientes de una empresa, precios en vivo, o cualquier cosa posterior a su fecha de corte.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>perplexity.ai</strong> and sign up</li>
+                <li>Click your profile → <strong>Settings</strong></li>
+                <li>Go to the <strong>API</strong> tab</li>
+                <li>Click <strong>Generate</strong> to create a key</li>
+                <li>Add to .env: <code>PERPLEXITY_API_KEY=pplx-...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>perplexity.ai</strong> y creá una cuenta</li>
+                <li>Hacé clic en tu perfil → <strong>Configuración</strong></li>
+                <li>Andá a la pestaña <strong>API</strong></li>
+                <li>Hacé clic en <strong>Generar</strong> para crear una clave</li>
+                <li>Agregá al .env: <code>PERPLEXITY_API_KEY=pplx-...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Pipeline -->
+        <div class="glossary-card" data-cat="gtm" data-search="pipeline sales funnel stages opportunities revenue forecast crm deals progression close">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Pipeline</span><span class="lang-es">Pipeline de Ventas</span></h3>
+          <p class="glossary-card__def lang-en">The set of all active deals at every stage of the sales process — from first contact to closed. Tracked in a CRM. "Pipeline value" = total potential revenue of open opportunities. A healthy pipeline has enough deals in early stages to replace those that close (or don't).</p>
+          <p class="glossary-card__def lang-es">El conjunto de todos los deals activos en cada etapa del proceso de ventas — desde el primer contacto hasta el cierre. Se sigue en un CRM. "Valor del pipeline" = el ingreso potencial total de las oportunidades abiertas. Un pipeline saludable tiene suficientes deals en etapas tempranas para reemplazar los que cierran.</p>
+        </div>
+
+        <!-- Plugin -->
+        <div class="glossary-card" data-cat="claude" data-search="plugin extension tool claude code capability add-on install skills workflows extend functionality package">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Plugin</span><span class="lang-es">Plugin (Extensión)</span></h3>
+          <p class="glossary-card__def lang-en">An add-on package installed into Claude Code that extends its capabilities — typically containing a collection of skills, workflows, or tools. Plugins are the distribution unit: a team packages their best skills and ships them as a plugin others can install and use immediately.</p>
+          <p class="glossary-card__def lang-es">Un paquete adicional instalado en Claude Code que extiende sus capacidades — típicamente contiene una colección de skills, workflows o herramientas. Los plugins son la unidad de distribución: un equipo empaqueta sus mejores skills y los publica como un plugin que otros pueden instalar y usar de inmediato.</p>
+        </div>
+
+        <!-- Progressive Disclosure -->
+        <div class="glossary-card" data-cat="claude" data-search="progressive disclosure design principle context window skills load front matter simple first">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Progressive Disclosure</span><span class="lang-es">Divulgación Progresiva</span></h3>
+          <p class="glossary-card__def lang-en">A design principle: show simple information first, reveal complexity only when needed. In Claude Code skills, only the front matter loads initially — full instructions load when the skill is invoked. Keeps context windows lean and responses focused.</p>
+          <p class="glossary-card__def lang-es">Un principio de diseño: mostrar información simple primero, revelar complejidad solo cuando sea necesario. En los skills de Claude Code, solo el front matter carga inicialmente — las instrucciones completas cargan cuando se invoca el skill. Mantiene las ventanas de contexto livianas.</p>
+        </div>
+
+        <!-- Project Knowledge -->
+        <div class="glossary-card" data-cat="claude" data-search="project knowledge base file upload context custom instructions documents always loaded claude project memory persistent">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Project Knowledge</span><span class="lang-es">Conocimiento del Proyecto</span></h3>
+          <p class="glossary-card__def lang-en">Files uploaded to a Claude Project that are automatically included in every conversation — a product catalog, writing samples, a company FAQ. The persistent reference layer: Claude always has access without you re-attaching files each time.</p>
+          <p class="glossary-card__def lang-es">Archivos subidos a un Proyecto de Claude que se incluyen automáticamente en cada conversación — un catálogo de productos, muestras de escritura, una FAQ de la empresa. La capa de referencia persistente: Claude siempre tiene acceso sin que adjuntés archivos cada vez.</p>
+        </div>
+
+        <!-- Prompt -->
+        <div class="glossary-card" data-cat="claude" data-search="prompt instruction message context task constraints format output quality">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Prompt</span><span class="lang-es">Prompt (Instrucción)</span></h3>
+          <p class="glossary-card__def lang-en">The text you send to an AI model to get a response. A well-structured prompt includes: context (who you are, what you're doing), the task (what you need), and constraints (format, length, what to avoid). Prompt quality directly determines output quality.</p>
+          <p class="glossary-card__def lang-es">El texto que enviás a un modelo de IA para obtener una respuesta. Un prompt bien estructurado incluye: contexto (quién sos, qué hacés), la tarea (qué necesitás) y restricciones (formato, longitud, qué evitar). La calidad del prompt determina directamente la calidad del resultado.</p>
+        </div>
+
+        <!-- Prompt Chaining -->
+        <div class="glossary-card" data-cat="claude" data-search="prompt chaining chain iteration sequence output input progressive refinement multi-step complex task pipeline draft refine">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Prompt Chaining</span><span class="lang-es">Encadenamiento de Prompts</span></h3>
+          <p class="glossary-card__def lang-en">Using the output of one prompt as the input for the next — breaking a complex task into sequential steps, each building on the last. Example: Draft → Evaluate → Improve → Finalize. Keeps each step focused and lets you catch errors before the next stage.</p>
+          <p class="glossary-card__def lang-es">Usar el resultado de un prompt como entrada del siguiente — dividir una tarea compleja en pasos secuenciales, cada uno construyendo sobre el anterior. Ejemplo: Borrador → Evaluar → Mejorar → Finalizar. Mantiene cada paso enfocado y permite detectar errores antes de la siguiente etapa.</p>
+        </div>
+
+        <!-- Qualification Framework -->
+        <div class="glossary-card" data-cat="gtm" data-search="qualification framework bant meddic scoring criteria lead quality fit budget authority need timeline deal">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Qualification Framework</span><span class="lang-es">Framework de Calificación</span></h3>
+          <p class="glossary-card__def lang-en">A structured set of criteria for deciding if a lead is worth pursuing. The most common is BANT (Budget, Authority, Need, Timeline). In GTM Engineering, qualification logic is codified into the lead scoring model — so Claude can apply it at scale automatically.</p>
+          <p class="glossary-card__def lang-es">Un conjunto estructurado de criterios para decidir si vale la pena perseguir un lead. El más común es BANT (Presupuesto, Autoridad, Necesidad, Cronograma). En GTM Engineering, la lógica de calificación se codifica en el modelo de puntuación de leads — Claude la aplica a escala automáticamente.</p>
+        </div>
+
+        <!-- Rate Limit -->
+        <div class="glossary-card" data-cat="technical" data-search="rate limit 429 too many requests api calls per minute batch sleep slow down free tier">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Rate Limit</span><span class="lang-es">Límite de Velocidad</span></h3>
+          <p class="glossary-card__def lang-en">A restriction on API calls per time window. Exceeding it returns <code>429 Too Many Requests</code>. Fix: add <code>time.sleep(1)</code> between calls and process in small batches. Free API tiers always have tighter limits than paid tiers.</p>
+          <p class="glossary-card__def lang-es">Una restricción sobre las llamadas API por ventana de tiempo. Superarla devuelve <code>429 Too Many Requests</code>. Solución: agregar <code>time.sleep(1)</code> entre llamadas y procesar en lotes pequeños. Los niveles gratuitos siempre tienen límites más estrictos.</p>
+        </div>
+
+        <!-- Reasoning Model -->
+        <div class="glossary-card" data-cat="claude" data-search="reasoning model extended thinking chain of thought step by step problem solving complex logic math o1 o3 claude opus">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Reasoning Model</span><span class="lang-es">Modelo de Razonamiento</span></h3>
+          <p class="glossary-card__def lang-en">An LLM that "thinks" step by step before answering — producing an internal chain of reasoning before the final response. Useful for complex logic, math, or multi-step analysis. Costs more tokens and is slower, but significantly more accurate on hard problems. Claude's equivalent is extended thinking.</p>
+          <p class="glossary-card__def lang-es">Un LLM que "piensa" paso a paso antes de responder — produce una cadena de razonamiento interna antes de la respuesta final. Útil para lógica compleja, matemáticas o análisis de múltiples pasos. Cuesta más tokens y es más lento, pero significativamente más preciso en problemas difíciles. El equivalente en Claude es el pensamiento extendido.</p>
+        </div>
+
+        <!-- fal.ai -->
+        <div class="glossary-card" data-cat="platform" data-search="fal.ai falai image generation flux stable diffusion fast inference api model prediction serverless gpu">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">fal.ai</span><span class="lang-es">fal.ai</span></h3>
+          <p class="glossary-card__def lang-en">A fast AI inference platform at <strong>fal.ai</strong> for running image generation models via API — Flux, Stable Diffusion, and more. Send a prompt, get an image URL back in seconds. Pay per image. Widely used for Brand Kit generation and visual pipelines.</p>
+          <p class="glossary-card__def lang-es">Una plataforma de inferencia rápida en <strong>fal.ai</strong> para ejecutar modelos de generación de imágenes vía API — Flux, Stable Diffusion y más. Enviás un prompt, obtenés una URL de imagen en segundos. Pago por imagen. Muy usada para kits de marca y pipelines visuales.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to get your key &rsaquo;</span><span class="lang-es">Cómo obtener tu clave &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>fal.ai</strong> and sign up</li>
+                <li>Click your profile → <strong>Settings</strong></li>
+                <li>Go to the <strong>API Keys</strong> tab</li>
+                <li>Click <strong>Add key</strong> and copy it</li>
+                <li>Add to .env: <code>FAL_KEY=...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>fal.ai</strong> y creá una cuenta</li>
+                <li>Hacé clic en tu perfil → <strong>Configuración</strong></li>
+                <li>Andá a la pestaña <strong>API Keys</strong></li>
+                <li>Hacé clic en <strong>Agregar clave</strong> y copiála</li>
+                <li>Agregá al .env: <code>FAL_KEY=...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Vercel -->
+        <div class="glossary-card" data-cat="platform" data-search="vercel deploy frontend web app hosting static site preview url github ci cd serverless functions">
+          <span class="glossary-card__cat cat-badge--platform"><span class="lang-en">Platform</span><span class="lang-es">Plataforma</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Vercel</span><span class="lang-es">Vercel</span></h3>
+          <p class="glossary-card__def lang-en">A hosting platform at <strong>vercel.com</strong> for deploying frontend web apps in seconds. Connect a GitHub repo → every push auto-deploys and gets a public preview URL. Free tier is generous. Ideal for sharing web projects with others without needing a server.</p>
+          <p class="glossary-card__def lang-es">Una plataforma de hosting en <strong>vercel.com</strong> para publicar apps web frontend en segundos. Conectás un repositorio de GitHub → cada push se despliega automáticamente y recibe una URL pública de preview. El tier gratuito es generoso. Ideal para compartir proyectos web sin necesitar un servidor.</p>
+          <details class="glossary-card__key">
+            <summary><span class="lang-en">How to deploy &rsaquo;</span><span class="lang-es">Cómo desplegar &rsaquo;</span></summary>
+            <div class="glossary-card__key-steps">
+              <ol class="lang-en">
+                <li>Go to <strong>vercel.com</strong> and sign up (use your GitHub account)</li>
+                <li>Click <strong>Add New → Project</strong></li>
+                <li>Import your GitHub repository</li>
+                <li>Leave settings as default → click <strong>Deploy</strong></li>
+                <li>Vercel gives you a live URL (e.g. <code>my-project.vercel.app</code>)</li>
+                <li>For API access: <strong>Settings → Tokens → Create</strong> → add to .env: <code>VERCEL_TOKEN=...</code></li>
+              </ol>
+              <ol class="lang-es">
+                <li>Andá a <strong>vercel.com</strong> y registrate (usá tu cuenta de GitHub)</li>
+                <li>Hacé clic en <strong>Agregar nuevo → Proyecto</strong></li>
+                <li>Importá tu repositorio de GitHub</li>
+                <li>Dejá la configuración por defecto → hacé clic en <strong>Deploy</strong></li>
+                <li>Vercel te da una URL en vivo (p. ej. <code>mi-proyecto.vercel.app</code>)</li>
+                <li>Para acceso API: <strong>Configuración → Tokens → Crear</strong> → agregá al .env: <code>VERCEL_TOKEN=...</code></li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Sequence / Cadence -->
+        <div class="glossary-card" data-cat="gtm" data-search="sequence cadence outreach email linkedin touchpoints automated steps timing follow-up apollo lemlist sales">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Sequence / Cadence</span><span class="lang-es">Secuencia / Cadencia</span></h3>
+          <p class="glossary-card__def lang-en">A pre-defined series of outreach touchpoints sent to a prospect over time — email on Day 1, LinkedIn on Day 3, follow-up email on Day 7, etc. Programmed in tools like Apollo or lemlist. Multiple touchpoints increase reply rates without manual follow-up effort.</p>
+          <p class="glossary-card__def lang-es">Una serie predefinida de puntos de contacto enviados a un prospecto a lo largo del tiempo — email el Día 1, LinkedIn el Día 3, email de seguimiento el Día 7, etc. Se programa en herramientas como Apollo o lemlist. Múltiples contactos aumentan las tasas de respuesta sin esfuerzo manual de seguimiento.</p>
+        </div>
+
+        <!-- SDK -->
+        <div class="glossary-card" data-cat="technical" data-search="sdk software development kit library package import apify-client wrapper http calls install">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">SDK</span><span class="lang-es">SDK</span></h3>
+          <p class="glossary-card__def lang-en">Software Development Kit. A library a company publishes to simplify calling their API. Instead of writing raw HTTP requests, you install the SDK and use cleaner methods. Example: <code>apify-client</code> is Apify's Python SDK — it wraps all the HTTP calls for you.</p>
+          <p class="glossary-card__def lang-es">Software Development Kit. Una librería que una empresa publica para simplificar las llamadas a su API. En lugar de escribir solicitudes HTTP en crudo, instalás el SDK y usás métodos más limpios. Ejemplo: <code>apify-client</code> es el SDK de Python de Apify.</p>
+        </div>
+
+        <!-- SKILL.md -->
+        <div class="glossary-card" data-cat="claude" data-search="skill.md skill file instruction set claude code trigger yaml front matter description name folder stored procedure">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">SKILL.md</span><span class="lang-es">SKILL.md</span></h3>
+          <p class="glossary-card__def lang-en">The entry-point file inside a skill folder. Contains YAML front matter (name, description — what triggers it) and the step-by-step instructions Claude follows when the skill is invoked. Like a stored procedure: the front matter is the function signature; the body is the logic that executes.</p>
+          <p class="glossary-card__def lang-es">El archivo de entrada dentro de una carpeta de skill. Contiene front matter YAML (nombre, descripción — qué lo dispara) y las instrucciones paso a paso que Claude sigue cuando se invoca. Como un procedimiento almacenado: el front matter es la firma de la función; el cuerpo es la lógica que se ejecuta.</p>
+        </div>
+
+        <!-- Skill -->
+        <div class="glossary-card" data-cat="claude" data-search="skill instruction set claude code trigger command stored procedure skill.md folder capabilities">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Skill</span><span class="lang-es">Skill (Habilidad)</span></h3>
+          <p class="glossary-card__def lang-en">A self-contained instruction set in a folder with a <code>SKILL.md</code> file. Claude Code loads it when triggered with a specific command (e.g., <code>/brand-voice</code>). Like a stored procedure — defined once, called by name, executes consistently every time.</p>
+          <p class="glossary-card__def lang-es">Un conjunto de instrucciones autocontenido en una carpeta con un archivo <code>SKILL.md</code>. Claude Code lo carga cuando se activa con un comando específico (ej.: <code>/brand-voice</code>). Como un procedimiento almacenado — definido una vez, llamado por nombre, se ejecuta igual cada vez.</p>
+        </div>
+
+        <!-- Social Selling -->
+        <div class="glossary-card" data-cat="content" data-search="social selling linkedin personal brand content thought leadership warm outreach trust relationship building authority">
+          <span class="glossary-card__cat cat-badge--content"><span class="lang-en">Content</span><span class="lang-es">Contenido</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Social Selling</span><span class="lang-es">Social Selling (Venta Social)</span></h3>
+          <p class="glossary-card__def lang-en">Using social media — primarily LinkedIn — to build relationships and trust with prospects before a sales conversation. Share valuable content, comment meaningfully, demonstrate expertise. When you reach out, they already know who you are. Turns cold outreach into warm outreach.</p>
+          <p class="glossary-card__def lang-es">Usar redes sociales — principalmente LinkedIn — para construir relaciones y confianza con prospectos antes de una conversación de ventas. Compartís contenido de valor, comentás de forma significativa y demostrás experiencia. Cuando te comunicás, ya saben quién sos. Convierte el outreach frío en outreach cálido.</p>
+        </div>
+
+        <!-- SOP -->
+        <div class="glossary-card" data-cat="claude" data-search="sop standard operating procedure workflow markdown recurring task steps instructions documentation">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">SOP</span><span class="lang-es">SOP (Procedimiento Operativo)</span></h3>
+          <p class="glossary-card__def lang-en">Standard Operating Procedure. A documented, step-by-step process for a recurring task. In the WAT framework, SOPs are Markdown files in <code>workflows/</code> — Claude reads them and follows the steps as the agent. Writing one yourself proves you understand the process.</p>
+          <p class="glossary-card__def lang-es">Standard Operating Procedure (Procedimiento Operativo Estándar). Un proceso documentado paso a paso para una tarea recurrente. En el framework WAT, los SOPs son archivos Markdown en <code>workflows/</code> — Claude los lee y sigue los pasos como agente.</p>
+        </div>
+
+        <!-- SQL (Sales Qualified Lead) -->
+        <div class="glossary-card" data-cat="gtm" data-search="sql sales qualified lead sales team accepted crm handoff mql bdr sdr pipeline demo not database">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">SQL <em>(Sales Qualified Lead)</em></span><span class="lang-es">SQL <em>(Lead Calificado por Ventas)</em></span></h3>
+          <p class="glossary-card__def lang-en">A lead that the sales team has reviewed and accepted as worth pursuing. The MQL → SQL transition is the hand-off from marketing to sales. Not to be confused with SQL the database query language.</p>
+          <p class="glossary-card__def lang-es">Un lead que el equipo de ventas revisó y aceptó como digno de perseguir. La transición MQL → SQL es la transferencia de marketing a ventas. No confundir con SQL el lenguaje de consulta de bases de datos.</p>
+        </div>
+
+        <!-- Status Code -->
+        <div class="glossary-card" data-cat="technical" data-search="status code 200 201 401 404 429 500 http response success error unauthorized rate limit server">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Status Code</span><span class="lang-es">Código de Estado HTTP</span></h3>
+          <p class="glossary-card__def lang-en">A 3-digit number in every API response. <strong>200</strong> = success. <strong>201</strong> = created. <strong>401</strong> = wrong/missing credentials. <strong>404</strong> = not found. <strong>429</strong> = rate limited (slow down). <strong>500</strong> = server error on their side.</p>
+          <p class="glossary-card__def lang-es">Un número de 3 dígitos en cada respuesta API. <strong>200</strong> = éxito. <strong>201</strong> = creado. <strong>401</strong> = credenciales incorrectas o faltantes. <strong>404</strong> = no encontrado. <strong>429</strong> = límite superado (ralentizá). <strong>500</strong> = error del servidor de su lado.</p>
+        </div>
+
+        <!-- System Prompt -->
+        <div class="glossary-card" data-cat="claude" data-search="system prompt custom instructions background session claude project behavior stored procedure startup">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">System Prompt</span><span class="lang-es">Prompt de Sistema</span></h3>
+          <p class="glossary-card__def lang-en">Background instructions that shape Claude's behavior across an entire conversation — set before any user messages. In a Claude Project, this is the custom instructions field. Like a stored procedure that fires automatically at the start of every session.</p>
+          <p class="glossary-card__def lang-es">Instrucciones de fondo que moldean el comportamiento de Claude durante toda una conversación — se establecen antes de cualquier mensaje. En un Proyecto de Claude, es el campo de instrucciones personalizadas. Como un procedimiento almacenado que se dispara al inicio de cada sesión.</p>
+        </div>
+
+        <!-- TAM -->
+        <div class="glossary-card" data-cat="gtm" data-search="tam total addressable market sam som market size opportunity revenue potential icp segment size">
+          <span class="glossary-card__cat cat-badge--gtm"><span class="lang-en">GTM &amp; Sales</span><span class="lang-es">GTM y Ventas</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">TAM <em>(Total Addressable Market)</em></span><span class="lang-es">TAM <em>(Mercado Total Direccionable)</em></span></h3>
+          <p class="glossary-card__def lang-en">The total revenue opportunity if you captured 100% of your target market. Often broken down: TAM (everyone who could buy) → SAM (your serviceable segment) → SOM (the portion you can realistically win). Used to size opportunities and prioritize which markets to enter.</p>
+          <p class="glossary-card__def lang-es">La oportunidad de ingresos total si capturases el 100% de tu mercado objetivo. Se suele descomponer: TAM (todos los que podrían comprar) → SAM (tu segmento alcanzable) → SOM (la porción que podés ganar de forma realista). Se usa para dimensionar oportunidades y priorizar qué mercados ingresar.</p>
+        </div>
+
+        <!-- Temperature -->
+        <div class="glossary-card" data-cat="claude" data-search="temperature randomness creativity deterministic predictable 0 1 sampling model parameter creative writing consistent">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Temperature</span><span class="lang-es">Temperatura (Modelo IA)</span></h3>
+          <p class="glossary-card__def lang-en">A parameter (0–1) controlling how random the model's outputs are. Low temperature (0–0.3) = more consistent, predictable — good for structured tasks like data extraction. High temperature (0.7–1) = more creative and varied — good for brainstorming or copywriting. Claude's default is around 1.</p>
+          <p class="glossary-card__def lang-es">Un parámetro (0–1) que controla qué tan aleatorias son las respuestas del modelo. Temperatura baja (0–0.3) = más consistente, predecible — bueno para tareas estructuradas como extracción de datos. Temperatura alta (0.7–1) = más creativo y variado — bueno para brainstorming o copywriting.</p>
+        </div>
+
+        <!-- Token -->
+        <div class="glossary-card" data-cat="claude" data-search="token llm text unit cost context window characters words pricing billing not api key">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Token</span><span class="lang-es">Token (LLM)</span></h3>
+          <p class="glossary-card__def lang-en">The basic unit an LLM uses to process text — roughly 4 characters or ¾ of a word. Every message and every response costs tokens. Context window size and API pricing are both measured in tokens. <em>Not</em> the same as an API key, which is also sometimes called a token.</p>
+          <p class="glossary-card__def lang-es">La unidad básica que un LLM usa para procesar texto — aproximadamente 4 caracteres o ¾ de una palabra. Cada mensaje y cada respuesta cuesta tokens. El tamaño de la ventana de contexto y el precio de la API se miden en tokens. <em>No</em> es lo mismo que una clave API, que a veces también se llama token.</p>
+        </div>
+
+        <!-- Tool Use -->
+        <div class="glossary-card" data-cat="claude" data-search="tool use function calling structured output external api code execution real world action calculator search database python script">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Tool Use</span><span class="lang-es">Uso de Herramientas</span></h3>
+          <p class="glossary-card__def lang-en">The ability for an LLM to call external functions or APIs — a calculator, a search engine, a database query, a Python script. Instead of guessing, the model decides when to call a tool and passes structured arguments. In the WAT framework, Tools (Python scripts) are what Claude calls to take real-world actions.</p>
+          <p class="glossary-card__def lang-es">La capacidad de un LLM de llamar a funciones o APIs externas — una calculadora, un motor de búsqueda, una consulta a base de datos, un script de Python. En lugar de adivinar, el modelo decide cuándo llamar una herramienta y pasa argumentos estructurados. En el framework WAT, las Tools (scripts de Python) son lo que Claude llama para actuar en el mundo real.</p>
+        </div>
+
+        <!-- Training Cutoff -->
+        <div class="glossary-card" data-cat="claude" data-search="training cutoff knowledge cutoff date stale information current events news real-time outdated limit llm perplexity">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Training Cutoff</span><span class="lang-es">Fecha de Corte de Entrenamiento</span></h3>
+          <p class="glossary-card__def lang-en">The date after which an LLM has no knowledge of world events — its training data stops there. Anything after that (new laws, company news, recent pricing) it simply doesn't know. Fix: use the Perplexity API or inject current context directly into the prompt.</p>
+          <p class="glossary-card__def lang-es">La fecha después de la cual un LLM no tiene conocimiento de eventos mundiales — sus datos de entrenamiento terminan ahí. Todo lo posterior (nuevas leyes, noticias de empresas, precios recientes) simplemente no lo sabe. Solución: usar la API de Perplexity o inyectar el contexto actual directamente en el prompt.</p>
+        </div>
+
+        <!-- WAT Framework -->
+        <div class="glossary-card" data-cat="claude" data-search="wat framework workflows agents tools architecture reliable ai separation concerns layers python markdown">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">WAT Framework</span><span class="lang-es">Framework WAT</span></h3>
+          <p class="glossary-card__def lang-en"><strong>W</strong>orkflows + <strong>A</strong>gents + <strong>T</strong>ools. Three-layer architecture for reliable AI systems: Workflows are Markdown SOPs (instructions), the Agent is Claude (reasoning), Tools are Python scripts (execution). Separating concerns is what makes the system reliable at scale.</p>
+          <p class="glossary-card__def lang-es"><strong>W</strong>orkflows + <strong>A</strong>gents + <strong>T</strong>ools. Arquitectura de tres capas: los Workflows son SOPs en Markdown (instrucciones), el Agente es Claude (razonamiento), las Tools son scripts de Python (ejecución). Separar las responsabilidades hace al sistema confiable a escala.</p>
+        </div>
+
+        <!-- Webhook -->
+        <div class="glossary-card" data-cat="technical" data-search="webhook reverse api push notification event trigger url post callback database trigger outbound">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Webhook</span><span class="lang-es">Webhook</span></h3>
+          <p class="glossary-card__def lang-en">A reverse API call — instead of you calling a service, the service calls your URL when something happens. Example: when a contact replies to an Apollo sequence, Apollo POSTs to your webhook URL. Like a database trigger that fires an outbound HTTP call.</p>
+          <p class="glossary-card__def lang-es">Una llamada API inversa — en lugar de que vos llamés a un servicio, el servicio llama a tu URL cuando algo sucede. Ejemplo: cuando un contacto responde a una secuencia de Apollo, Apollo hace un POST a tu webhook. Como un trigger de base de datos que dispara una llamada HTTP saliente.</p>
+        </div>
+
+        <!-- Workflow -->
+        <div class="glossary-card" data-cat="claude" data-search="workflow sop process markdown recurring steps tools error handling wat agent follows">
+          <span class="glossary-card__cat cat-badge--claude"><span class="lang-en">Claude &amp; AI</span><span class="lang-es">Claude e IA</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">Workflow</span><span class="lang-es">Workflow (Flujo de Trabajo)</span></h3>
+          <p class="glossary-card__def lang-en">A Markdown SOP in the <code>workflows/</code> folder defining a recurring process: objective, inputs, steps, tools to call, error handling. Claude reads it and follows it as the agent. Different from a Skill: a Skill is a capability Claude uses; a Workflow is a process Claude follows.</p>
+          <p class="glossary-card__def lang-es">Un SOP Markdown en la carpeta <code>workflows/</code> que define un proceso recurrente: objetivo, entradas, pasos, herramientas a llamar, manejo de errores. Claude lo lee y lo sigue como agente. Un Skill es una capacidad que Claude usa; un Workflow es un proceso que Claude sigue.</p>
+        </div>
+
+        <!-- YAML -->
+        <div class="glossary-card" data-cat="technical" data-search="yaml front matter metadata format indentation colons key value skill claude.md delimiters ---">
+          <span class="glossary-card__cat cat-badge--technical"><span class="lang-en">Technical</span><span class="lang-es">Técnico</span></span>
+          <h3 class="glossary-card__term"><span class="lang-en">YAML</span><span class="lang-es">YAML</span></h3>
+          <p class="glossary-card__def lang-en">A human-readable format for structured data — used in front matter. Relies on indentation and colons: <code>name: my-skill</code>, <code>type: user</code>. It's everything between the <code>---</code> delimiters at the top of CLAUDE.md and skill files.</p>
+          <p class="glossary-card__def lang-es">Un formato legible por humanos para datos estructurados — se usa en el front matter. Usa sangría y dos puntos: <code>name: my-skill</code>, <code>type: user</code>. Es todo lo que está entre los delimitadores <code>---</code> al comienzo de los archivos CLAUDE.md y de skills.</p>
+        </div>
+
+      </div><!-- /glossary-grid -->
+
+      <div class="glossary-empty" id="glossary-empty" style="display:none">
+        <span class="lang-en">No terms match your search.</span>
+        <span class="lang-es">Ningún término coincide con tu búsqueda.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dashboard-footer">
+    <div class="container">
+      <span class="lang-en">The tools change. The concepts stay. Keep building.</span>
+      <span class="lang-es">Las herramientas cambian. Los conceptos quedan. Seguí construyendo.</span>
+    </div>
+  </footer>
+
+  <script>
+  var currentCat = 'all';
+
+  function updateCount(visible, total) {
+    var el = document.getElementById('glossary-count');
+    el.querySelector('.lang-en').textContent = 'Showing ' + visible + ' of ' + total + ' terms';
+    el.querySelector('.lang-es').textContent = 'Mostrando ' + visible + ' de ' + total + ' términos';
+  }
+
+  // Inject count spans once
+  (function(){
+    var el = document.getElementById('glossary-count');
+    var sEn = document.createElement('span');
+    sEn.className = 'lang-en';
+    var sEs = document.createElement('span');
+    sEs.className = 'lang-es';
+    el.appendChild(sEn);
+    el.appendChild(sEs);
+  })();
+
+  function applyFilter() {
+    var q = document.getElementById('glossary-search').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('.glossary-card');
+    var visible = 0;
+    var total = cards.length;
+
+    cards.forEach(function(card) {
+      var catOk = currentCat === 'all' || card.dataset.cat === currentCat;
+      var searchOk = !q || card.dataset.search.includes(q) ||
+        card.querySelector('.glossary-card__term').textContent.toLowerCase().includes(q);
+      var show = catOk && searchOk;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    document.getElementById('glossary-empty').style.display = visible === 0 ? 'block' : 'none';
+    updateCount(visible, total);
+  }
+
+  document.getElementById('glossary-search').addEventListener('input', applyFilter);
+
+  document.getElementById('cat-tabs').addEventListener('click', function(e) {
+    var btn = e.target.closest('.cat-tab');
+    if (!btn) return;
+    document.querySelectorAll('.cat-tab').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    applyFilter();
+  });
+
+  applyFilter();
+  </script>
+
+</body>
+</html>

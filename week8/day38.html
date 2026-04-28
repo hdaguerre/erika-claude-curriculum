@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 38 — Apollo Push</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 8</span>
+          <span>Day 38 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 8</span>
+        <span class="badge badge--day">Day 38</span>
+      </div>
+      <h1>Apollo Push</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Pushing contacts to Apollo programmatically</span><span class="lang-es">1. Enviando contactos a Apollo de forma programática</span></h3>
+
+          <div class="lang-en">
+            <p>Apollo's Contacts API lets you create or update contact records without touching the UI. You send a JSON payload with the contact's details and Apollo creates the record if it doesn't exist, or updates it if it does.</p>
+            <p>The key endpoint:</p>
+            <pre><code>POST https://api.apollo.io/v1/contacts</code></pre>
+            <p>Headers:</p>
+            <pre><code>{"X-Api-Key": "your_key", "Content-Type": "application/json"}</code></pre>
+            <p>Body (minimum required fields):</p>
+            <pre><code>{
+  "first_name": "...",
+  "last_name": "...",
+  "email": "...",
+  "organization_name": "...",
+  "website_url": "..."
+}</code></pre>
+            <p>Apollo returns a JSON response with the created contact's ID. Log this — you'll need it if you ever want to update the record later.</p>
+          </div>
+          <div class="lang-es">
+            <p>La API de Contactos de Apollo te permite crear o actualizar registros de contactos sin tocar la interfaz. Enviás un payload JSON con los detalles del contacto y Apollo crea el registro si no existe, o lo actualiza si existe.</p>
+            <p>El endpoint clave:</p>
+            <pre><code>POST https://api.apollo.io/v1/contacts</code></pre>
+            <p>Headers:</p>
+            <pre><code>{"X-Api-Key": "tu_clave", "Content-Type": "application/json"}</code></pre>
+            <p>Body (campos mínimos requeridos):</p>
+            <pre><code>{
+  "first_name": "...",
+  "last_name": "...",
+  "email": "...",
+  "organization_name": "...",
+  "website_url": "..."
+}</code></pre>
+            <p>Apollo devuelve una respuesta JSON con el ID del contacto creado. Registralo — lo vas a necesitar si querés actualizar el registro después.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>This is a remote <code>MERGE INTO</code> statement — the same upsert pattern you know from Oracle. Apollo's API handles the "does this record exist?" check for you. Think of each API call as executing:</p>
+            <pre><code>MERGE INTO apollo.contacts c
+USING (SELECT :email FROM dual) src
+ON (c.email = src.email)
+WHEN MATCHED THEN UPDATE SET ...
+WHEN NOT MATCHED THEN INSERT (...) VALUES (...)</code></pre>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Esto es un <code>MERGE INTO</code> remoto — el mismo patrón de upsert que conocés de Oracle. La API de Apollo maneja por vos la verificación de "¿existe este registro?". Pensá cada llamada a la API como ejecutar:</p>
+            <pre><code>MERGE INTO apollo.contacts c
+USING (SELECT :email FROM dual) src
+ON (c.email = src.email)
+WHEN MATCHED THEN UPDATE SET ...
+WHEN NOT MATCHED THEN INSERT (...) VALUES (...)</code></pre>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Rate limits and batching</span><span class="lang-es">2. Límites de velocidad y procesamiento por lotes</span></h3>
+
+          <div class="lang-en">
+            <p>Apollo's free tier limits how many API calls you can make per minute. If you loop through all rows without any delay, you'll hit a <strong>429 Too Many Requests</strong> error and the script will crash partway through.</p>
+            <p>The safe pattern:</p>
+            <ul>
+              <li>Process in batches of 10 rows</li>
+              <li>Add <code>time.sleep(1)</code> between batches — one second pause is usually enough</li>
+              <li>Log each push: print the company name, the HTTP status code, and "success" or the error message</li>
+              <li>If a push fails: log the error, continue to the next row — don't let one failure stop the whole pipeline</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>El nivel gratuito de Apollo limita cuántas llamadas a la API podés hacer por minuto. Si iterás sobre todas las filas sin ninguna demora, vas a llegar al error <strong>429 Too Many Requests</strong> y el script va a fallar a mitad de camino.</p>
+            <p>El patrón seguro:</p>
+            <ul>
+              <li>Procesar en lotes de 10 filas</li>
+              <li>Agregar <code>time.sleep(1)</code> entre lotes — una pausa de un segundo suele ser suficiente</li>
+              <li>Registrar cada push: imprimir el nombre de la empresa, el código de estado HTTP y "success" o el mensaje de error</li>
+              <li>Si un push falla: registrar el error, continuar con la siguiente fila — no dejar que un fallo detenga todo el pipeline</li>
+            </ul>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>The score threshold (score &gt;= 60) is your filter before pushing. You're not pushing everything — you're pushing qualified leads. This keeps Apollo clean and makes sure your outreach sequences start with the right companies, not your entire list.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>El umbral de puntuación (score &gt;= 60) es tu filtro antes de enviar. No enviás todo — enviás leads calificados. Esto mantiene Apollo limpio y asegura que tus secuencias de outreach empiecen con las empresas correctas, no con toda tu lista.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Check your .env file.</strong> Confirm that <code>APOLLO_API_KEY=your_key</code> is present. If it's missing, get the API key from Apollo → Settings → Integrations → API Keys.</div>
+              <div class="lang-es"><strong>Verificá tu archivo .env.</strong> Confirmá que <code>APOLLO_API_KEY=tu_clave</code> está presente. Si falta, obtené la clave API desde Apollo → Settings → Integrations → API Keys.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Update tools/push_to_apollo.py</strong> to process rows from <code>scored_leads.csv</code>. Ask Claude Code: "Update push_to_apollo.py to read scored_leads.csv, filter rows where score >= 60, push each to Apollo's contacts API with rate limiting (batches of 10, 1 second sleep between batches), and add a --test flag that only processes the first 3 rows."</div>
+              <div class="lang-es"><strong>Actualizá tools/push_to_apollo.py</strong> para procesar filas de <code>scored_leads.csv</code>. Pedile a Claude Code: "Update push_to_apollo.py to read scored_leads.csv, filter rows where score >= 60, push each to Apollo's contacts API with rate limiting (batches of 10, 1 second sleep between batches), and add a --test flag that only processes the first 3 rows."</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Test with 3 rows first:</strong> <code>python tools/push_to_apollo.py --test</code>. Read the output carefully — did all 3 return status 200?</div>
+              <div class="lang-es"><strong>Probá con 3 filas primero:</strong> <code>python tools/push_to_apollo.py --test</code>. Leé el resultado con cuidado — ¿las 3 devolvieron estado 200?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Verify in Apollo:</strong> go to Apollo → Contacts and confirm the 3 test contacts appear with correct details. If something's wrong (wrong field mapping, missing data), fix push_to_apollo.py before running the full list.</div>
+              <div class="lang-es"><strong>Verificá en Apollo:</strong> andá a Apollo → Contacts y confirmá que los 3 contactos de prueba aparecen con los detalles correctos. Si algo está mal (mapeo de campos incorrecto, datos faltantes), arreglá push_to_apollo.py antes de ejecutar la lista completa.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>If correct, run the full qualified list:</strong> <code>python tools/push_to_apollo.py</code>. Watch the output — check for any errors. After it completes, go to Apollo and confirm all the new contacts are there.</div>
+              <div class="lang-es"><strong>Si está correcto, ejecutá la lista calificada completa:</strong> <code>python tools/push_to_apollo.py</code>. Mirá el resultado — verificá si hay errores. Después de que termine, andá a Apollo y confirmá que todos los contactos nuevos están ahí.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Add a <code>pushed_to_apollo</code> column</strong> to scored_leads.csv — <code>True</code> for each successfully pushed row, <code>False</code> or blank for rows that failed or weren't sent. Ask Claude to add this to the script.</div>
+              <div class="lang-es"><strong>Agregá una columna <code>pushed_to_apollo</code></strong> a scored_leads.csv — <code>True</code> para cada fila enviada exitosamente, <code>False</code> o vacío para filas que fallaron o no se enviaron. Pedile a Claude que agregue esto al script.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>Apollo API documentation — Contacts: Create/Update.</strong> Find it at <a href="https://apolloio.github.io/apollo-api-docs/" target="_blank" rel="noopener">apolloio.github.io/apollo-api-docs</a>. Read the Contacts section. Pay attention to: required vs optional fields, what happens when you push a duplicate email, and the rate limit documentation.</span>
+          <span class="lang-es"><strong>Documentación de la API de Apollo — Contacts: Create/Update.</strong> Encontrala en <a href="https://apolloio.github.io/apollo-api-docs/" target="_blank" rel="noopener">apolloio.github.io/apollo-api-docs</a>. Leé la sección de Contacts. Prestá atención a: campos requeridos vs opcionales, qué pasa cuando enviás un email duplicado, y la documentación de límites de velocidad.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What Apollo API endpoint creates a new contact?</span>
+            <span class="lang-es">¿Qué endpoint de la API de Apollo crea un nuevo contacto?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>POST https://api.apollo.io/v1/contacts</code> with the contact data as a JSON body and your API key in the <code>X-Api-Key</code> header. If the email already exists, Apollo updates the record instead of creating a duplicate.</div>
+            <div class="lang-es"><code>POST https://api.apollo.io/v1/contacts</code> con los datos del contacto como cuerpo JSON y tu clave API en el header <code>X-Api-Key</code>. Si el email ya existe, Apollo actualiza el registro en vez de crear un duplicado.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Why add a <code>time.sleep()</code> between Apollo API calls?</span>
+            <span class="lang-es">¿Por qué agregar <code>time.sleep()</code> entre llamadas a la API de Apollo?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">To respect rate limits — Apollo's free tier restricts how many calls you can make per minute. Calling too fast returns 429 errors (Too Many Requests) and the script crashes mid-run, leaving your data partially pushed.</div>
+            <div class="lang-es">Para respetar los límites de velocidad — el nivel gratuito de Apollo restringe cuántas llamadas podés hacer por minuto. Llamar demasiado rápido devuelve errores 429 (Too Many Requests) y el script se cae a mitad de ejecución, dejando tus datos parcialmente enviados.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What score threshold is used to decide which leads get pushed to Apollo today?</span>
+            <span class="lang-es">¿Qué umbral de puntuación se usa para decidir qué leads se envían a Apollo hoy?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Score &gt;= 60. Only leads that score 60 or above get pushed — these are the qualified leads that closely match the ICP. Lower-scored leads stay in the CSV but don't enter Apollo's sequences.</div>
+            <div class="lang-es">Score &gt;= 60. Solo los leads con puntuación 60 o más se envían — estos son los leads calificados que se ajustan bien al ICP. Los leads con menor puntuación quedan en el CSV pero no entran en las secuencias de Apollo.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 38 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day39.html">Next: Day 39 — Pipeline Rehearsal</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(38);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

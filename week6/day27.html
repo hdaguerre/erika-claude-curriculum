@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 27 — Apify from Python</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 6</span>
+          <span>Day 27 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 6</span>
+        <span class="badge badge--day">Day 27</span>
+      </div>
+      <h1>Apify from Python</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. The Apify API — calling Actors programmatically</span><span class="lang-es">1. La API de Apify — llamar Actors desde código</span></h3>
+
+          <div class="lang-en">
+            <p>So far you have run Apify Actors manually through the web console. Today you go one level deeper: calling them from Python code using the Apify API. Instead of clicking "Run" in the browser, your script sends an HTTP request that starts the Actor, waits for it to finish, and retrieves the results — all automatically.</p>
+            <p>The flow is: your Python script → HTTP POST to Apify → Actor runs in the cloud → results come back as JSON → your script parses and saves them.</p>
+          </div>
+          <div class="lang-es">
+            <p>Hasta ahora ejecutaste Apify Actors manualmente desde la consola web. Hoy vas un nivel más profundo: llamarlos desde código Python usando la API de Apify. En vez de hacer clic en "Run" en el navegador, tu script envía una petición HTTP que inicia el Actor, espera a que termine y recupera los resultados — todo automáticamente.</p>
+            <p>El flujo es: tu script Python → HTTP POST a Apify → el Actor corre en la nube → los resultados vuelven como JSON → tu script los parsea y guarda.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Calling Apify from Python is like <strong>DBLINK to a vendor-hosted stored procedure</strong>. You pass parameters in the POST body (like IN parameters), Apify executes the logic on their servers, and you get results back — just like a stored procedure returning a result set. You don't see the internals; you only control the inputs and consume the output.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Llamar a Apify desde Python es como un <strong>DBLINK a un stored procedure alojado por un proveedor</strong>. Pasás los parámetros en el cuerpo del POST (como parámetros IN), Apify ejecuta la lógica en sus servidores y te devuelve los resultados — igual que un stored procedure que retorna un result set. No ves los internos; solo controlás los inputs y consumís el output.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>The <code>apify-client</code> Python package wraps all the HTTP calls for you: <code>client.actor("actor-id").call(run_input={...})</code> starts the Actor, waits for it to complete, and returns the run object. Then you fetch the dataset to get results.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>El paquete Python <code>apify-client</code> envuelve todas las llamadas HTTP por vos: <code>client.actor("actor-id").call(run_input={...})</code> inicia el Actor, espera a que termine y retorna el objeto run. Después fetcheás el dataset para obtener los resultados.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Building tools/fetch_tech_stack.py</span><span class="lang-es">2. Construir tools/fetch_tech_stack.py</span></h3>
+
+          <div class="lang-en">
+            <p>This script is a clean, reusable function: give it a domain, get back a dict of tech categories. Internally it calls the BuiltWith Actor on Apify, which tells you what technologies a website runs — their CMS, analytics, ad platforms, email tools, and more.</p>
+            <p>The output is a <strong>flat dict</strong> — something like <code>{"analytics": "Google Analytics", "cms": "WordPress", "email": "Mailchimp"}</code> — that can be stored as a single column in your enrichment CSV.</p>
+            <p>Three things to understand in the code when you read it:</p>
+            <ul>
+              <li><strong>The Actor call</strong> — where it starts the BuiltWith Actor with your domain as input</li>
+              <li><strong>Polling / waiting</strong> — <code>.call()</code> blocks until the Actor finishes (the client handles this for you)</li>
+              <li><strong>JSON parsing</strong> — how it extracts the top tech categories from Apify's response structure</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>Este script es una función limpia y reutilizable: le das un dominio y te devuelve un dict de categorías de tecnologías. Internamente llama al Actor BuiltWith en Apify, que te dice qué tecnologías usa un sitio web — su CMS, analytics, plataformas de publicidad, herramientas de email y más.</p>
+            <p>El output es un <strong>dict plano</strong> — algo como <code>{"analytics": "Google Analytics", "cms": "WordPress", "email": "Mailchimp"}</code> — que puede guardarse como una sola columna en tu CSV de enriquecimiento.</p>
+            <p>Tres cosas para entender en el código cuando lo leás:</p>
+            <ul>
+              <li><strong>La llamada al Actor</strong> — dónde inicia el Actor BuiltWith con tu dominio como input</li>
+              <li><strong>Polling / espera</strong> — <code>.call()</code> bloquea hasta que el Actor termina (el cliente lo maneja por vos)</li>
+              <li><strong>Parseo de JSON</strong> — cómo extrae las principales categorías de tech de la estructura de respuesta de Apify</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Integrating the output into your enrichment CSV as a <code>tech_stack</code> column is exactly like adding a <strong>computed column to a SELECT</strong>. Each row gets a value derived from a secondary lookup — the same pattern as a scalar subquery or a joined lookup table.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Integrar el output en tu CSV de enriquecimiento como columna <code>tech_stack</code> es exactamente como <strong>agregar una columna calculada a un SELECT</strong>. Cada fila obtiene un valor derivado de una búsqueda secundaria — el mismo patrón que una subquery escalar o una tabla de lookup unida.</p>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~2 hours)</span><span class="lang-es">Ejercicio (~2 horas)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Get your Apify API token.</strong> Go to <a href="https://console.apify.com" target="_blank" rel="noopener">console.apify.com</a> → Settings → API. Copy your Personal API token. Open your project's <code>.env</code> file and add: <code>APIFY_API_KEY=your_token_here</code></div>
+              <div class="lang-es"><strong>Obtené tu token de API de Apify.</strong> Andá a <a href="https://console.apify.com" target="_blank" rel="noopener">console.apify.com</a> → Settings → API. Copiá tu Personal API token. Abrí el archivo <code>.env</code> de tu proyecto y agregá: <code>APIFY_API_KEY=your_token_here</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Claude Code to build the script.</strong> Open Claude Code in your project folder and run: <em>"Create tools/fetch_tech_stack.py that takes a domain, calls the BuiltWith Actor on Apify using apify-client, and returns the top 5 tech categories as a dict."</em></div>
+              <div class="lang-es"><strong>Pedile a Claude Code que construya el script.</strong> Abrí Claude Code en tu carpeta de proyecto y ejecutá: <em>"Create tools/fetch_tech_stack.py that takes a domain, calls the BuiltWith Actor on Apify using apify-client, and returns the top 5 tech categories as a dict."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read the file.</strong> Open <code>tools/fetch_tech_stack.py</code> in VS Code. Identify: (1) where it calls the Actor, (2) how it waits for the result (polling), and (3) where it parses the JSON. Write a short note to yourself about each part — even one sentence each.</div>
+              <div class="lang-es"><strong>Leé el archivo.</strong> Abrí <code>tools/fetch_tech_stack.py</code> en VS Code. Identificá: (1) dónde llama al Actor, (2) cómo espera el resultado (polling), y (3) dónde parsea el JSON. Escribite una nota corta sobre cada parte — aunque sea una oración cada una.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run it on one domain.</strong> In the terminal: <code>python tools/fetch_tech_stack.py acme.com</code>. You should see a dict printed to the console. If you get an error, read it carefully — is it a missing package, an auth error, or an Actor ID issue? Ask Claude Code to fix it.</div>
+              <div class="lang-es"><strong>Ejecutalo en un dominio.</strong> En la terminal: <code>python tools/fetch_tech_stack.py acme.com</code>. Deberías ver un dict impreso en la consola. Si obtenés un error, leélo con atención — ¿es un paquete faltante, un error de autenticación, o un problema con el Actor ID? Pedile a Claude Code que lo arregle.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Integrate into enrich_list.py.</strong> Ask Claude Code: <em>"Add a tech_stack column to enrich_list.py by calling fetch_tech_stack for each row's domain."</em> Review the change before saving.</div>
+              <div class="lang-es"><strong>Integralo en enrich_list.py.</strong> Pedile a Claude Code: <em>"Add a tech_stack column to enrich_list.py by calling fetch_tech_stack for each row's domain."</em> Revisá el cambio antes de guardar.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run on a 5-row test.</strong> Create a small test CSV with 5 rows and run <code>python tools/enrich_list.py</code> on it. Open the output CSV and confirm the <code>tech_stack</code> column is there. Check that at least some rows have real values (not empty or "None").</div>
+              <div class="lang-es"><strong>Ejecutalo en un test de 5 filas.</strong> Creá un CSV de prueba con 5 filas y ejecutá <code>python tools/enrich_list.py</code>. Abrí el CSV de salida y confirmá que la columna <code>tech_stack</code> está. Verificá que al menos algunas filas tienen valores reales (no vacíos ni "None").</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">Apify API docs — "Running actors" section</span><span class="lang-es">Docs de la API de Apify — sección "Running actors"</span></strong></p>
+        <p>
+          <span class="lang-en">Don't read the full docs — they're long. Instead, ask Claude: <em>"Summarize the Apify 'Running actors' API docs for me. What are the key parameters for the run endpoint, how does polling work, and what does the dataset API return?"</em> Read that summary. The goal is to understand the shape of the system, not memorize every endpoint.</span>
+          <span class="lang-es">No leás los docs completos — son largos. En cambio, preguntale a Claude: <em>"Summarize the Apify 'Running actors' API docs for me. What are the key parameters for the run endpoint, how does polling work, and what does the dataset API return?"</em> Leé ese resumen. El objetivo es entender la forma del sistema, no memorizar cada endpoint.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What Python package simplifies Apify API calls?</span>
+            <span class="lang-es">¿Qué paquete Python simplifica las llamadas a la API de Apify?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>apify-client</code> — it wraps the HTTP calls so you don't have to write raw requests. Install it with <code>pip install apify-client</code>.</div>
+            <div class="lang-es"><code>apify-client</code> — envuelve las llamadas HTTP para que no tengas que escribir requests crudas. Instalalo con <code>pip install apify-client</code>.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Where do you find your Apify API token?</span>
+            <span class="lang-es">¿Dónde encontrás tu token de API de Apify?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">console.apify.com → Settings → API. Copy the Personal API token and add it to your <code>.env</code> file as <code>APIFY_API_KEY</code>.</div>
+            <div class="lang-es">console.apify.com → Settings → API. Copiá el Personal API token y agregalo a tu archivo <code>.env</code> como <code>APIFY_API_KEY</code>.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What does <code>client.actor("actor-id").call(run_input={...})</code> do?</span>
+            <span class="lang-es">¿Qué hace <code>client.actor("actor-id").call(run_input={...})</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">It triggers an Apify Actor with the given inputs and waits for it to complete before returning. The <code>run_input</code> dict is passed to the Actor as its configuration — in this case, the domain you want to look up.</div>
+            <div class="lang-es">Dispara un Apify Actor con los inputs dados y espera a que termine antes de retornar. El dict <code>run_input</code> se le pasa al Actor como su configuración — en este caso, el dominio que querés buscar.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 27 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day28.html">Next: Day 28 — Job Posting Signals</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(27);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

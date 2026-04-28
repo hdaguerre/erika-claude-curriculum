@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 17 — Tools | Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 4</span>
+          <span>Day 17 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 4</span>
+        <span class="badge badge--day">Day 17</span>
+      </div>
+      <h1>Tools — Python Scripts as Deterministic Execution</h1>
+      <div class="lesson-header__meta">Estimated time: 3 hours</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- Concepts Section -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What is a tool?</span><span class="lang-es">1. ¿Qué es una herramienta?</span></h3>
+          <div class="lang-en">
+            <p>A tool is a Python script in the <code>tools/</code> folder that does <em>one specific thing</em> reliably. It doesn't think — it executes. Claude decides <em>when</em> to run a tool and <em>what to pass it</em>. The tool just runs the same way every time.</p>
+            <p>This is the core reliability guarantee: 100% of the time, if you call the tool with the same input, you get the same output. No variation. No "I interpreted this differently today."</p>
+          </div>
+          <div class="lang-es">
+            <p>Una herramienta es un script de Python en la carpeta <code>tools/</code> que hace <em>una cosa específica</em> de manera confiable. No piensa — ejecuta. Claude decide <em>cuándo</em> ejecutar una herramienta y <em>qué pasarle</em>. La herramienta simplemente corre de la misma manera cada vez.</p>
+            <p>Esta es la garantía central de confiabilidad: el 100% de las veces, si llamás la herramienta con la misma entrada, obtenés la misma salida. Sin variación. Sin "hoy lo interpreté diferente."</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>A tool is the <strong>stored procedure body</strong>. Claude is the application calling the procedure. The procedure signature (its input parameters) = the command-line arguments. The result set = the script's output. Just like <code>EXEC save_caption('text', 'filename')</code> does exactly one thing every time — no opinions, no creativity, just execution.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Una herramienta = el cuerpo del procedimiento almacenado. Claude = la aplicación que llama al procedimiento. La firma del procedimiento (entradas) = argumentos de línea de comandos. El conjunto de resultados = la salida del script. Igual que un procedimiento almacenado que hace una cosa de manera confiable cuando se llama con los parámetros correctos — sin opiniones, sin creatividad, solo ejecución.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Anatomy of a tool</span><span class="lang-es">2. Anatomía de una herramienta</span></h3>
+          <div class="lang-en">
+            <p>Every tool script follows the same pattern. It has four parts:</p>
+            <ul>
+              <li><strong>Argument parsing</strong> — what inputs does the script accept? Uses Python's <code>argparse</code> library</li>
+              <li><strong>Core logic</strong> — the actual work: fetch, transform, save, calculate</li>
+              <li><strong>Output</strong> — what does it print or return when it's done?</li>
+              <li><strong>Error handling</strong> — what happens if an input is missing, a file doesn't exist, a network request fails?</li>
+            </ul>
+            <p>Tools are called from the command line: <code>python tools/save_caption.py --caption "..." --filename "test"</code></p>
+          </div>
+          <div class="lang-es">
+            <p>Todo script de herramienta sigue el mismo patrón. Tiene cuatro partes:</p>
+            <ul>
+              <li><strong>Análisis de argumentos</strong> — ¿qué entradas acepta el script? Usa la librería <code>argparse</code> de Python</li>
+              <li><strong>Lógica central</strong> — el trabajo real: obtener datos, transformar, guardar, calcular</li>
+              <li><strong>Salida</strong> — ¿qué imprime o devuelve cuando termina?</li>
+              <li><strong>Manejo de errores</strong> — ¿qué pasa si falta una entrada, un archivo no existe, una solicitud de red falla?</li>
+            </ul>
+            <p>Las herramientas se llaman desde la línea de comandos: <code>python tools/save_caption.py --caption "..." --filename "test"</code></p>
+          </div>
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight — Why this matters</div>
+            <p>Claude might reason slightly differently on different runs — that's how language models work. A Python script <em>never does</em>. For anything that must be consistent (saving files, calling APIs, formatting output, logging data), use a tool. Reserve Claude for what it's good at: reasoning, judgment, and orchestration.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave — Por qué importa</div>
+            <p>Claude puede razonar de manera ligeramente diferente en diferentes ejecuciones — así funcionan los modelos de lenguaje. Un script de Python <em>nunca lo hace</em>. Para cualquier cosa que deba ser consistente (guardar archivos, llamar APIs, formatear salida, registrar datos), usá una herramienta. Reservá a Claude para lo que hace bien: razonar, juzgar y orquestar.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. Reading a real tool</span><span class="lang-es">3. Leyendo una herramienta real</span></h3>
+          <div class="lang-en">
+            <p>Before you write your own tool, you're going to read two real ones. They live in the <code>skill-creator/scripts/</code> folder inside the main erika project. Reading existing scripts is the fastest way to internalize the pattern. You're not memorizing syntax — you're understanding structure.</p>
+            <p>As you read, ask for each function: <em>What does it accept? What does it do? What does it return?</em> That's all you need.</p>
+          </div>
+          <div class="lang-es">
+            <p>Antes de escribir tu propia herramienta, vas a leer dos reales. Están en la carpeta <code>skill-creator/scripts/</code> dentro del proyecto erika principal. Leer scripts existentes es la manera más rápida de internalizar el patrón. No estás memorizando sintaxis — estás entendiendo la estructura.</p>
+            <p>Mientras leés, preguntate por cada función: <em>¿Qué acepta? ¿Qué hace? ¿Qué devuelve?</em> Eso es todo lo que necesitás.</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Reading <code>utils.py</code> is like reading a package of shared utility procedures in Oracle — procedures other procedures call. <code>quick_validate.py</code> is like a pre-execution validation check: it confirms the inputs are sane before the main logic runs. Both patterns will feel very familiar.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Leer <code>utils.py</code> es como leer un paquete de procedimientos utilitarios compartidos en Oracle — procedimientos que otros procedimientos llaman. <code>quick_validate.py</code> es como una verificación de validación antes de la ejecución: confirma que las entradas son correctas antes de que corra la lógica principal. Los dos patrones te van a resultar muy familiares.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Exercise Section -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 to 60 minutes)</span><span class="lang-es">Ejercicio (~45 a 60 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open VS Code</strong> and navigate to the main erika project folder. Go to <code>skills/skill-creator/scripts/</code>.</div>
+              <div class="lang-es"><strong>Abrí VS Code</strong> y navegá hasta la carpeta principal del proyecto erika. Andá a <code>skills/skill-creator/scripts/</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open <code>utils.py</code> and read every line.</strong> It's short — around 48 lines. For each function, write (in your own words, even just mentally) what it does. Don't skip anything. Familiarity with this pattern is what makes the next step possible.</div>
+              <div class="lang-es"><strong>Abrí <code>utils.py</code> y leé cada línea.</strong> Es corto — alrededor de 48 líneas. Por cada función, escribí (con tus propias palabras, aunque sea mentalmente) qué hace. No saltees nada. La familiaridad con este patrón es lo que hace posible el siguiente paso.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open <code>quick_validate.py</code> and read it.</strong> Answer these questions:
+                <ul style="margin-top:0.5rem;">
+                  <li>What does it check?</li>
+                  <li>What does it output when validation passes? When it fails?</li>
+                  <li>How does it use <code>argparse</code>?</li>
+                </ul>
+              </div>
+              <div class="lang-es"><strong>Abrí <code>quick_validate.py</code> y leélo.</strong> Respondé estas preguntas:
+                <ul style="margin-top:0.5rem;">
+                  <li>¿Qué verifica?</li>
+                  <li>¿Qué muestra cuando la validación pasa? ¿Cuando falla?</li>
+                  <li>¿Cómo usa <code>argparse</code>?</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>In your <code>mi-taller-code</code> project, create a <code>tools/</code> folder.</strong> (In VS Code, right-click the project root and create a new folder named <code>tools</code>.)</div>
+              <div class="lang-es"><strong>En tu proyecto <code>mi-taller-code</code>, creá una carpeta <code>tools/</code>.</strong> (En VS Code, hacé clic derecho en la raíz del proyecto y creá una nueva carpeta llamada <code>tools</code>.)</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Create your first tool: <code>tools/save_caption.py</code></strong><br />
+              This script accepts two command-line arguments and saves a caption to a file. Here's what it should do:
+                <ul style="margin-top:0.5rem;">
+                  <li>Accept <code>--caption</code> (the text to save) and <code>--filename</code> (the base name for the file)</li>
+                  <li>Save the caption to a folder called <code>saved_captions/</code> (create it if it doesn't exist)</li>
+                  <li>Include today's date in the filename, like: <code>saved_captions/2026-04-27_test.txt</code></li>
+                  <li>Print a confirmation message when it saves successfully</li>
+                  <li>Use <code>argparse</code> for argument handling (follow the pattern from <code>quick_validate.py</code>)</li>
+                </ul>
+                <p style="margin-top:0.75rem;">Test it from the terminal: <code>python tools/save_caption.py --caption "Esta es una prueba" --filename "test"</code></p>
+              </div>
+              <div class="lang-es"><strong>Creá tu primera herramienta: <code>tools/save_caption.py</code></strong><br />
+              Este script acepta dos argumentos de línea de comandos y guarda un caption en un archivo. Esto es lo que debe hacer:
+                <ul style="margin-top:0.5rem;">
+                  <li>Aceptar <code>--caption</code> (el texto a guardar) y <code>--filename</code> (el nombre base del archivo)</li>
+                  <li>Guardar el caption en una carpeta llamada <code>saved_captions/</code> (creála si no existe)</li>
+                  <li>Incluir la fecha de hoy en el nombre del archivo, como: <code>saved_captions/2026-04-27_test.txt</code></li>
+                  <li>Imprimir un mensaje de confirmación cuando se guarda con éxito</li>
+                  <li>Usar <code>argparse</code> para el manejo de argumentos (seguí el patrón de <code>quick_validate.py</code>)</li>
+                </ul>
+                <p style="margin-top:0.75rem;">Probalo desde la terminal: <code>python tools/save_caption.py --caption "Esta es una prueba" --filename "test"</code></p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- No Reading Section -->
+      <details class="reading-section">
+        <summary><span class="lang-en">No Reading Tonight</span><span class="lang-es">Sin Lectura Esta Noche</span></summary>
+        <p>
+          <span class="lang-en">This is a coding day. The exercise <em>is</em> the lesson. If your script runs and creates a file, you've done it. If it doesn't, read the error message carefully — it will tell you exactly what's wrong. That's Python being helpful, not Python being hard.</span>
+          <span class="lang-es">Este es un día de programación. El ejercicio <em>es</em> la lección. Si tu script corre y crea un archivo, lo lograste. Si no, leé el mensaje de error con atención — te va a decir exactamente qué está mal. Eso es Python siendo útil, no Python siendo difícil.</span>
+        </p>
+      </details>
+
+      <!-- Quiz Section -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the key difference between a tool and an agent?</span>
+            <span class="lang-es">¿Cuál es la diferencia clave entre una herramienta y un agente?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>Tools execute deterministically</strong> — same input always produces the same output, every single time.<br />
+            <strong>Agents reason and adapt</strong> — they interpret, make decisions, and their output can vary based on context. Claude is an agent. <code>save_caption.py</code> is a tool.</div>
+            <div class="lang-es"><strong>Las herramientas ejecutan de manera determinista</strong> — la misma entrada siempre produce la misma salida, cada vez.<br />
+            <strong>Los agentes razonan y se adaptan</strong> — interpretan, toman decisiones, y su salida puede variar según el contexto. Claude es un agente. <code>save_caption.py</code> es una herramienta.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Why would you use a Python tool instead of just asking Claude to save the file?</span>
+            <span class="lang-es">¿Por qué usarías una herramienta de Python en vez de simplemente pedirle a Claude que guarde el archivo?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>Reliability.</strong> For anything that must work consistently every time — saving files, calling APIs, formatting data, logging — a deterministic script is better than AI reasoning. Claude might save the file differently on a different day, in a different format, to a different location. A script will not.</div>
+            <div class="lang-es"><strong>Confiabilidad.</strong> Para cualquier cosa que deba funcionar de manera consistente cada vez — guardar archivos, llamar APIs, formatear datos, registrar información — un script determinista es mejor que el razonamiento de IA. Claude podría guardar el archivo de manera diferente otro día, en otro formato, en otra ubicación. Un script no.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the SQL analogy for a tool?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL para una herramienta?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The <strong>stored procedure body</strong> — called with input parameters, executes the same logic every time, returns the same type of output. The command-line arguments = the procedure parameters. Claude = the application calling <code>EXEC</code>.</div>
+            <div class="lang-es">El <strong>cuerpo del procedimiento almacenado</strong> — se llama con parámetros de entrada, ejecuta la misma lógica cada vez, devuelve el mismo tipo de salida. Los argumentos de línea de comandos = los parámetros del procedimiento. Claude = la aplicación que llama <code>EXEC</code>.</div>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- Complete Button -->
+      <div class="complete-area">
+        <button class="btn-complete" onclick="completeDay()">
+          Mark Day 17 Complete
+        </button>
+      </div>
+
+    </div><!-- /.container--narrow -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="lesson-footer">
+    <div class="container">
+      <a href="day18.html">Up next: Day 18 — APIs, endpoints, authentication</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(17);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

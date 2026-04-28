@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 28 — Job Posting Signals</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 6</span>
+          <span>Day 28 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 6</span>
+        <span class="badge badge--day">Day 28</span>
+      </div>
+      <h1>Job Posting Signals</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Why job postings are a buying signal</span><span class="lang-es">1. Por qué las ofertas de trabajo son una señal de compra</span></h3>
+
+          <div class="lang-en">
+            <p>When a company posts a job for "Marketing Operations Manager" or "RevOps Analyst," they are broadcasting something important: they have budget allocated, they are growing, and they have recognized a gap they need to fill. That gap is your opportunity.</p>
+            <p>A company that is hiring for GTM roles is far more likely to buy GTM tools, hire GTM consultants, or be receptive to outreach about GTM solutions — compared to a company with no such postings. Job data is one of the most reliable <strong>intent signals</strong> in B2B sales.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cuando una empresa publica una oferta de trabajo para "Marketing Operations Manager" o "RevOps Analyst", está transmitiendo algo importante: tiene presupuesto asignado, está creciendo y ha reconocido una brecha que necesita cubrir. Esa brecha es tu oportunidad.</p>
+            <p>Una empresa que está contratando para roles GTM tiene muchas más probabilidades de comprar herramientas GTM, contratar consultores GTM, o ser receptiva a outreach sobre soluciones GTM — en comparación con una empresa sin esas ofertas. Los datos de empleo son una de las <strong>señales de intención</strong> más confiables en ventas B2B.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Adding a <code>hiring_signal</code> column is like a <strong>correlated subquery</strong>: for each lead row, you run a secondary lookup and attach the result.<br><code>SELECT *, (SELECT COUNT(*) FROM job_posts WHERE company = l.company AND keyword IN (...)) AS hiring_signal FROM leads l</code><br>If the count is greater than zero, the signal is True. Same logic in Python.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Agregar una columna <code>hiring_signal</code> es como una <strong>subquery correlacionada</strong>: para cada fila de lead, ejecutás una búsqueda secundaria y adjuntás el resultado.<br><code>SELECT *, (SELECT COUNT(*) FROM job_posts WHERE company = l.company AND keyword IN (...)) AS hiring_signal FROM leads l</code><br>Si el conteo es mayor que cero, la señal es True. La misma lógica en Python.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>You don't need to scrape every job posting — you just need a True/False. If any job posting for that company matches your keyword list ("RevOps", "marketing operations", "demand gen", "growth marketing"), the signal fires. Simple logic, high value.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>No necesitás scrapear todas las ofertas de trabajo — solo necesitás un True/False. Si alguna oferta de esa empresa coincide con tu lista de palabras clave ("RevOps", "marketing operations", "demand gen", "growth marketing"), la señal se activa. Lógica simple, alto valor.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. LinkedIn Jobs / Indeed scraper Actor on Apify</span><span class="lang-es">2. Actor scraper de LinkedIn Jobs / Indeed en Apify</span></h3>
+
+          <div class="lang-en">
+            <p>Apify's Actor marketplace has pre-built scrapers for LinkedIn Jobs and Indeed. You search for them in the console, pick one with good reviews and recent runs, and test it manually before writing any code.</p>
+            <p>Input to the Actor: company names or domains, plus your keyword list. Output: job titles, descriptions, and posting dates. Your Python function then checks whether any title or description contains your target keywords.</p>
+            <p>Processing logic:</p>
+            <ul>
+              <li>Run the scraper Actor for a company</li>
+              <li>Get back a list of job postings</li>
+              <li>Check: does any posting title/description contain a keyword from the list?</li>
+              <li>Return <code>True</code> if yes, <code>False</code> if no postings match</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>El marketplace de Actors de Apify tiene scrapers pre-construidos para LinkedIn Jobs e Indeed. Los buscás en la consola, elegís uno con buenas reseñas y ejecuciones recientes, y lo probás manualmente antes de escribir código.</p>
+            <p>Input al Actor: nombres de empresa o dominios, más tu lista de palabras clave. Output: títulos de trabajo, descripciones y fechas de publicación. Tu función Python luego verifica si algún título o descripción contiene tus palabras clave objetivo.</p>
+            <p>Lógica de procesamiento:</p>
+            <ul>
+              <li>Ejecutar el Actor scraper para una empresa</li>
+              <li>Obtener una lista de ofertas de trabajo</li>
+              <li>Verificar: ¿algún título/descripción de oferta contiene una palabra clave de la lista?</li>
+              <li>Retornar <code>True</code> si sí, <code>False</code> si ninguna oferta coincide</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>The keyword check is a <strong>LIKE or INSTR pattern</strong> applied to each job description. In SQL: <code>WHERE LOWER(job_title) LIKE '%revops%' OR LOWER(job_title) LIKE '%marketing operations%'</code>. In Python: <code>any(kw in title.lower() for kw in keywords)</code>. Same idea.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>La verificación de palabras clave es un <strong>patrón LIKE o INSTR</strong> aplicado a cada descripción de trabajo. En SQL: <code>WHERE LOWER(job_title) LIKE '%revops%' OR LOWER(job_title) LIKE '%marketing operations%'</code>. En Python: <code>any(kw in title.lower() for kw in keywords)</code>. La misma idea.</p>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~2.5 hours)</span><span class="lang-es">Ejercicio (~2.5 horas)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Find a jobs scraper Actor on Apify.</strong> Go to <a href="https://console.apify.com/store" target="_blank" rel="noopener">console.apify.com/store</a> and search for "LinkedIn Jobs" or "Indeed scraper." Look at the top results — check the run count and last updated date. Pick one that looks actively maintained.</div>
+              <div class="lang-es"><strong>Encontrá un Actor scraper de empleos en Apify.</strong> Andá a <a href="https://console.apify.com/store" target="_blank" rel="noopener">console.apify.com/store</a> y buscá "LinkedIn Jobs" o "Indeed scraper." Mirá los principales resultados — verificá el número de ejecuciones y la fecha de última actualización. Elegí uno que parezca mantenido activamente.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run it manually on 3 target domains.</strong> Use the Apify console to run the Actor on 3 companies you are targeting. Look at the output — what job titles appear? Do any match "RevOps", "marketing operations", "demand gen", or "growth marketing"? Note your findings.</div>
+              <div class="lang-es"><strong>Ejecutalo manualmente en 3 dominios objetivo.</strong> Usá la consola de Apify para ejecutar el Actor en 3 empresas que estés apuntando. Mirá el output — ¿qué títulos de trabajo aparecen? ¿Alguno coincide con "RevOps", "marketing operations", "demand gen" o "growth marketing"? Anotá tus hallazgos.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Claude Code to build the function.</strong> Run: <em>"Add a function to tools/ that checks if a domain has active job postings mentioning any of: ['RevOps', 'marketing operations', 'demand gen', 'growth marketing']. Return True/False."</em> Review the generated file — make sure you understand the keyword matching logic.</div>
+              <div class="lang-es"><strong>Pedile a Claude Code que construya la función.</strong> Ejecutá: <em>"Add a function to tools/ that checks if a domain has active job postings mentioning any of: ['RevOps', 'marketing operations', 'demand gen', 'growth marketing']. Return True/False."</em> Revisá el archivo generado — asegurate de entender la lógica de coincidencia de palabras clave.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Integrate into enrich_list.py.</strong> Ask Claude Code: <em>"Add a hiring_signal column to enrich_list.py using the new function."</em> Review the change — confirm it calls the function for each row and adds the result to the output.</div>
+              <div class="lang-es"><strong>Integralo en enrich_list.py.</strong> Pedile a Claude Code: <em>"Add a hiring_signal column to enrich_list.py using the new function."</em> Revisá el cambio — confirmá que llama a la función para cada fila y agrega el resultado al output.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run on a 10-row test.</strong> Run <code>python tools/enrich_list.py</code> on a 10-row sample CSV. Open the output and confirm both <code>tech_stack</code> and <code>hiring_signal</code> columns appear. Check a few values — do they look right?</div>
+              <div class="lang-es"><strong>Ejecutalo en un test de 10 filas.</strong> Ejecutá <code>python tools/enrich_list.py</code> en un CSV de muestra de 10 filas. Abrí el output y confirmá que aparecen tanto las columnas <code>tech_stack</code> como <code>hiring_signal</code>. Verificá algunos valores — ¿se ven correctos?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">Intent data for sales teams</span><span class="lang-es">Intent data para equipos de ventas</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Explain intent data for B2B sales teams. What is it, where does it come from, how do companies use it to prioritize outreach, and where does job posting scraping fit in the intent data ecosystem?"</em> Read the explanation and think about how the signals you are building fit into this bigger picture.</span>
+          <span class="lang-es">Preguntale a Claude: <em>"Explain intent data for B2B sales teams. What is it, where does it come from, how do companies use it to prioritize outreach, and where does job posting scraping fit in the intent data ecosystem?"</em> Leé la explicación y pensá en cómo las señales que estás construyendo encajan en este panorama más amplio.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">Why are job postings a GTM signal?</span>
+            <span class="lang-es">¿Por qué las ofertas de trabajo son una señal GTM?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Active hiring for relevant roles (RevOps, Marketing Ops, Demand Gen) signals that the company has budget, is growing, and has recognized a capability gap — exactly the conditions that make them likely to buy related tools or services.</div>
+            <div class="lang-es">La contratación activa para roles relevantes (RevOps, Marketing Ops, Demand Gen) señala que la empresa tiene presupuesto, está creciendo y ha reconocido una brecha de capacidades — exactamente las condiciones que la hacen propensa a comprar herramientas o servicios relacionados.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What simple logic sets <code>hiring_signal</code>?</span>
+            <span class="lang-es">¿Qué lógica simple establece <code>hiring_signal</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">True if any job posting for that company matches the target keyword list ("RevOps", "marketing operations", "demand gen", "growth marketing"), False otherwise. It's a simple existence check — does a matching post exist?</div>
+            <div class="lang-es">True si alguna oferta de esa empresa coincide con la lista de palabras clave objetivo ("RevOps", "marketing operations", "demand gen", "growth marketing"), False en caso contrario. Es una simple verificación de existencia — ¿existe alguna oferta que coincida?</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">After Days 26–28, what enrichment columns does the pipeline produce?</span>
+            <span class="lang-es">Después de los Días 26–28, ¿qué columnas de enriquecimiento produce el pipeline?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>tech_stack</code> (from Day 27 — BuiltWith via Apify) and <code>hiring_signal</code> (from Day 28 — job posting scraper via Apify), plus the company data columns added in earlier enrichment days.</div>
+            <div class="lang-es"><code>tech_stack</code> (del Día 27 — BuiltWith via Apify) y <code>hiring_signal</code> (del Día 28 — scraper de ofertas de trabajo via Apify), más las columnas de datos de empresa agregadas en los días de enriquecimiento anteriores.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 28 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day29.html">Next: Day 29 — Apollo API Basics</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(28);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

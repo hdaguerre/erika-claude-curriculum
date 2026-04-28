@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 16 — Workflows | Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 4</span>
+          <span>Day 16 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 4</span>
+        <span class="badge badge--day">Day 16</span>
+      </div>
+      <h1>Workflows — Writing SOPs Claude Follows</h1>
+      <div class="lesson-header__meta">Estimated time: 2.5 hours</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- Concepts Section -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What is a workflow?</span><span class="lang-es">1. ¿Qué es un workflow?</span></h3>
+          <div class="lang-en">
+            <p>A workflow is a plain-language SOP (standard operating procedure) that Claude reads before executing a task. It lives in <code>workflows/</code> as a markdown file. It tells Claude: what the goal is, what inputs are required, which tools to use and in what order, what to do when something fails, and what the expected output looks like.</p>
+            <p>Claude reads the workflow and orchestrates the execution. It doesn't improvise — it follows your instructions, step by step, the way you wrote them.</p>
+          </div>
+          <div class="lang-es">
+            <p>Un workflow es un SOP (procedimiento operativo estándar) en lenguaje simple que Claude lee antes de ejecutar una tarea. Vive en <code>workflows/</code> como archivo markdown. Le dice a Claude: cuál es el objetivo, qué entradas se requieren, qué herramientas usar y en qué orden, qué hacer cuando algo falla, y cómo se ve el resultado esperado. Claude lo lee y orquesta la ejecución.</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>A workflow is a <strong>query plan written in plain language</strong>. In Oracle, the query optimizer decides execution order automatically. Here, Claude is the optimizer — it reads your workflow and decides how to execute each step. And just like a stored procedure has an <code>EXCEPTION</code> block? Your workflow's Error Handling section is exactly that.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Un workflow = un plan de consulta escrito en lenguaje simple. En Oracle, el optimizador de consultas decide el orden de ejecución. Aquí, Claude es el optimizador — lee el workflow y decide cómo ejecutar cada paso. El manejo de errores en un workflow = el bloque EXCEPTION de Oracle en un procedimiento almacenado.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Writing good workflows</span><span class="lang-es">2. Cómo escribir buenos workflows</span></h3>
+          <div class="lang-en">
+            <p>A workflow is <em>not</em> code. It's English — or Spanish. It should be specific enough that Claude can follow it step by step, but not so prescriptive that it can't adapt when something unexpected happens.</p>
+            <p>A well-structured workflow has five sections:</p>
+            <ul>
+              <li><strong>Objective</strong> — What is this workflow trying to accomplish?</li>
+              <li><strong>Required Inputs</strong> — What does Claude need before it can start?</li>
+              <li><strong>Steps</strong> — Numbered sequence of what to do, in order</li>
+              <li><strong>Error Handling</strong> — What to do when something goes wrong</li>
+              <li><strong>Expected Output</strong> — What does success look like? Include an example.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>Un workflow NO es código. Es inglés (o español). Debe ser suficientemente específico para que Claude pueda seguirlo paso a paso, pero no tan prescriptivo que no pueda adaptarse cuando algo inesperado ocurre.</p>
+            <p>Un workflow bien estructurado tiene cinco secciones:</p>
+            <ul>
+              <li><strong>Objetivo</strong> — ¿Qué intenta lograr este workflow?</li>
+              <li><strong>Entradas Requeridas</strong> — ¿Qué necesita Claude antes de empezar?</li>
+              <li><strong>Pasos</strong> — Secuencia numerada de qué hacer, en orden</li>
+              <li><strong>Manejo de Errores</strong> — Qué hacer cuando algo sale mal</li>
+              <li><strong>Resultado Esperado</strong> — ¿Cómo se ve el éxito? Incluí un ejemplo.</li>
+            </ul>
+          </div>
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>The "Required Inputs" section is the most commonly skipped — and the most important. If Claude doesn't know what it needs before it starts, it will either guess or stop to ask. Both are bad. Define your inputs like you're writing a procedure signature.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>La sección "Entradas Requeridas" es la que más se saltea — y la más importante. Si Claude no sabe qué necesita antes de empezar, va a adivinar o va a detenerse a preguntar. Las dos opciones son malas. Definí tus entradas como si escribieras la firma de un procedimiento.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. Workflow vs. Skill — an important distinction</span><span class="lang-es">3. Workflow vs. Habilidad — una distinción importante</span></h3>
+          <div class="lang-en">
+            <p>These two concepts are easy to confuse. Here's the clean version:</p>
+            <ul>
+              <li>A <strong>Skill</strong> tells Claude <em>how to respond</em> to a certain type of request — it's about Claude's behavior, tone, and output format.</li>
+              <li>A <strong>Workflow</strong> tells Claude <em>how to execute</em> a multi-step process — it's about sequence, tools, and what to do when steps fail.</li>
+            </ul>
+            <p>A skill says "when someone asks for a bakery caption, do it this way." A workflow says "when generating a recipe post, fetch this, check that, run this tool, then produce this output."</p>
+          </div>
+          <div class="lang-es">
+            <p>Es fácil confundir estos dos conceptos. Acá la versión clara:</p>
+            <ul>
+              <li>Una <strong>Habilidad</strong> le dice a Claude <em>cómo responder</em> a cierto tipo de solicitud — es sobre el comportamiento, el tono y el formato de salida de Claude.</li>
+              <li>Un <strong>Workflow</strong> le dice a Claude <em>cómo ejecutar</em> un proceso de varios pasos — es sobre la secuencia, las herramientas y qué hacer cuando los pasos fallan.</li>
+            </ul>
+            <p>Una habilidad dice "cuando alguien pide un caption para la panadería, hacelo así." Un workflow dice "cuando generás una publicación de receta, traé esto, verificá aquello, ejecutá esta herramienta, luego producí esta salida."</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>A skill is like a <strong>view or a report template</strong> — it formats and presents information in a consistent, expected way. A workflow is like a <strong>stored procedure</strong> that coordinates multiple operations, uses branching logic, and has its own error handling.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Una habilidad es como una <strong>vista o plantilla de reporte</strong> — formatea y presenta información de manera consistente. Un workflow es como un <strong>procedimiento almacenado</strong> que coordina múltiples operaciones, usa lógica de ramificación y tiene su propio manejo de errores.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Exercise Section -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 to 60 minutes)</span><span class="lang-es">Ejercicio (~45 a 60 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open your <code>mi-taller-code</code> project</strong> in VS Code (or open Claude Code and navigate to it). This is the project you started on Day 15.</div>
+              <div class="lang-es"><strong>Abrí tu proyecto <code>mi-taller-code</code></strong> en VS Code (o abrí Claude Code y navegá hasta él). Este es el proyecto que empezaste el Día 15.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read your existing <code>workflows/instagram_caption.md</code></strong> from Day 15. Read it critically. Where is it vague? Where would Claude have to guess? Mark those spots.</div>
+              <div class="lang-es"><strong>Leé tu <code>workflows/instagram_caption.md</code> existente</strong> del Día 15. Leélo de manera crítica. ¿Dónde es vago? ¿Dónde tendría que adivinar Claude? Marcá esos lugares.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Improve that workflow.</strong> Add or fix three things:
+                <ul style="margin-top:0.5rem;">
+                  <li>A proper <strong>Required Inputs</strong> section (topic, tone, language, product?)</li>
+                  <li>An <strong>Error Handling</strong> section — what should Claude do if the topic is too vague to work with?</li>
+                  <li>An <strong>Expected Output</strong> section with a short example of what a good caption looks like</li>
+                </ul>
+              </div>
+              <div class="lang-es"><strong>Mejorá ese workflow.</strong> Agregá o corregí tres cosas:
+                <ul style="margin-top:0.5rem;">
+                  <li>Una sección de <strong>Entradas Requeridas</strong> completa (tema, tono, idioma, producto?)</li>
+                  <li>Una sección de <strong>Manejo de Errores</strong> — ¿qué debería hacer Claude si el tema es demasiado vago para trabajar?</li>
+                  <li>Una sección de <strong>Resultado Esperado</strong> con un ejemplo corto de cómo se ve un buen caption</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Create a second workflow: <code>workflows/recipe_post.md</code></strong><br />
+              This workflow takes one of your recipes and turns it into a blog-post-style Instagram caption in Spanish. Think through: what inputs does it need? What steps does Claude follow? What if the recipe name is in English — should it translate it? What's the expected output format?</div>
+              <div class="lang-es"><strong>Creá un segundo workflow: <code>workflows/recipe_post.md</code></strong><br />
+              Este workflow toma una de tus recetas y la convierte en un caption de Instagram estilo blog en español. Pensá: ¿qué entradas necesita? ¿Qué pasos sigue Claude? ¿Y si el nombre de la receta está en inglés — debería traducirlo? ¿Cuál es el formato de salida esperado?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Self-review test:</strong> Read both workflows out loud, slowly. Ask: "If I handed this to a new assistant with zero context, could they follow it without asking a single question?" If the answer is no, keep editing until it is.</div>
+              <div class="lang-es"><strong>Prueba de autorevision:</strong> Leé ambos workflows en voz alta, despacio. Preguntate: "Si le diera esto a un asistente nuevo sin ningún contexto, ¿podría seguirlo sin hacer una sola pregunta?" Si la respuesta es no, seguí editando hasta que lo sea.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- Reading Section -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>Anthropic 101 — Module 3</strong></p>
+        <p>
+          <span class="lang-en">Complete Module 3 on Anthropic's official learning platform. This module covers how Claude reasons and executes — which directly connects to why workflows work the way they do.</span>
+          <span class="lang-es">Completá el Módulo 3 en la plataforma oficial de aprendizaje de Anthropic. Este módulo cubre cómo Claude razona y ejecuta — lo que se conecta directamente con por qué los workflows funcionan como funcionan.</span>
+        </p>
+        <p><a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener">anthropic.skilljar.com/claude-101 →</a></p>
+      </details>
+
+      <!-- Quiz Section -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the difference between a skill and a workflow?</span>
+            <span class="lang-es">¿Cuál es la diferencia entre una habilidad y un workflow?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>Skill</strong> = how Claude responds to a <em>type of request</em> (behavior, tone, output format).<br />
+            <strong>Workflow</strong> = how Claude <em>executes a multi-step process</em> with tools — it's about sequence, coordination, and error handling.</div>
+            <div class="lang-es"><strong>Habilidad</strong> = cómo responde Claude a un <em>tipo de solicitud</em> (comportamiento, tono, formato de salida).<br />
+            <strong>Workflow</strong> = cómo Claude <em>ejecuta un proceso de varios pasos</em> con herramientas — es sobre secuencia, coordinación y manejo de errores.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Name four sections a well-written workflow should have.</span>
+            <span class="lang-es">Nombrá cuatro secciones que debería tener un workflow bien escrito.</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Any four of: <strong>Objective, Required Inputs, Steps, Error Handling, Expected Output.</strong><br />
+            A complete workflow has all five. The two most often skipped are Required Inputs and Expected Output — which are also the most useful.</div>
+            <div class="lang-es">Cualquiera de las cuatro: <strong>Objetivo, Entradas Requeridas, Pasos, Manejo de Errores, Resultado Esperado.</strong><br />
+            Un workflow completo tiene las cinco. Las dos que más se saltean son Entradas Requeridas y Resultado Esperado — que también son las más útiles.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the SQL analogy for a workflow?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL para un workflow?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <strong>query plan written in plain language</strong>. Claude is the query optimizer — it reads the workflow and decides how to execute each step. Error handling in a workflow = the <code>EXCEPTION</code> block in an Oracle stored procedure.</div>
+            <div class="lang-es">Un <strong>plan de consulta escrito en lenguaje simple</strong>. Claude es el optimizador de consultas — lee el workflow y decide cómo ejecutar cada paso. El manejo de errores en un workflow = el bloque <code>EXCEPTION</code> en un procedimiento almacenado de Oracle.</div>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- Complete Button -->
+      <div class="complete-area">
+        <button class="btn-complete" onclick="completeDay()">
+          Mark Day 16 Complete
+        </button>
+      </div>
+
+    </div><!-- /.container--narrow -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="lesson-footer">
+    <div class="container">
+      <a href="day17.html">Up next: Day 17 — Tools, Python scripts as deterministic execution</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(16);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

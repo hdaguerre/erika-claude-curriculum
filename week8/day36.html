@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 36 — ICP Scoring Model</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 8</span>
+          <span>Day 36 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 8</span>
+        <span class="badge badge--day">Day 36</span>
+      </div>
+      <h1>ICP Scoring Model</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What an ICP scoring model is</span><span class="lang-es">1. ¿Qué es un modelo de puntuación ICP?</span></h3>
+
+          <div class="lang-en">
+            <p>ICP = Ideal Customer Profile. A scoring model translates "good fit" criteria into numbers — each lead gets a score based on how closely it matches your ICP. Higher score = higher priority outreach.</p>
+            <p>The model works by assigning weights to signals. For example:</p>
+            <ul>
+              <li>Company uses HubSpot (tech stack match) = +20 points</li>
+              <li>Company is hiring RevOps (hiring signal) = +15 points</li>
+              <li>Company size 50–500 employees = +10 points</li>
+              <li>Company is in the US = +5 points</li>
+            </ul>
+            <p>Total score out of 100. The highest-scored leads are who you reach out to first.</p>
+          </div>
+          <div class="lang-es">
+            <p>ICP = Ideal Customer Profile (Perfil de Cliente Ideal). Un modelo de puntuación traduce los criterios de "buen ajuste" en números — cada lead recibe una puntuación basada en qué tan bien coincide con tu ICP. Puntuación más alta = prioridad más alta para el outreach.</p>
+            <p>El modelo funciona asignando pesos a señales. Por ejemplo:</p>
+            <ul>
+              <li>La empresa usa HubSpot (coincidencia de tech stack) = +20 puntos</li>
+              <li>La empresa está contratando RevOps (señal de contratación) = +15 puntos</li>
+              <li>Tamaño de empresa 50–500 empleados = +10 puntos</li>
+              <li>La empresa está en EE. UU. = +5 puntos</li>
+            </ul>
+            <p>Puntuación total sobre 100. Los leads con mayor puntuación son a quienes primero contactás.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>A scoring model is a computed column query. You've written these before in Oracle:</p>
+            <pre><code>SELECT *,
+  (CASE WHEN tech_stack LIKE '%HubSpot%' THEN 20 ELSE 0 END
+   + CASE WHEN hiring_signal = TRUE THEN 15 ELSE 0 END
+   + CASE WHEN employee_count BETWEEN 50 AND 500 THEN 10 ELSE 0 END
+   + CASE WHEN country = 'US' THEN 5 ELSE 0 END) AS score
+FROM leads
+ORDER BY score DESC</code></pre>
+            <p>The Python version does the exact same logic — it just runs row by row on a CSV instead of on a database table.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Un modelo de puntuación es una consulta de columna calculada. Ya escribiste estas en Oracle:</p>
+            <pre><code>SELECT *,
+  (CASE WHEN tech_stack LIKE '%HubSpot%' THEN 20 ELSE 0 END
+   + CASE WHEN hiring_signal = TRUE THEN 15 ELSE 0 END
+   + CASE WHEN employee_count BETWEEN 50 AND 500 THEN 10 ELSE 0 END
+   + CASE WHEN country = 'US' THEN 5 ELSE 0 END) AS score
+FROM leads
+ORDER BY score DESC</code></pre>
+            <p>La versión en Python hace exactamente la misma lógica — solo que corre fila por fila sobre un CSV en vez de sobre una tabla de base de datos.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Building <code>tools/score_leads.py</code></span><span class="lang-es">2. Construyendo <code>tools/score_leads.py</code></span></h3>
+
+          <div class="lang-en">
+            <p>This script takes the enriched CSV from Week 6 and adds a <code>score</code> column.</p>
+            <ul>
+              <li><strong>Input:</strong> <code>tools/enriched_sample.csv</code> — the file you built during enrichment week</li>
+              <li><strong>Logic:</strong> A series of if/else checks per row, adding weighted points for each signal that matches</li>
+              <li><strong>Output:</strong> <code>tools/scored_leads.csv</code> — same data, new <code>score</code> column, sorted highest to lowest</li>
+            </ul>
+            <p><strong>Design principle:</strong> Start with 5 simple criteria. Get feedback from Hernan. Adjust weights. Don't over-engineer on the first pass — a simple model you can tune is better than a complex model you can't explain.</p>
+          </div>
+          <div class="lang-es">
+            <p>Este script toma el CSV enriquecido de la Semana 6 y agrega una columna <code>score</code>.</p>
+            <ul>
+              <li><strong>Entrada:</strong> <code>tools/enriched_sample.csv</code> — el archivo que construiste durante la semana de enriquecimiento</li>
+              <li><strong>Lógica:</strong> Una serie de verificaciones if/else por fila, sumando puntos ponderados por cada señal que coincide</li>
+              <li><strong>Salida:</strong> <code>tools/scored_leads.csv</code> — mismos datos, nueva columna <code>score</code>, ordenados de mayor a menor</li>
+            </ul>
+            <p><strong>Principio de diseño:</strong> Empezá con 5 criterios simples. Pedile feedback a Hernan. Ajustá los pesos. No sobre-ingenierees en la primera iteración — un modelo simple que podés ajustar es mejor que uno complejo que no podés explicar.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>A scoring model is just a decision rule made explicit. Every salesperson already has one in their head — "I look for companies that use X, are this size, hire for Y role." The model makes that instinct repeatable and measurable.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Un modelo de puntuación es simplemente una regla de decisión hecha explícita. Todo vendedor ya tiene una en su cabeza — "busco empresas que usan X, tienen este tamaño, contratan para el rol Y." El modelo hace que ese instinto sea repetible y medible.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Hernan:</strong> "What are the 5 things that make a company a perfect ICP for us? Be specific — tech stack, company size, geography, roles they hire, etc." Write down his exact answers before moving forward.</div>
+              <div class="lang-es"><strong>Preguntale a Hernan:</strong> "¿Cuáles son las 5 cosas que hacen que una empresa sea un ICP perfecto para nosotros? Sé específico — tech stack, tamaño de empresa, geografía, roles que contratan, etc." Anotá sus respuestas exactas antes de continuar.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Define the weights together.</strong> For each criterion Hernan named, agree on a point value (e.g., 20 for the most important signal, 5 for a "nice to have"). They should add up to roughly 100.</div>
+              <div class="lang-es"><strong>Definan los pesos juntos.</strong> Para cada criterio que nombró Hernan, acuerden un valor en puntos (ej: 20 para la señal más importante, 5 para un "estaría bueno"). Deberían sumar aproximadamente 100.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Claude Code:</strong> "Create tools/score_leads.py that reads tools/enriched_sample.csv and adds a score column. Scoring criteria: [paste your 5 criteria and weights]. Sort by score descending and save to tools/scored_leads.csv"</div>
+              <div class="lang-es"><strong>Pedile a Claude Code:</strong> "Create tools/score_leads.py that reads tools/enriched_sample.csv and adds a score column. Scoring criteria: [pegá tus 5 criterios y pesos]. Sort by score descending and save to tools/scored_leads.csv"</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read score_leads.py</strong> before running it. Make sure you understand every scoring rule — can you trace how it would score a single row?</div>
+              <div class="lang-es"><strong>Leé score_leads.py</strong> antes de ejecutarlo. Asegurate de entender cada regla de puntuación — ¿podés rastrear cómo puntuaría una sola fila?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run it on the enriched sample: <code>python tools/score_leads.py</code></div>
+              <div class="lang-es">Ejecutalo sobre el sample enriquecido: <code>python tools/score_leads.py</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open scored_leads.csv.</strong> Do the top-ranked companies look like good-fit leads? Show Hernan the top 5 — does he agree?</div>
+              <div class="lang-es"><strong>Abrí scored_leads.csv.</strong> ¿Las empresas con mayor puntuación parecen buenos leads? Mostrale a Hernan el top 5 — ¿está de acuerdo?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>ICP vs buyer persona</strong> — ask Claude to explain the difference and why scoring matters for outbound. Prompt: "Explain the difference between an ICP and a buyer persona. Why does a scoring model matter specifically for outbound sales, versus inbound?"</span>
+          <span class="lang-es"><strong>ICP vs buyer persona</strong> — pedile a Claude que explique la diferencia y por qué importa la puntuación para el outbound. Prompt: "Explica la diferencia entre un ICP y un buyer persona. ¿Por qué importa un modelo de puntuación específicamente para ventas outbound, versus inbound?"</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What does an ICP scoring model produce?</span>
+            <span class="lang-es">¿Qué produce un modelo de puntuación ICP?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A score for each lead based on how closely they match your Ideal Customer Profile — allows you to prioritize outreach by fit. The higher the score, the more that company looks like your best customers.</div>
+            <div class="lang-es">Una puntuación para cada lead basada en qué tan bien coinciden con tu Perfil de Cliente Ideal — te permite priorizar el outreach por ajuste. Cuanto más alta la puntuación, más se parece esa empresa a tus mejores clientes.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the SQL equivalent of a scoring model?</span>
+            <span class="lang-es">¿Cuál es el equivalente SQL de un modelo de puntuación?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A computed column query with CASE WHEN statements for each scoring criterion, summed into a total score column. You've written exactly this kind of query in Oracle — it's the same pattern, just running on a CSV instead of a database table.</div>
+            <div class="lang-es">Una consulta de columna calculada con sentencias CASE WHEN para cada criterio de puntuación, sumadas en una columna de puntuación total. Ya escribiste exactamente este tipo de consulta en Oracle — es el mismo patrón, solo corriendo sobre un CSV en vez de una tabla de base de datos.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Why start with only 5 scoring criteria?</span>
+            <span class="lang-es">¿Por qué empezar con solo 5 criterios de puntuación?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">To keep it simple, testable, and easy to tune. You can always add more criteria after validating the first version with real output. A model with 5 well-chosen signals beats a model with 20 signals you don't understand.</div>
+            <div class="lang-es">Para mantenerlo simple, testeable y fácil de ajustar. Siempre podés agregar más criterios después de validar la primera versión con resultados reales. Un modelo con 5 señales bien elegidas supera a uno con 20 señales que no entendés.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 36 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day37.html">Next: Day 37 — Calibrate the Scores</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(36);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

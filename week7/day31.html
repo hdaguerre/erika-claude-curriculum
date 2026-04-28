@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 31 — MCP Deep Dive</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 7</span>
+          <span>Day 31 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 7</span>
+        <span class="badge badge--day">Day 31</span>
+      </div>
+      <h1><span class="lang-en">MCP Deep Dive</span><span class="lang-es">MCP a Fondo</span></h1>
+      <div class="lesson-header__meta"><span class="lang-en">Estimated time: ~3 hours</span><span class="lang-es">Tiempo estimado: ~3 horas</span></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What an MCP server is</span><span class="lang-es">1. Qué es un servidor MCP</span></h3>
+
+          <div class="lang-en">
+            <p>MCP (Model Context Protocol) is a standard that lets Claude connect to external tools and data sources. An MCP server exposes capabilities — read a file, query an API, search a database — that Claude can call mid-conversation. It's what transforms Claude from a chat assistant into an active participant in your system.</p>
+            <p>Without MCP: Claude reads text you paste in. With MCP: Claude can directly call Figma, read your files, query APIs — all without you copy-pasting anything.</p>
+          </div>
+          <div class="lang-es">
+            <p>MCP (Model Context Protocol) es un estándar que le permite a Claude conectarse a herramientas y fuentes de datos externas. Un servidor MCP expone capacidades — leer un archivo, consultar una API, buscar en una base de datos — que Claude puede invocar en medio de una conversación. Es lo que transforma a Claude de un asistente de chat a un participante activo en tu sistema.</p>
+            <p>Sin MCP: Claude lee el texto que le pegás. Con MCP: Claude puede llamar directamente a Figma, leer tus archivos, consultar APIs — todo sin que vos tengas que copiar ni pegar nada.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>An MCP server is like an <strong>Oracle Database Link combined with a package of stored procedures</strong>. The DBLINK gives Claude access to the remote system. The package procedures define what operations are allowed. Claude doesn't own the data — it just gets authorized read/write access through the link.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Un servidor MCP es como un <strong>Database Link de Oracle combinado con un paquete de stored procedures</strong>. El DBLINK le da a Claude acceso al sistema remoto. Los procedimientos del paquete definen qué operaciones están permitidas. Claude no es dueño de los datos — solo obtiene acceso autorizado de lectura/escritura a través del enlace.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. MCP in the WAT framework</span><span class="lang-es">2. MCP en el framework WAT</span></h3>
+
+          <div class="lang-en">
+            <p>In the WAT framework, MCP servers are <strong>Tools</strong> — but richer than plain Python scripts. Instead of calling <code>python tools/my_script.py</code>, Claude calls an MCP endpoint directly.</p>
+            <p>The Figma MCP server, for example, lets Claude call <code>get_design_context(nodeId)</code> or <code>get_screenshot(fileKey)</code> — Claude gets real Figma data back as structured JSON without you having to export anything manually.</p>
+          </div>
+          <div class="lang-es">
+            <p>En el framework WAT, los servidores MCP son <strong>Tools</strong> (Herramientas) — pero más ricos que los scripts de Python simples. En lugar de llamar a <code>python tools/mi_script.py</code>, Claude llama directamente a un endpoint MCP.</p>
+            <p>El servidor Figma MCP, por ejemplo, le permite a Claude llamar a <code>get_design_context(nodeId)</code> o <code>get_screenshot(fileKey)</code> — Claude recibe datos reales de Figma como JSON estructurado sin que vos tengas que exportar nada manualmente.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>MCP is what makes Claude Code actually agentic. It's the difference between Claude knowing about your system and Claude being able to act on your system.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>MCP es lo que hace que Claude Code sea verdaderamente agéntico. Es la diferencia entre que Claude sepa sobre tu sistema y que Claude pueda actuar sobre tu sistema.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~70 minutes)</span><span class="lang-es">Ejercicio (~70 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"What MCP servers are configured in this project? Show me the configuration."</em> — look at any <code>.claude</code> or settings files that Claude surfaces.</div>
+              <div class="lang-es">Preguntale a Claude Code: <em>"¿Qué servidores MCP están configurados en este proyecto? Mostrame la configuración."</em> — fijate en los archivos <code>.claude</code> o de configuración que Claude muestre.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Read the Figma MCP server documentation — ask Claude: <em>"Explain what the Figma MCP server can do, using the WAT framework as context. What would be the SQL equivalent of the get_design_context call?"</em></div>
+              <div class="lang-es">Leé la documentación del servidor Figma MCP — preguntale a Claude: <em>"Explicame qué puede hacer el servidor Figma MCP, usando el framework WAT como contexto. ¿Cuál sería el equivalente SQL de la llamada get_design_context?"</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"Walk me through how the MCP protocol works. When I type a message, how does Claude decide to call an MCP tool vs just responding with text?"</em></div>
+              <div class="lang-es">Preguntale a Claude: <em>"Explicame paso a paso cómo funciona el protocolo MCP. Cuando escribo un mensaje, ¿cómo decide Claude si llamar a una herramienta MCP o simplemente responder con texto?"</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude to list 3 MCP servers that would be useful for GTM engineering work and explain what each one does — note them in your project notes.</div>
+              <div class="lang-es">Pedile a Claude que liste 3 servidores MCP que serían útiles para trabajo de GTM engineering y que explique qué hace cada uno — anotálos en tus notas del proyecto.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Reading:</strong> Ask Claude to summarize the key concepts from Anthropic's MCP documentation in 5 bullet points — one sentence each.</div>
+              <div class="lang-es"><strong>Lectura:</strong> Pedile a Claude que resuma los conceptos clave de la documentación de MCP de Anthropic en 5 puntos — una oración cada uno.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>Anthropic's MCP documentation</strong> — ask Claude to summarize the key concepts. Focus on: what a server exposes, how Claude decides when to call a tool, and how authorization works.</span>
+          <span class="lang-es"><strong>Documentación de MCP de Anthropic</strong> — pedile a Claude que resuma los conceptos clave. Enfocate en: qué expone un servidor, cómo decide Claude cuándo llamar a una herramienta, y cómo funciona la autorización.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What does MCP stand for, and what does it do?</span>
+            <span class="lang-es">¿Qué significa MCP y qué hace?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Model Context Protocol — it lets Claude connect to external tools and data sources so Claude can act on systems, not just talk about them.</div>
+            <div class="lang-es">Model Context Protocol — le permite a Claude conectarse a herramientas y fuentes de datos externas para que Claude pueda actuar sobre sistemas, no solo hablar de ellos.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">In the WAT framework, what layer do MCP servers belong to?</span>
+            <span class="lang-es">En el framework WAT, ¿a qué capa pertenecen los servidores MCP?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Tools — they are the execution layer, just like Python scripts, but with a richer protocol that lets Claude call them directly mid-conversation.</div>
+            <div class="lang-es">Tools (Herramientas) — son la capa de ejecución, igual que los scripts de Python, pero con un protocolo más rico que le permite a Claude llamarlos directamente en medio de una conversación.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the key difference between Claude with and without MCP?</span>
+            <span class="lang-es">¿Cuál es la diferencia clave entre Claude con y sin MCP?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Without MCP: Claude only reads text you give it. With MCP: Claude can directly call external systems, APIs, and data sources mid-conversation — no copy-pasting required.</div>
+            <div class="lang-es">Sin MCP: Claude solo lee el texto que le das. Con MCP: Claude puede llamar directamente a sistemas externos, APIs y fuentes de datos en medio de una conversación — sin necesidad de copiar ni pegar nada.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">
+      <span class="lang-en">Mark Day 31 Complete</span>
+      <span class="lang-es">Marcar Día 31 Completo</span>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day32.html"><span class="lang-en">Next: Day 32 — Figma MCP in Action</span><span class="lang-es">Siguiente: Día 32 — Figma MCP en Acción</span></a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(31);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

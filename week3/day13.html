@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 13 — CLAUDE.md</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 3</span>
+          <span>Day 13 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 3</span>
+        <span class="badge badge--day">Day 13</span>
+      </div>
+      <h1>CLAUDE.md — What It Is &amp; What Gets Loaded</h1>
+      <div class="lesson-header__meta">Estimated time: ~2.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What CLAUDE.md is</span><span class="lang-es">1. Qué es CLAUDE.md</span></h3>
+          <div class="lang-en">
+            <p>CLAUDE.md is a special file that Claude Code reads <strong>automatically</strong> every time you start a session in that project folder. It's the first thing Claude reads — before any other files. It sets the entire context for the session: who Claude is in this project, what rules it follows, what the project is about, and how to operate.</p>
+            <p>Think of it as the briefing document Claude gets before starting work. If you want Claude Code to know something about your project — the tone to use, the constraints to respect, the key files to be aware of — you write it in CLAUDE.md.</p>
+          </div>
+          <div class="lang-es">
+            <p>CLAUDE.md es un archivo especial que Claude Code lee automáticamente cuando abrís una carpeta de proyecto. Es lo primero que Claude lee — antes que cualquier otro archivo. Establece el contexto para toda la sesión: quién es Claude en este proyecto, qué reglas sigue, de qué trata el proyecto y cómo operar dentro de él.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>CLAUDE.md is the <strong><code>login.sql</code></strong> — the file that Oracle runs automatically when you start a SQL*Plus session. In Oracle, <code>login.sql</code> sets session parameters, NLS settings, and context. CLAUDE.md does the same: it runs first, every time, no exceptions. It's also analogous to a <strong>DDL file that defines the schema</strong> — it tells the system what everything is before any work begins.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>CLAUDE.md = el archivo DDL que corre al inicio de cada sesión de base de datos. En Oracle, podrías tener un login.sql que establece parámetros de sesión y contexto. CLAUDE.md es ese archivo — corre primero, siempre, sin excepciones.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>CLAUDE.md is the most powerful file in any Claude Code project. If Claude Code isn't behaving the way you want, the answer is almost always: update CLAUDE.md. It's your first lever for shaping Claude's behavior.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Si quiere que Claude Code sepa algo sobre su proyecto, lo escribe en CLAUDE.md. Es el archivo más poderoso de cualquier proyecto.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. What actually gets loaded into context</span><span class="lang-es">2. Qué se carga realmente en el contexto</span></h3>
+          <div class="lang-en">
+            <p>When you type <code>claude</code> in a project folder, Claude Code reads:</p>
+            <ul>
+              <li><strong>CLAUDE.md</strong> — always, automatically, first</li>
+              <li><strong>Files you reference in conversation</strong> — when you say "look at this file," Claude reads it</li>
+              <li><strong>Files Claude needs to act on</strong> — if you ask Claude to edit a file, it reads it</li>
+            </ul>
+            <p>Claude does <em>not</em> automatically read every file in your project. Your codebase could be gigabytes — that would be impossible. CLAUDE.md is the <strong>guaranteed-read</strong> file. Everything else is on demand.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cuando Erika escribe <code>claude</code> en una carpeta de proyecto, Claude Code lee: CLAUDE.md primero, y luego los archivos que ella mencione en la conversación. NO lee TODOS los archivos automáticamente — solo lo que ella le indique. CLAUDE.md es el archivo de lectura garantizada.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. What a good CLAUDE.md contains</span><span class="lang-es">3. Qué contiene un buen CLAUDE.md</span></h3>
+          <div class="lang-en">
+            <p>A well-written CLAUDE.md typically covers:</p>
+            <ul>
+              <li><strong>Project purpose</strong> — what this project is and why it exists</li>
+              <li><strong>How to operate</strong> — key rules, workflows, what tools to use</li>
+              <li><strong>Key files to know about</strong> — the important files Claude should be aware of</li>
+              <li><strong>Constraints</strong> — things Claude should never do, tone to use, formats to follow</li>
+            </ul>
+            <p>It's written in plain language — no special syntax needed. Write it like you're briefing a smart new colleague on the first day.</p>
+          </div>
+          <div class="lang-es">
+            <p>Un buen CLAUDE.md tiene: propósito del proyecto (qué es esto), cómo operar (reglas clave), archivos clave que conocer, cualquier restricción. Se escribe en lenguaje simple — no se necesita sintaxis especial.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~60 minutes)</span><span class="lang-es">Ejercicio (~60 min)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Open VS Code. In the Explorer panel, find <code>CLAUDE.md</code> at the root of the erika project. Click it to open. <strong>Read it fully</strong> — don't skim. Notice: what sections does it cover? What tone does it use? What does it tell Claude about how to operate?</div>
+              <div class="lang-es">Abrí VS Code. En el panel Explorador, encontrá el <code>CLAUDE.md</code> en la raíz del proyecto erika. Hacé clic para abrirlo. <strong>Leélo completo</strong> — no lo ojees. Fijate: ¿qué secciones cubre? ¿Qué tono usa? ¿Qué le dice a Claude sobre cómo operar?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Note the structure as you read. How many sections? What's in the YAML-style front matter (if any)? What rules does it give Claude? What's the most important thing it communicates?</div>
+              <div class="lang-es">Tomá nota de la estructura mientras leés. ¿Cuántas secciones tiene? ¿Qué hay en el encabezado estilo YAML (si lo hay)? ¿Qué reglas le da a Claude? ¿Cuál es lo más importante que comunica?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Now create a new folder on your Desktop (or wherever makes sense): call it <code>mi-taller</code>. This will be the home for your personal creative project — your bakery/Instagram content.</div>
+              <div class="lang-es">Ahora creá una nueva carpeta en tu Escritorio (o donde tenga sentido): llamala <code>mi-taller</code>. Este va a ser el hogar de tu proyecto creativo personal — tu panadería/contenido de Instagram.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">In VS Code, File → Open Folder → open <code>mi-taller</code>. Create a new file: click the new-file icon in the Explorer, name it <code>CLAUDE.md</code>.</div>
+              <div class="lang-es">En VS Code, Archivo → Abrir Carpeta → abrí <code>mi-taller</code>. Creá un nuevo archivo: hacé clic en el ícono de nuevo archivo en el Explorador, nombralo <code>CLAUDE.md</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Write your own CLAUDE.md from scratch. It should include:
+                <ul style="margin-top: 0.5rem;">
+                  <li>What "Mi Taller" is — your personal creative project (bakery, handmade goods, Instagram content — describe it in your own words)</li>
+                  <li>Your audience — Spanish-speaking followers, the vibe you're going for</li>
+                  <li>Content rules — tone, style, what to avoid (salesy language? formal Spanish? certain topics?)</li>
+                  <li>Key reference files you'll add later (brand voice doc, recipe list, caption library)</li>
+                  <li>How Claude should behave when working in this project</li>
+                </ul>
+              </div>
+              <div class="lang-es">Escribí tu propio CLAUDE.md desde cero. Debería incluir:
+                <ul style="margin-top: 0.5rem;">
+                  <li>Qué es "Mi Taller" — tu proyecto creativo personal (panadería, artesanías, contenido de Instagram — describilo con tus propias palabras)</li>
+                  <li>Tu audiencia — seguidores de habla hispana, el vibe que buscás</li>
+                  <li>Reglas de contenido — tono, estilo, qué evitar (¿lenguaje de ventas? ¿español formal? ¿ciertos temas?)</li>
+                  <li>Archivos de referencia clave que vas a agregar después (documento de voz de marca, lista de recetas, biblioteca de captions)</li>
+                  <li>Cómo debe comportarse Claude cuando trabaja en este proyecto</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Save the file. Open the terminal, navigate into <code>mi-taller</code>, and type <code>claude</code>. Claude Code will read your CLAUDE.md automatically. Say hello and ask Claude to introduce itself based on what it read. Does it sound like it understood your project?</div>
+              <div class="lang-es">Guardá el archivo. Abrí la terminal, navegá hasta <code>mi-taller</code> y escribí <code>claude</code>. Claude Code va a leer tu CLAUDE.md automáticamente. Saludá y pedile a Claude que se presente en base a lo que leyó. ¿Suena como si hubiera entendido tu proyecto?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>"Claude Skills"</strong> guide by Ruben Hassid</p>
+        <p><a href="https://lnkd.in/g9MQUC-Z" target="_blank" rel="noopener">Read on LinkedIn &rarr;</a></p>
+        <p>
+          <span class="lang-en">This sets up tomorrow's lesson on Skills. Read it tonight so the concepts feel familiar when we dig into the technical structure tomorrow.</span>
+          <span class="lang-es">Esto prepara la lección de mañana sobre Skills. Leélo esta noche para que los conceptos te sean familiares cuando nos metamos en la estructura técnica mañana.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">When exactly does Claude Code read CLAUDE.md?</span>
+            <span class="lang-es">¿Cuándo exactamente lee Claude Code el CLAUDE.md?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Automatically, at the start of every session, before anything else. You don't have to ask or reference it — Claude reads it every single time you run <code>claude</code> in that folder.</div>
+            <div class="lang-es">Automáticamente, al inicio de cada sesión, antes que cualquier otra cosa. No tenés que pedirlo ni referenciarlo — Claude lo lee cada vez que ejecutás <code>claude</code> en esa carpeta.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the SQL analogy for CLAUDE.md?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL para CLAUDE.md?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Oracle's <strong><code>login.sql</code></strong> — the file that runs automatically at the start of every SQL*Plus session and sets the environment/context. Also analogous to a DDL file that defines the schema before work begins.</div>
+            <div class="lang-es">El <strong><code>login.sql</code></strong> de Oracle — el archivo que corre automáticamente al inicio de cada sesión de SQL*Plus y establece el entorno/contexto. También es análogo a un archivo DDL que define el esquema antes de que empiece el trabajo.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Name two things that belong in a well-written CLAUDE.md.</span>
+            <span class="lang-es">Nombrá dos cosas que deberían estar en un CLAUDE.md bien escrito.</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Any two of: project purpose, operating rules/workflows, key files to know about, constraints or tone guidelines, tools to use, what Claude should never do.</div>
+            <div class="lang-es">Cualquiera de estas dos: propósito del proyecto, reglas de operación/flujos de trabajo, archivos clave que conocer, restricciones o pautas de tono, herramientas a usar, qué no debe hacer Claude nunca.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 13 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day14.html">Next: Day 14 — Skills</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(13);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

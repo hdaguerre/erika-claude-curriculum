@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 32 — Figma MCP in Action</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 7</span>
+          <span>Day 32 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 7</span>
+        <span class="badge badge--day">Day 32</span>
+      </div>
+      <h1><span class="lang-en">Figma MCP in Action</span><span class="lang-es">Figma MCP en Acción</span></h1>
+      <div class="lesson-header__meta"><span class="lang-en">Estimated time: ~3.5 hours</span><span class="lang-es">Tiempo estimado: ~3.5 horas</span></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What the Figma MCP server can do</span><span class="lang-es">1. Qué puede hacer el servidor Figma MCP</span></h3>
+
+          <div class="lang-en">
+            <p>The Figma MCP server connects Claude Code to your Figma workspace. It can read design files, describe component structure, extract design tokens (colors, fonts, spacing), and get screenshots of specific frames — all without you manually exporting anything.</p>
+            <p>Key operations:</p>
+            <ul>
+              <li><code>get_design_context(nodeId, fileKey)</code> — returns the full structure, code, and visual of a Figma frame.</li>
+              <li><code>get_screenshot(fileKey)</code> — returns a visual snapshot of a frame.</li>
+              <li><code>get_metadata(fileKey)</code> — returns file info and page names.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>El servidor Figma MCP conecta Claude Code con tu espacio de trabajo de Figma. Puede leer archivos de diseño, describir la estructura de componentes, extraer design tokens (colores, fuentes, espaciado) y obtener capturas de pantalla de frames específicos — todo sin que vos tengas que exportar nada manualmente.</p>
+            <p>Operaciones clave:</p>
+            <ul>
+              <li><code>get_design_context(nodeId, fileKey)</code> — devuelve la estructura completa, código y visual de un frame de Figma.</li>
+              <li><code>get_screenshot(fileKey)</code> — devuelve una captura visual de un frame.</li>
+              <li><code>get_metadata(fileKey)</code> — devuelve información del archivo y nombres de páginas.</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Using Figma MCP is like running <code>SELECT * FROM figma.design_tokens WHERE frame_id = :nodeId</code> — you're querying Figma's database through a standardized interface, getting structured data back that you can use in code.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Usar Figma MCP es como ejecutar <code>SELECT * FROM figma.design_tokens WHERE frame_id = :nodeId</code> — estás consultando la base de datos de Figma a través de una interfaz estandarizada, obteniendo datos estructurados que podés usar en código.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Commanding Figma without designing</span><span class="lang-es">2. Comandar Figma sin diseñar</span></h3>
+
+          <div class="lang-en">
+            <p>You are not a Figma designer — and you don't need to be. Your role is to command Claude Code to interact with Figma programmatically. "Read this frame and tell me its colors." "Get the font used in this component." "Describe the layout of this design so I can replicate it in code."</p>
+            <p>This is the same skill you've been building all month: directing an AI agent through structured instructions rather than doing the work manually.</p>
+          </div>
+          <div class="lang-es">
+            <p>No sos diseñadora de Figma — y no necesitás serlo. Tu rol es comandar a Claude Code para que interactúe con Figma de manera programática. "Leé este frame y decime sus colores." "Obtené la fuente usada en este componente." "Describí el layout de este diseño para que pueda replicarlo en código."</p>
+            <p>Esta es la misma habilidad que venís desarrollando todo el mes: dirigir un agente de IA a través de instrucciones estructuradas en lugar de hacer el trabajo manualmente.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Open your Figma account (or create a free one at <strong>figma.com</strong>). You just need the free tier for this exercise.</div>
+              <div class="lang-es">Abrí tu cuenta de Figma (o creá una gratis en <strong>figma.com</strong>). Solo necesitás el nivel gratuito para este ejercicio.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Create a simple Figma file — add a rectangle, a text element with your name, and a color. This is your test frame. Keep it simple: this isn't about design, it's about reading data.</div>
+              <div class="lang-es">Creá un archivo de Figma simple — agregá un rectángulo, un elemento de texto con tu nombre y un color. Este es tu frame de prueba. Que sea simple: esto no es sobre diseño, es sobre leer datos.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Copy the file URL from Figma — it looks like <code>https://www.figma.com/design/XXXX/filename?node-id=...</code></div>
+              <div class="lang-es">Copiá la URL del archivo desde Figma — tiene esta forma: <code>https://www.figma.com/design/XXXX/filename?node-id=...</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Using the Figma MCP server, read the design context from this URL: [paste your URL]. Describe what you see — colors, fonts, layout."</em></div>
+              <div class="lang-es">Preguntale a Claude Code: <em>"Usando el servidor Figma MCP, leé el contexto de diseño de esta URL: [pegá tu URL]. Describí lo que ves — colores, fuentes, layout."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"What are the exact color values used in that frame? Give them to me as CSS variables."</em> — for example: <code>--color-primary: #E87A53;</code></div>
+              <div class="lang-es">Preguntale a Claude: <em>"¿Cuáles son los valores exactos de color usados en ese frame? Dámelos como variables CSS."</em> — por ejemplo: <code>--color-primary: #E87A53;</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"If I wanted to recreate this design in HTML/CSS, what would the code look like?"</em> — review what Claude produces. Does it match what you see in Figma?</div>
+              <div class="lang-es">Preguntale a Claude: <em>"Si quisiera recrear este diseño en HTML/CSS, ¿cómo quedaría el código?"</em> — revisá lo que produce Claude. ¿Coincide con lo que ves en Figma?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>Figma MCP server README</strong> — have Claude explain the available tools. Ask: "What are all the tools the Figma MCP server exposes? Give me a table: tool name, what it does, and when I would use it."</span>
+          <span class="lang-es"><strong>README del servidor Figma MCP</strong> — pedile a Claude que explique las herramientas disponibles. Preguntale: "¿Cuáles son todas las herramientas que expone el servidor Figma MCP? Dámelas en una tabla: nombre de la herramienta, qué hace y cuándo la usaría."</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What Figma MCP function would you use to get the full structure and content of a specific design frame?</span>
+            <span class="lang-es">¿Qué función del Figma MCP usarías para obtener la estructura completa y el contenido de un frame de diseño específico?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>get_design_context(nodeId, fileKey)</code> — it returns the full structure, code, and visual of a Figma frame.</div>
+            <div class="lang-es"><code>get_design_context(nodeId, fileKey)</code> — devuelve la estructura completa, código y visual de un frame de Figma.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Why can you use Figma MCP effectively even without design skills?</span>
+            <span class="lang-es">¿Por qué podés usar Figma MCP de manera efectiva incluso sin habilidades de diseño?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Because your role is to command Claude to interact with Figma — you give instructions, Claude makes the MCP calls and interprets the results. You're the director, not the designer.</div>
+            <div class="lang-es">Porque tu rol es comandar a Claude para que interactúe con Figma — vos das las instrucciones, Claude hace las llamadas MCP e interpreta los resultados. Sos la directora, no la diseñadora.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the SQL analogy for using the Figma MCP server?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL para usar el servidor Figma MCP?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Running a SELECT query on Figma's design data — <code>SELECT * FROM figma.design_tokens WHERE frame_id = :nodeId</code> — you query through a standardized interface and get structured data back.</div>
+            <div class="lang-es">Ejecutar una consulta SELECT sobre los datos de diseño de Figma — <code>SELECT * FROM figma.design_tokens WHERE frame_id = :nodeId</code> — consultás a través de una interfaz estandarizada y obtenés datos estructurados de vuelta.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">
+      <span class="lang-en">Mark Day 32 Complete</span>
+      <span class="lang-es">Marcar Día 32 Completo</span>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day33.html"><span class="lang-en">Next: Day 33 — Image Generation APIs</span><span class="lang-es">Siguiente: Día 33 — APIs de Generación de Imágenes</span></a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(32);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

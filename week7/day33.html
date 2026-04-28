@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 33 — Image Generation APIs</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 7</span>
+          <span>Day 33 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 7</span>
+        <span class="badge badge--day">Day 33</span>
+      </div>
+      <h1><span class="lang-en">Image Generation APIs</span><span class="lang-es">APIs de Generación de Imágenes</span></h1>
+      <div class="lesson-header__meta"><span class="lang-en">Estimated time: ~3.5 hours</span><span class="lang-es">Tiempo estimado: ~3.5 horas</span></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What image generation APIs do and how they work</span><span class="lang-es">1. Qué hacen las APIs de generación de imágenes y cómo funcionan</span></h3>
+
+          <div class="lang-en">
+            <p>Image generation models (like Replicate's Flux, Stability AI's Stable Diffusion, or Google's Imagen) take a text prompt and return a URL pointing to a generated image. You describe what you want in words, the model renders it, and you download the result.</p>
+            <p>The API pattern: <code>POST /predictions</code> with <code>{"input": {"prompt": "...", "width": 1024, "height": 1024}}</code> → response includes a URL you can download.</p>
+            <p>The big practical difference from text APIs: you're not parsing JSON to extract text — you're downloading a binary file (the image) from the returned URL.</p>
+          </div>
+          <div class="lang-es">
+            <p>Los modelos de generación de imágenes (como Flux de Replicate, Stable Diffusion de Stability AI, o Imagen de Google) reciben un prompt de texto y devuelven una URL que apunta a la imagen generada. Describís lo que querés en palabras, el modelo lo renderiza y vos descargás el resultado.</p>
+            <p>El patrón de la API: <code>POST /predictions</code> con <code>{"input": {"prompt": "...", "width": 1024, "height": 1024}}</code> → la respuesta incluye una URL que podés descargar.</p>
+            <p>La gran diferencia práctica con las APIs de texto: no estás parseando JSON para extraer texto — estás descargando un archivo binario (la imagen) desde la URL devuelta.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Calling an image generation API is like calling a stored procedure that creates a file and returns its path: <code>CALL generate_image(:prompt) RETURNING :image_url</code> — you pass the description, get back a location.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Llamar a una API de generación de imágenes es como llamar a un stored procedure que crea un archivo y devuelve su ruta: <code>CALL generate_image(:prompt) RETURNING :image_url</code> — pasás la descripción, obtenés de vuelta una ubicación.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Building <code>tools/generate_image.py</code></span><span class="lang-es">2. Construyendo <code>tools/generate_image.py</code></span></h3>
+
+          <div class="lang-en">
+            <p>The tool takes a prompt string as input, calls the Replicate API, saves the downloaded image to an <code>output/</code> folder, and returns the local file path.</p>
+            <p>Prompt engineering for images is its own skill — be specific about style, mood, composition, and aspect ratio:</p>
+            <ul>
+              <li><strong>Vague:</strong> "LinkedIn banner" → generic result</li>
+              <li><strong>Specific:</strong> "Professional LinkedIn banner photo, clean minimalist design, warm terracotta and cream tones, abstract geometric shapes, 1584x396 pixels" → much better result</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>La herramienta recibe un string de prompt como entrada, llama a la API de Replicate, guarda la imagen descargada en una carpeta <code>output/</code> y devuelve la ruta del archivo local.</p>
+            <p>El prompt engineering para imágenes es una habilidad propia — sé específica sobre el estilo, el mood, la composición y la relación de aspecto:</p>
+            <ul>
+              <li><strong>Vago:</strong> "banner de LinkedIn" → resultado genérico</li>
+              <li><strong>Específico:</strong> "Banner de LinkedIn profesional, diseño minimalista limpio, tonos cálidos terracota y crema, formas geométricas abstractas, 1584x396 píxeles" → resultado mucho mejor</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Create a free account at <strong>replicate.com</strong> — Replicate is an API platform for open-source AI models including Flux image generation. No credit card required for the free tier.</div>
+              <div class="lang-es">Creá una cuenta gratuita en <strong>replicate.com</strong> — Replicate es una plataforma de API para modelos de IA de código abierto incluyendo generación de imágenes con Flux. No necesitás tarjeta de crédito para el nivel gratuito.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Get your API token from <strong>replicate.com/account/api-tokens</strong> and add it to your project's <code>.env</code> file: <code>REPLICATE_API_KEY=your_key_here</code></div>
+              <div class="lang-es">Obtené tu token de API desde <strong>replicate.com/account/api-tokens</strong> y agregalo al archivo <code>.env</code> de tu proyecto: <code>REPLICATE_API_KEY=your_key_here</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Create tools/generate_image.py that takes a prompt string, calls the Replicate API to run the black-forest-labs/flux-schnell model, downloads the generated image, saves it to output/{timestamp}.png, and prints the file path."</em></div>
+              <div class="lang-es">Preguntale a Claude Code: <em>"Creá tools/generate_image.py que reciba un string de prompt, llame a la API de Replicate para ejecutar el modelo black-forest-labs/flux-schnell, descargue la imagen generada, la guarde en output/{timestamp}.png, y muestre la ruta del archivo."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Read the generated script carefully — identify three things: (1) the API call that submits the prompt, (2) the polling loop that waits for the prediction to complete, (3) the image download step.</div>
+              <div class="lang-es">Leé el script generado con atención — identificá tres cosas: (1) la llamada a la API que envía el prompt, (2) el loop de polling que espera que la predicción se complete, (3) el paso de descarga de la imagen.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run it with a test prompt: ask Claude to generate a simple abstract image — something like "abstract watercolor shapes in terracotta and cream tones, minimal, 1024x1024." Confirm the file appears in the output folder.</div>
+              <div class="lang-es">Ejecutalo con un prompt de prueba: pedile a Claude que genere una imagen abstracta simple — algo como "formas abstractas de acuarela en tonos terracota y crema, minimalista, 1024x1024." Confirmá que el archivo aparece en la carpeta de output.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Write 3 prompts for brand-aligned images: one LinkedIn banner (1584x396), one profile photo background, one post visual. Run all 3 and compare the results. Which prompt produced the best result and why?</div>
+              <div class="lang-es">Escribí 3 prompts para imágenes alineadas con tu marca: un banner de LinkedIn (1584x396), un fondo para foto de perfil, un visual para un post. Ejecutá los 3 y comparé los resultados. ¿Qué prompt produjo el mejor resultado y por qué?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>Replicate documentation — "Run a model in Python"</strong>. Navigate to docs.replicate.com and find the Python quickstart. Ask Claude to walk you through the key steps: submitting a prediction, polling for status, downloading the output.</span>
+          <span class="lang-es"><strong>Documentación de Replicate — "Ejecutar un modelo en Python"</strong>. Andá a docs.replicate.com y encontrá el quickstart de Python. Pedile a Claude que te explique los pasos clave: enviar una predicción, hacer polling del estado, descargar el output.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What does a typical image generation API return?</span>
+            <span class="lang-es">¿Qué devuelve una API de generación de imágenes típica?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A URL pointing to the generated image, which you then download as a binary file — not text you parse, but a file you save to disk.</div>
+            <div class="lang-es">Una URL que apunta a la imagen generada, que luego descargás como archivo binario — no texto que parsear, sino un archivo que guardás en disco.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the SQL analogy for calling an image generation API?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL para llamar a una API de generación de imágenes?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A stored procedure that creates a file and returns its path — <code>CALL generate_image(:prompt) RETURNING :image_url</code> — you pass the description, get back a location.</div>
+            <div class="lang-es">Un stored procedure que crea un archivo y devuelve su ruta — <code>CALL generate_image(:prompt) RETURNING :image_url</code> — pasás la descripción, obtenés de vuelta una ubicación.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What makes a good image generation prompt?</span>
+            <span class="lang-es">¿Qué hace que un prompt de generación de imágenes sea bueno?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Specificity — describe the style, mood, composition, colors, and dimensions. Vague prompts return generic results. The more concrete detail you include, the closer the output matches your vision.</div>
+            <div class="lang-es">Especificidad — describí el estilo, el mood, la composición, los colores y las dimensiones. Los prompts vagos devuelven resultados genéricos. Cuanto más detalle concreto incluyas, más se acercará el output a tu visión.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">
+      <span class="lang-en">Mark Day 33 Complete</span>
+      <span class="lang-es">Marcar Día 33 Completo</span>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day34.html"><span class="lang-en">Next: Day 34 — Visual Brand Pipeline</span><span class="lang-es">Siguiente: Día 34 — Pipeline Visual de Marca</span></a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(33);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

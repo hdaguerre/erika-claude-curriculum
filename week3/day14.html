@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 14 — Skills</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 3</span>
+          <span>Day 14 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 3</span>
+        <span class="badge badge--day">Day 14</span>
+      </div>
+      <h1>Skills — Structure, Triggers &amp; the Stored Procedure Analogy</h1>
+      <div class="lesson-header__meta">Estimated time: ~2.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What a skill is</span><span class="lang-es">1. Qué es una habilidad</span></h3>
+          <div class="lang-en">
+            <p>A skill is a <strong>self-contained unit of instructions</strong> that Claude loads when triggered. It lives in its own folder inside <code>skills/</code>. At the center of every skill is a <code>SKILL.md</code> file with two parts:</p>
+            <ul>
+              <li><strong>YAML front matter</strong> (at the top, between <code>---</code> markers) — a short header with <code>name</code> and <code>description</code></li>
+              <li><strong>Body</strong> — the step-by-step instructions Claude follows when the skill is active</li>
+            </ul>
+            <p>Skills can also have supporting folders: <code>references/</code> for knowledge documents, <code>scripts/</code> for executable code, and <code>assets/</code> for templates and files.</p>
+          </div>
+          <div class="lang-es">
+            <p>Una habilidad (skill) es una unidad autónoma de instrucciones que Claude carga cuando se activa. Se almacena en una carpeta con un archivo SKILL.md en su núcleo. El SKILL.md tiene un encabezado YAML (nombre y descripción) y un cuerpo (instrucciones sobre qué hacer). Cuando la descripción coincide con algo que Erika pide, Claude carga y sigue la habilidad automáticamente.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>A skill is a <strong>stored procedure</strong>. The YAML header is the <strong>procedure signature</strong> — name and input parameters. The <code>description</code> field is the <strong>trigger condition</strong> (like a trigger's WHEN clause). The SKILL.md body is the <strong>procedure body</strong> — the actual logic that executes.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Una habilidad es un procedimiento almacenado. El encabezado YAML = la firma del procedimiento (nombre + parámetros). La descripción = la condición de activación (como la cláusula WHEN de un trigger). El cuerpo del SKILL.md = el cuerpo del procedimiento.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. How skills trigger</span><span class="lang-es">2. Cómo se activan las habilidades</span></h3>
+          <div class="lang-en">
+            <p>Claude reads the <code>description</code> field of every skill in your <code>skills/</code> folder. When you ask for something, Claude pattern-matches your request against all the descriptions and loads the matching skill automatically.</p>
+            <p>A weak description: <em>"Use for captions."</em></p>
+            <p>A strong description: <em>"Use this skill when writing Instagram captions for bakery/food content in Spanish, especially when the user wants a warm, community-focused tone for Mi Taller."</em></p>
+            <p>The difference is specificity. A well-written description tells Claude exactly when to trigger and when not to. The more specific the trigger, the more reliably Claude uses the skill.</p>
+          </div>
+          <div class="lang-es">
+            <p>El campo de descripción en el encabezado YAML es el disparador. Le dice a Claude cuándo usar esta habilidad. Una descripción bien escrita es específica: "Usar esta habilidad cuando el usuario pide escribir captions de Instagram para contenido de comida/repostería en español." Claude compara sus solicitudes con todas las descripciones de habilidades y carga la correcta.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Skills let Claude be an expert in something specific without you re-explaining it every session. Write a skill for "bakery captions in Spanish" once, and Claude will always follow those exact instructions whenever that context arises — in any project that has the skill.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Las habilidades permiten que Claude sea experto en algo específico sin tener que re-explicarlo cada vez. Podría crear una habilidad para "escribir captions de repostería en español" y cada vez que esté en ese proyecto y necesite un caption, Claude automáticamente sigue las instrucciones de esa habilidad.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. The skill-creator skill</span><span class="lang-es">3. La habilidad skill-creator</span></h3>
+          <div class="lang-en">
+            <p>This project has a special skill called <code>skill-creator</code> — it's a skill that builds new skills. When you invoke it with <code>/skill-creator</code>, it walks through a structured process: draft the skill, write test cases (evals), optimize the description for reliable triggering, and output a ready-to-use skill folder.</p>
+            <p>It's a meta-tool — a code generator that scaffolds stored procedures for you. You'll use it in Day 19.</p>
+          </div>
+          <div class="lang-es">
+            <p>Este proyecto tiene una habilidad especial llamada <code>skill-creator</code> que ayuda a construir NUEVAS habilidades. Es la habilidad que crea más habilidades — una meta-herramienta.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>The <code>skill-creator</code> is like a <strong>code generator</strong> that scaffolds new stored procedures for you — the same way SQL Developer's procedure wizard generates the boilerplate structure of a new stored procedure.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>El skill-creator = un generador de código que crea scaffolding de nuevos procedimientos para vos. Igual que un asistente de código en SQL Developer que genera la estructura de un procedimiento almacenado.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 minutes)</span><span class="lang-es">Ejercicio (~45 min)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Open VS Code with the erika project. In the Explorer, navigate to <code>skills/skill-creator/</code>. Open <code>SKILL.md</code>. Read the YAML front matter carefully — notice the <code>name</code> and <code>description</code> fields. What does the description tell you about when this skill triggers?</div>
+              <div class="lang-es">Abrí VS Code con el proyecto erika. En el Explorador, navegá hasta <code>skills/skill-creator/</code>. Abrí <code>SKILL.md</code>. Leé el encabezado YAML con atención — fijate en los campos <code>name</code> y <code>description</code>. ¿Qué te dice la descripción sobre cuándo se activa esta habilidad?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Read the first 50 lines of the SKILL.md body. Notice the structure: how does it organize its instructions? Does it reference any files in a <code>references/</code> subfolder? How does it differ from a plain CLAUDE.md?</div>
+              <div class="lang-es">Leé las primeras 50 líneas del cuerpo del SKILL.md. Fijate en la estructura: ¿cómo organiza sus instrucciones? ¿Hace referencia a algún archivo en una subcarpeta <code>references/</code>? ¿En qué se diferencia de un CLAUDE.md simple?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Open <code>skills/skill-creator/evals.json</code> if it exists. Read 2-3 examples. Evals are test cases — they describe a user request and the expected skill behavior. This is how skills are tested and improved over time. Does anything surprise you?</div>
+              <div class="lang-es">Abrí <code>skills/skill-creator/evals.json</code> si existe. Leé 2-3 ejemplos. Los evals son casos de prueba — describen una solicitud del usuario y el comportamiento esperado de la habilidad. Así es como se prueban y mejoran las habilidades con el tiempo. ¿Algo te sorprende?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Now, without writing any code, <strong>sketch your own "bakery caption" skill</strong> on paper or in a plain text file. Write just the YAML header:
+                <ul style="margin-top: 0.5rem;">
+                  <li>What would the <code>name</code> be? (kebab-case, e.g., <code>bakery-caption</code>)</li>
+                  <li>What would the <code>description</code> say? Be specific — when exactly should this skill trigger? What contexts? What NOT to trigger for?</li>
+                </ul>
+                This is design thinking before implementation. Don't worry about the body yet.</div>
+              <div class="lang-es">Ahora, sin escribir código, <strong>bosquejá tu propia habilidad de "caption de repostería"</strong> en papel o en un archivo de texto. Escribí solo el encabezado YAML:
+                <ul style="margin-top: 0.5rem;">
+                  <li>¿Cuál sería el <code>name</code>? (kebab-case, por ejemplo, <code>bakery-caption</code>)</li>
+                  <li>¿Qué diría la <code>description</code>? Sé específica — ¿cuándo exactamente debería activarse esta habilidad? ¿En qué contextos? ¿Para qué NO debería activarse?</li>
+                </ul>
+                Esto es pensar el diseño antes de implementarlo. No te preocupes por el cuerpo todavía.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Optional: Open the terminal, navigate to the erika project root, and type <code>claude</code>. Ask it: "What skills do you have available?" See how it responds.</div>
+              <div class="lang-es">Opcional: Abrí la terminal, navegá hasta la raíz del proyecto erika y escribí <code>claude</code>. Preguntale: "What skills do you have available?" Observá cómo responde.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- NO READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">No Reading Tonight</span><span class="lang-es">Sin Lectura Esta Noche</span></summary>
+        <p>
+          <span class="lang-en">Today is hands-on exploration. If you want to dig deeper, re-read the "Claude Skills" article from yesterday with fresh eyes — the concepts will land differently now that you've seen real skill files.</span>
+          <span class="lang-es">Hoy es exploración práctica. Si querés profundizar más, volvé a leer el artículo "Claude Skills" de ayer con ojos frescos — los conceptos van a tener más sentido ahora que viste archivos de habilidades reales.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What file is at the heart of every skill?</span>
+            <span class="lang-es">¿Qué archivo está en el núcleo de cada habilidad?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>SKILL.md</code> — located at the root of the skill's folder. It contains the YAML front matter (name and description) and the body (step-by-step instructions).</div>
+            <div class="lang-es"><code>SKILL.md</code> — ubicado en la raíz de la carpeta de la habilidad. Contiene el encabezado YAML (nombre y descripción) y el cuerpo (instrucciones paso a paso).</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What part of a skill file determines when it gets triggered?</span>
+            <span class="lang-es">¿Qué parte del archivo de habilidad determina cuándo se activa?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The <strong><code>description</code> field</strong> in the YAML front matter. Claude reads all skill descriptions and pattern-matches your requests against them to decide which skill to load.</div>
+            <div class="lang-es">El <strong>campo <code>description</code></strong> en el encabezado YAML. Claude lee todas las descripciones de habilidades y compara tus solicitudes con ellas para decidir qué habilidad cargar.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the SQL analogy for a skill?</span>
+            <span class="lang-es">¿Cuál es la analogía de SQL para una habilidad?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <strong>stored procedure</strong> — it has a name (procedure name), a trigger condition (the description acts like a trigger's WHEN clause), and a body of logic that executes when invoked.</div>
+            <div class="lang-es">Un <strong>procedimiento almacenado</strong> — tiene un nombre (nombre del procedimiento), una condición de activación (la descripción actúa como la cláusula WHEN de un trigger) y un cuerpo de lógica que se ejecuta cuando se invoca.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 14 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day15.html">Next: Day 15 — The WAT Framework</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(14);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

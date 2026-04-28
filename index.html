@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="progress.js"></script>
+  <script src="language.js"></script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="site-header__hero">
+        <h1>Erika's Claude Curriculum</h1>
+        <p class="subtitle">8 weeks &nbsp;&middot;&nbsp; 40 days &nbsp;&middot;&nbsp; zero to GTM collaborator</p>
+      </div>
+      <div class="header-controls">
+        <a href="glossary.html" class="glossary-link">
+          <span class="lang-en">Glossary</span>
+          <span class="lang-es">Glosario</span>
+        </a>
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn active" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PROGRESS ===== -->
+  <section class="progress-section">
+    <div class="container">
+      <div class="progress-label">
+        <span id="progress-text">0 of 20 days complete</span>
+        <button class="btn-reset" id="btn-reset">Reset progress</button>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <div class="container">
+
+      <!-- WEEK 1 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 1</h2>
+          <span class="week-note">via Claude Desktop Project</span>
+        </div>
+        <div class="day-grid" id="week1-grid"></div>
+      </section>
+
+      <!-- WEEK 2 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 2</h2>
+          <span class="week-note">via Claude Desktop Project</span>
+        </div>
+        <div class="day-grid" id="week2-grid"></div>
+      </section>
+
+      <!-- WEEK 3 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 3</h2>
+          <span class="week-note">Claude Code begins</span>
+        </div>
+        <div class="day-grid" id="week3-grid"></div>
+      </section>
+
+      <!-- WEEK 4 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 4</h2>
+          <span class="week-note">Building real workflows</span>
+        </div>
+        <div class="day-grid" id="week4-grid"></div>
+      </section>
+
+      <!-- MONTH 2 DIVIDER -->
+      <div class="month-divider">
+        <span class="month-divider__label">Month 2 — GTM Engineering</span>
+      </div>
+
+      <!-- WEEK 5 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 5</h2>
+          <span class="week-note">Real data — CSV + Python</span>
+        </div>
+        <div class="day-grid" id="week5-grid"></div>
+      </section>
+
+      <!-- WEEK 6 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 6</h2>
+          <span class="week-note">Apify + scraping signals</span>
+        </div>
+        <div class="day-grid" id="week6-grid"></div>
+      </section>
+
+      <!-- WEEK 7 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 7</h2>
+          <span class="week-note">Visual tools + MCP</span>
+        </div>
+        <div class="day-grid" id="week7-grid"></div>
+      </section>
+
+      <!-- WEEK 8 -->
+      <section class="week-section">
+        <div class="week-header">
+          <h2>Week 8</h2>
+          <span class="week-note">Live GTM work</span>
+        </div>
+        <div class="day-grid" id="week8-grid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="dashboard-footer">
+    <div class="container">Keep going, Erika.</div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Day data ----
+    var DAYS = [
+      { day: 1,  title: "What is Claude?",               time: "~1.5 hrs", week: 1, deliverable: false },
+      { day: 2,  title: "Tokens & Context Window",        time: "~1.5 hrs", week: 1, deliverable: false },
+      { day: 3,  title: "Prompt Structure",               time: "~1.5 hrs", week: 1, deliverable: false },
+      { day: 4,  title: "Models & Temperature",           time: "~1.5 hrs", week: 1, deliverable: false },
+      { day: 5,  title: "Prompting Best Practices",       time: "~2 hrs",   week: 1, deliverable: true  },
+      { day: 6,  title: "Claude Projects",                time: "~1.5 hrs", week: 2, deliverable: false },
+      { day: 7,  title: "Custom Instructions",            time: "~1.5 hrs", week: 2, deliverable: false },
+      { day: 8,  title: "Memory in Claude",               time: "~1.5 hrs", week: 2, deliverable: false },
+      { day: 9,  title: "File Uploads & Prompt Chaining", time: "~2 hrs",   week: 2, deliverable: false },
+      { day: 10, title: "LinkedIn Workshop",              time: "~2.5 hrs", week: 2, deliverable: true  },
+      { day: 11, title: "Claude Code Intro",              time: "~2 hrs",   week: 3, deliverable: false },
+      { day: 12, title: "First Commands",                 time: "~2.5 hrs", week: 3, deliverable: false },
+      { day: 13, title: "CLAUDE.md",                      time: "~2.5 hrs", week: 3, deliverable: false },
+      { day: 14, title: "Skills",                         time: "~2.5 hrs", week: 3, deliverable: false },
+      { day: 15, title: "The WAT Framework",              time: "~3 hrs",   week: 3, deliverable: true  },
+      { day: 16, title: "Workflows",                      time: "~2.5 hrs", week: 4, deliverable: false },
+      { day: 17, title: "Tools",                          time: "~3 hrs",   week: 4, deliverable: false },
+      { day: 18, title: "APIs",                           time: "~3 hrs",   week: 4, deliverable: false },
+      { day: 19, title: "Skill Creator",                  time: "~3 hrs",   week: 4, deliverable: false },
+      { day: 20, title: "Integration Day",                time: "~3.5 hrs", week: 4, deliverable: true  },
+      { day: 21, title: "Python for SQL Devs",            time: "~3 hrs",   week: 5, deliverable: false },
+      { day: 22, title: "Pandas & Lead Cleaning",         time: "~3 hrs",   week: 5, deliverable: false },
+      { day: 23, title: "HTTP Requests",                  time: "~3 hrs",   week: 5, deliverable: false },
+      { day: 24, title: "First Enrichment Pipeline",      time: "~3.5 hrs", week: 5, deliverable: false },
+      { day: 25, title: "Error Handling & .env",          time: "~3 hrs",   week: 5, deliverable: true  },
+      { day: 26, title: "Apify & the Actor Model",        time: "~3 hrs",   week: 6, deliverable: false },
+      { day: 27, title: "Apify from Python",              time: "~3 hrs",   week: 6, deliverable: false },
+      { day: 28, title: "Job Posting Signals",            time: "~3.5 hrs", week: 6, deliverable: false },
+      { day: 29, title: "Apollo API Basics",              time: "~3.5 hrs", week: 6, deliverable: false },
+      { day: 30, title: "Week 6 Integration",             time: "~3 hrs",   week: 6, deliverable: true  },
+      { day: 31, title: "MCP Deep Dive",                  time: "~3 hrs",   week: 7, deliverable: false },
+      { day: 32, title: "Figma MCP in Action",            time: "~3.5 hrs", week: 7, deliverable: false },
+      { day: 33, title: "Image Generation APIs",          time: "~3.5 hrs", week: 7, deliverable: false },
+      { day: 34, title: "Visual Brand Pipeline",          time: "~3.5 hrs", week: 7, deliverable: false },
+      { day: 35, title: "Personal Brand Kit",             time: "~4 hrs",   week: 7, deliverable: true  },
+      { day: 36, title: "ICP Scoring Model",              time: "~3.5 hrs", week: 8, deliverable: false },
+      { day: 37, title: "Calibrate the Scores",           time: "~3.5 hrs", week: 8, deliverable: false },
+      { day: 38, title: "Apollo Push",                    time: "~3.5 hrs", week: 8, deliverable: false },
+      { day: 39, title: "Pipeline Rehearsal",             time: "~3.5 hrs", week: 8, deliverable: false },
+      { day: 40, title: "Graduation Day",                 time: "~4 hrs",   week: 8, deliverable: true  }
+    ];
+
+    function getPageUrl(day) {
+      if (day.week === 3) return "week3/day" + day.day + ".html";
+      if (day.week === 4) return "week4/day" + day.day + ".html";
+      if (day.week === 5) return "week5/day" + day.day + ".html";
+      if (day.week === 6) return "week6/day" + day.day + ".html";
+      if (day.week === 7) return "week7/day" + day.day + ".html";
+      if (day.week === 8) return "week8/day" + day.day + ".html";
+      return null;
+    }
+
+    function el(tag, cls) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      return e;
+    }
+
+    function buildCard(day) {
+      var complete = isComplete(day.day);
+      var url = getPageUrl(day);
+
+      var classes = "day-card";
+      if (complete)       classes += " day-card--complete";
+      if (day.deliverable) classes += " day-card--deliverable";
+      if (!url)           classes += " day-card--locked";
+
+      var card = url && !complete ? document.createElement("a") : document.createElement("div");
+      card.className = classes;
+      if (url && !complete) card.href = url;
+
+      // Checkmark
+      var check = el("div", "day-card__check");
+      check.textContent = "✓";
+      card.appendChild(check);
+
+      // Day number
+      var num = el("div", "day-card__num");
+      num.textContent = "Day " + day.day;
+      card.appendChild(num);
+
+      // Title (+ star badge if deliverable)
+      var titleEl = el("div", "day-card__title");
+      titleEl.textContent = day.title;
+      if (day.deliverable) {
+        var star = el("span", "deliverable-star");
+        star.textContent = " ★";
+        titleEl.appendChild(star);
+      }
+      card.appendChild(titleEl);
+
+      // Meta row
+      var meta = el("div", "day-card__meta");
+      var timeSpan = el("span");
+      timeSpan.textContent = day.time;
+      var weekSpan = el("span");
+      weekSpan.textContent = "Week " + day.week;
+      meta.appendChild(timeSpan);
+      meta.appendChild(weekSpan);
+      card.appendChild(meta);
+
+      // Weeks 1-2 click message
+      if (!url) {
+        card.addEventListener("click", function() {
+          showToast("Days 1–10 are delivered through your Claude Desktop Project");
+        });
+      }
+
+      return card;
+    }
+
+    function renderGrid(containerId, days) {
+      var container = document.getElementById(containerId);
+      days.forEach(function(d) { container.appendChild(buildCard(d)); });
+    }
+
+    function updateProgressBar() {
+      var prog = getProgress();
+      var count = prog.completed.length;
+      var total = DAYS.length;
+      document.getElementById("progress-text").textContent =
+        count + " of " + total + " day" + (count !== 1 ? "s" : "") + " complete";
+      document.getElementById("progress-bar").style.width = (count / total * 100).toFixed(1) + "%";
+    }
+
+    document.getElementById("btn-reset").addEventListener("click", function() {
+      var reset = resetProgress();
+      if (reset) {
+        ["week1-grid","week2-grid","week3-grid","week4-grid","week5-grid","week6-grid","week7-grid","week8-grid"].forEach(function(id) {
+          document.getElementById(id).textContent = "";
+        });
+        init();
+        showToast("Progress reset.");
+      }
+    });
+
+    var toastTimer;
+    function showToast(msg) {
+      var t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { t.classList.remove("show"); }, 3200);
+    }
+
+    function init() {
+      renderGrid("week1-grid", DAYS.filter(function(d) { return d.week === 1; }));
+      renderGrid("week2-grid", DAYS.filter(function(d) { return d.week === 2; }));
+      renderGrid("week3-grid", DAYS.filter(function(d) { return d.week === 3; }));
+      renderGrid("week4-grid", DAYS.filter(function(d) { return d.week === 4; }));
+      renderGrid("week5-grid", DAYS.filter(function(d) { return d.week === 5; }));
+      renderGrid("week6-grid", DAYS.filter(function(d) { return d.week === 6; }));
+      renderGrid("week7-grid", DAYS.filter(function(d) { return d.week === 7; }));
+      renderGrid("week8-grid", DAYS.filter(function(d) { return d.week === 8; }));
+      updateProgressBar();
+    }
+
+    init();
+
+    // Floating sticky header
+    (function () {
+      var hdr = document.querySelector('.site-header');
+      window.addEventListener('scroll', function () {
+        hdr.classList.toggle('scrolled', window.scrollY > 56);
+      }, { passive: true });
+    })();
+  </script>
+
+</body>
+</html>

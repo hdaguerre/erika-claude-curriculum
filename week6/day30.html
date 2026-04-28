@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 30 — Week 6 Integration</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 6</span>
+          <span>Day 30 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 6</span>
+        <span class="badge badge--day">Day 30</span>
+        <span class="badge badge--deliverable">Deliverable</span>
+      </div>
+      <h1>Week 6 Integration</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours &nbsp;·&nbsp; Deliverable: enriched_sample.csv</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. The enriched lead list — putting it all together</span><span class="lang-es">1. La lista de leads enriquecida — juntando todo</span></h3>
+
+          <div class="lang-en">
+            <p>This week you built three distinct enrichment layers on top of your cleaned lead list:</p>
+            <ul>
+              <li><strong>Day 26:</strong> Company data — size, industry, location</li>
+              <li><strong>Day 27:</strong> Tech stack — what tools they already use (via BuiltWith/Apify)</li>
+              <li><strong>Day 28:</strong> Hiring signal — are they actively hiring GTM roles? (True/False)</li>
+            </ul>
+            <p>Today you run all of these steps on a real sample — 30 to 50 rows — and produce a single enriched CSV that is ready to score or push to Apollo. This is your Week 6 deliverable.</p>
+          </div>
+          <div class="lang-es">
+            <p>Esta semana construiste tres capas distintas de enriquecimiento sobre tu lista de leads limpia:</p>
+            <ul>
+              <li><strong>Día 26:</strong> Datos de empresa — tamaño, industria, ubicación</li>
+              <li><strong>Día 27:</strong> Tech stack — qué herramientas ya usan (via BuiltWith/Apify)</li>
+              <li><strong>Día 28:</strong> Señal de contratación — ¿están contratando activamente para roles GTM? (True/False)</li>
+            </ul>
+            <p>Hoy ejecutás todos estos pasos en una muestra real — 30 a 50 filas — y producís un único CSV enriquecido que está listo para puntuar o empujar a Apollo. Este es tu entregable de la Semana 6.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>This full pipeline is like a <strong>multi-step ETL job</strong> — Extract (clean_leads.py), Transform (enrich_list.py, fetch_tech_stack.py, hiring signals), Load (enriched_sample.csv, ready for Apollo). Each step has a clear input and output. This is exactly how Oracle Data Integrator (ODI) or SQL*Plus batch scripts work: one stage feeds the next.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Este pipeline completo es como un <strong>job ETL de múltiples pasos</strong> — Extract (clean_leads.py), Transform (enrich_list.py, fetch_tech_stack.py, señales de contratación), Load (enriched_sample.csv, listo para Apollo). Cada paso tiene un input y output claros. Así es exactamente cómo funcionan Oracle Data Integrator (ODI) o los batch scripts de SQL*Plus: una etapa alimenta a la siguiente.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>A scored-ready CSV with 3 enrichment columns is worth 10x more than a raw list. You just built the machine that produces it. Most GTM teams buy this data from vendors for thousands of dollars — you built it yourself with Python and free APIs.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Un CSV listo para puntuar con 3 columnas de enriquecimiento vale 10 veces más que una lista cruda. Acabás de construir la máquina que lo produce. La mayoría de los equipos GTM compran estos datos a proveedores por miles de dólares — vos lo construiste sola con Python y APIs gratuitas.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Integration verification</span><span class="lang-es">2. Verificación de integración</span></h3>
+
+          <div class="lang-en">
+            <p>Running a pipeline end-to-end always surfaces integration bugs — problems that don't appear when you test each step in isolation. The most common ones:</p>
+            <ul>
+              <li><strong>Column name mismatch:</strong> Step 1 outputs <code>company_name</code>, Step 2 expects <code>company</code> — KeyError.</li>
+              <li><strong>Type mismatch:</strong> Step 1 outputs a number as a string, Step 2 tries to compare it as an integer.</li>
+              <li><strong>Missing field:</strong> Some rows have no domain — the tech stack function receives <code>None</code> and crashes.</li>
+            </ul>
+            <p>After each step, do a quick check: column count, null rate in key columns, a sample of 3–5 values. This takes 30 seconds and catches most problems before they cascade.</p>
+          </div>
+          <div class="lang-es">
+            <p>Ejecutar un pipeline de punta a punta siempre revela bugs de integración — problemas que no aparecen cuando probás cada paso de forma aislada. Los más comunes:</p>
+            <ul>
+              <li><strong>Nombre de columna incorrecto:</strong> El Paso 1 produce <code>company_name</code>, el Paso 2 espera <code>company</code> — KeyError.</li>
+              <li><strong>Tipo incorrecto:</strong> El Paso 1 produce un número como string, el Paso 2 intenta compararlo como entero.</li>
+              <li><strong>Campo faltante:</strong> Algunas filas no tienen dominio — la función de tech stack recibe <code>None</code> y crashea.</li>
+            </ul>
+            <p>Después de cada paso, hacé una verificación rápida: conteo de columnas, tasa de nulos en columnas clave, una muestra de 3–5 valores. Esto toma 30 segundos y atrapa la mayoría de los problemas antes de que se propaguen.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>This is exactly the <strong>data quality check</strong> you would run after loading a staging table in Oracle: <code>SELECT COUNT(*), COUNT(email), COUNT(domain), COUNT(tech_stack) FROM staging_leads;</code> — comparing column counts tells you immediately where data is dropping off.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Esto es exactamente la <strong>verificación de calidad de datos</strong> que ejecutarías después de cargar una tabla de staging en Oracle: <code>SELECT COUNT(*), COUNT(email), COUNT(domain), COUNT(tech_stack) FROM staging_leads;</code> — comparar los conteos de columnas te dice inmediatamente dónde se están perdiendo datos.</p>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise — Full Pipeline Run (~2.5 hours)</span><span class="lang-es">Ejercicio — Ejecución Completa del Pipeline (~2.5 horas)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run clean_leads.py.</strong> Execute <code>python tools/clean_leads.py</code> on your raw lead file. After it finishes: check the row count, confirm no rows have a missing email, and note how many rows were removed in cleaning. This is your baseline.</div>
+              <div class="lang-es"><strong>Ejecutá clean_leads.py.</strong> Ejecutá <code>python tools/clean_leads.py</code> en tu archivo de leads crudo. Después de que termine: verificá el conteo de filas, confirmá que ninguna fila tiene email faltante y anotá cuántas filas se eliminaron en la limpieza. Este es tu baseline.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run enrich_list.py.</strong> Execute <code>python tools/enrich_list.py</code>. After it finishes: open the output CSV and confirm the company data column was added. Check that the column has values for most rows — if more than 30% are empty, something is wrong with the domain lookup.</div>
+              <div class="lang-es"><strong>Ejecutá enrich_list.py.</strong> Ejecutá <code>python tools/enrich_list.py</code>. Después de que termine: abrí el CSV de salida y confirmá que se agregó la columna de datos de empresa. Verificá que la columna tiene valores para la mayoría de las filas — si más del 30% están vacías, algo está mal con la búsqueda de dominio.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Run fetch_tech_stack.py on 5 rows.</strong> Apify's free tier has usage limits — don't run on all rows. Pick 5 rows and run the tech stack lookup on them. Confirm you get back a populated <code>tech_stack</code> column for those rows.</div>
+              <div class="lang-es"><strong>Ejecutá fetch_tech_stack.py en 5 filas.</strong> El tier gratuito de Apify tiene límites de uso — no ejecutes en todas las filas. Elegí 5 filas y ejecutá la búsqueda de tech stack en ellas. Confirmá que obtenés una columna <code>tech_stack</code> completa para esas filas.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Add hiring_signal for the same 5 rows.</strong> Run the hiring signal function on the same 5 rows. After running: open the CSV and confirm both <code>tech_stack</code> and <code>hiring_signal</code> columns are present and populated for your test rows.</div>
+              <div class="lang-es"><strong>Agregá hiring_signal para las mismas 5 filas.</strong> Ejecutá la función de señal de contratación en las mismas 5 filas. Después de ejecutar: abrí el CSV y confirmá que tanto las columnas <code>tech_stack</code> como <code>hiring_signal</code> están presentes y completas para tus filas de prueba.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open the final CSV and audit it.</strong> Confirm these columns exist: <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>company</code>, <code>domain</code>, <code>company_size</code>, <code>tech_stack</code>, <code>hiring_signal</code>. Count how many rows made it through. What was the dropout rate from start to finish?</div>
+              <div class="lang-es"><strong>Abrí el CSV final y auditalo.</strong> Confirmá que existen estas columnas: <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>company</code>, <code>domain</code>, <code>company_size</code>, <code>tech_stack</code>, <code>hiring_signal</code>. Contá cuántas filas llegaron hasta el final. ¿Cuál fue la tasa de deserción de principio a fin?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Save as tools/enriched_sample.csv and show Hernan.</strong> Save the final output as <code>tools/enriched_sample.csv</code>. Open it together with Hernan — does the data make sense? Are the tech stacks recognizable? Do the hiring signals match what you'd expect for those companies?</div>
+              <div class="lang-es"><strong>Guardá como tools/enriched_sample.csv y mostráselo a Hernán.</strong> Guardá el output final como <code>tools/enriched_sample.csv</code>. Abrilo junto con Hernán — ¿los datos tienen sentido? ¿Los tech stacks son reconocibles? ¿Las señales de contratación coinciden con lo que esperarías para esas empresas?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">What is a GTM data stack?</span><span class="lang-es">¿Qué es un GTM data stack?</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Sketch the full GTM data stack for a typical B2B SaaS company — from raw data sources (lists, web scraping, intent data) through enrichment, scoring, CRM, and outbound. Where does each tool fit? What does data look like at each stage?"</em> Read the response carefully. You have now built a real piece of this stack yourself — you should recognize where your pipeline fits in.</span>
+          <span class="lang-es">Preguntale a Claude: <em>"Sketch the full GTM data stack for a typical B2B SaaS company — from raw data sources (lists, web scraping, intent data) through enrichment, scoring, CRM, and outbound. Where does each tool fit? What does data look like at each stage?"</em> Leé la respuesta con atención. Ahora construiste una pieza real de este stack vos misma — deberías reconocer dónde encaja tu pipeline.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is an integration bug?</span>
+            <span class="lang-es">¿Qué es un bug de integración?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">When the output format of one pipeline step doesn't match what the next step expects — a wrong column name, a missing field, or a type mismatch (e.g., string where a number is expected). Each step works fine in isolation, but they break when connected.</div>
+            <div class="lang-es">Cuando el formato de output de un paso del pipeline no coincide con lo que espera el siguiente paso — un nombre de columna incorrecto, un campo faltante o un tipo incorrecto (por ejemplo, un string donde se espera un número). Cada paso funciona bien de forma aislada, pero se rompen cuando se conectan.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What columns does the enriched CSV have after Week 6?</span>
+            <span class="lang-es">¿Qué columnas tiene el CSV enriquecido después de la Semana 6?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>company</code>, <code>domain</code>, <code>company_size</code>, <code>tech_stack</code>, <code>hiring_signal</code>. Eight columns — a complete enriched lead record ready for scoring or CRM push.</div>
+            <div class="lang-es"><code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>company</code>, <code>domain</code>, <code>company_size</code>, <code>tech_stack</code>, <code>hiring_signal</code>. Ocho columnas — un registro de lead enriquecido completo, listo para puntuar o empujar al CRM.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Why run on a small sample first?</span>
+            <span class="lang-es">¿Por qué ejecutar en una muestra pequeña primero?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">To catch bugs cheaply before spending API credits on thousands of rows. Each Apify run costs credits — a bug on row 1 that you discover at row 500 means you wasted credits on 499 bad runs. Test small, fix issues, then scale up.</div>
+            <div class="lang-es">Para atrapar bugs de forma barata antes de gastar créditos de API en miles de filas. Cada ejecución de Apify cuesta créditos — un bug en la fila 1 que descubrís en la fila 500 significa que desperdiciaste créditos en 499 ejecuciones malas. Probá en pequeño, arreglá los problemas, luego escalá.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 30 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="../week7/day31.html">Next: Day 31 — MCP Deep Dive</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(30);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 37 — Calibrate the Scores</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 8</span>
+          <span>Day 37 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 8</span>
+        <span class="badge badge--day">Day 37</span>
+      </div>
+      <h1>Calibrate the Scores</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What calibration means in a scoring context</span><span class="lang-es">1. Qué significa calibración en un contexto de puntuación</span></h3>
+
+          <div class="lang-en">
+            <p>A scoring model is only useful if its rankings reflect reality. <strong>Calibration</strong> means running the model, reviewing the output, and adjusting weights until the rankings match what a human expert would expect.</p>
+            <p>If the model ranks a company as score 95 but Hernan looks at it and says "that's not a good fit at all" — that's a calibration problem. Either the weights are wrong or you're missing a disqualifying signal. Both are fixable.</p>
+            <p>The goal isn't perfection on the first run. The goal is a feedback loop: run → review → adjust → repeat, until the model's top 10 consistently matches Hernan's judgment.</p>
+          </div>
+          <div class="lang-es">
+            <p>Un modelo de puntuación solo es útil si sus rankings reflejan la realidad. <strong>Calibración</strong> significa ejecutar el modelo, revisar el resultado y ajustar los pesos hasta que los rankings coincidan con lo que un experto humano esperaría.</p>
+            <p>Si el modelo puntúa una empresa con 95 pero Hernan la mira y dice "eso no es un buen ajuste para nada" — eso es un problema de calibración. O los pesos están mal o te falta una señal descalificadora. Ambas cosas se pueden arreglar.</p>
+            <p>El objetivo no es la perfección en la primera ejecución. El objetivo es un bucle de retroalimentación: ejecutar → revisar → ajustar → repetir, hasta que el top 10 del modelo coincida consistentemente con el criterio de Hernan.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Calibration is like tuning a query's WHERE clause based on actual results. You run a report, look at the output, find false positives (rows that shouldn't be there) and false negatives (rows that should be there but aren't), then adjust the filter conditions and re-run. Same concept — different medium.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>La calibración es como ajustar la cláusula WHERE de una consulta basándote en resultados reales. Ejecutás un reporte, mirás el resultado, encontrás falsos positivos (filas que no deberían estar) y falsos negativos (filas que deberían estar pero no están), después ajustás las condiciones de filtro y volvés a ejecutar. Mismo concepto — medio diferente.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. The calibration workflow</span><span class="lang-es">2. El flujo de trabajo de calibración</span></h3>
+
+          <div class="lang-en">
+            <ol>
+              <li><strong>Step 1:</strong> Run the model on 50 rows, review the top 10 and bottom 10</li>
+              <li><strong>Step 2:</strong> For each of the top 10 — would Hernan actually reach out to this company? For each of the bottom 10 — did any good companies end up low?</li>
+              <li><strong>Step 3:</strong> Identify the pattern — what signal is overweighted? What signal is missing or underweighted?</li>
+              <li><strong>Step 4:</strong> Adjust weights in score_leads.py, re-run, repeat</li>
+            </ol>
+            <p>Two or three calibration rounds is usually enough to get from "rough first pass" to "model Hernan trusts."</p>
+          </div>
+          <div class="lang-es">
+            <ol>
+              <li><strong>Paso 1:</strong> Ejecutar el modelo sobre 50 filas, revisar el top 10 y el bottom 10</li>
+              <li><strong>Paso 2:</strong> Para cada uno del top 10 — ¿Hernan realmente contactaría esta empresa? Para cada uno del bottom 10 — ¿alguna buena empresa terminó baja?</li>
+              <li><strong>Paso 3:</strong> Identificar el patrón — ¿qué señal tiene demasiado peso? ¿Qué señal falta o tiene poco peso?</li>
+              <li><strong>Paso 4:</strong> Ajustar los pesos en score_leads.py, volver a ejecutar, repetir</li>
+            </ol>
+            <p>Dos o tres rondas de calibración suelen ser suficientes para pasar de "primer borrador" a "modelo en el que Hernan confía."</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>A false positive costs time — you reach out to a bad-fit company. A false negative costs opportunity — you miss a great-fit company. Calibration is the process of reducing both. You can't eliminate them entirely, but you can make the model reliable enough to trust.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Un falso positivo cuesta tiempo — contactás a una empresa que no es buen ajuste. Un falso negativo cuesta oportunidad — te perdés una empresa que sería perfecto. La calibración es el proceso de reducir ambos. No podés eliminarlos completamente, pero podés hacer el modelo lo suficientemente confiable como para usarlo.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Run <code>python tools/score_leads.py</code> on the full enriched sample. Make sure it completes without errors.</div>
+              <div class="lang-es">Ejecutá <code>python tools/score_leads.py</code> sobre el sample enriquecido completo. Asegurate de que complete sin errores.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Print the top 10 and bottom 10 rows.</strong> Ask Claude to add a print statement to score_leads.py: "Add a print statement at the end that shows the top 10 and bottom 10 rows by score, displaying: company name, score, and the 5 scoring columns."</div>
+              <div class="lang-es"><strong>Imprimí el top 10 y bottom 10.</strong> Pedile a Claude que agregue un print a score_leads.py: "Add a print statement at the end that shows the top 10 and bottom 10 rows by score, displaying: company name, score, and the 5 scoring columns."</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Go through the top 10 with Hernan.</strong> For each company: "Is this actually a good fit? Why or why not?" Take notes — you're looking for patterns in what's wrong, not just one-off corrections.</div>
+              <div class="lang-es"><strong>Revisá el top 10 con Hernan.</strong> Para cada empresa: "¿Es realmente un buen ajuste? ¿Por qué sí o por qué no?" Tomá notas — estás buscando patrones en lo que está mal, no solo correcciones aisladas.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Based on Hernan's feedback, identify 2–3 weight adjustments.</strong> Which signal is too strong? Which is too weak? Is there a disqualifying criterion you're missing entirely (e.g., companies in a country you don't serve)?</div>
+              <div class="lang-es"><strong>Basándote en el feedback de Hernan, identificá 2-3 ajustes de peso.</strong> ¿Qué señal es demasiado fuerte? ¿Cuál es demasiado débil? ¿Hay un criterio descalificador que te falta por completo (ej: empresas en un país al que no servís)?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Update score_leads.py</strong> with the adjusted weights. Re-run. Review the new top 10 again — did the rankings improve?</div>
+              <div class="lang-es"><strong>Actualizá score_leads.py</strong> con los pesos ajustados. Volvé a ejecutar. Revisá el nuevo top 10 — ¿mejoraron los rankings?</div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="insight-callout lang-en" style="margin-top: 1.5rem;">
+          <div class="insight-callout__label">Deliverable</div>
+          <p>A <code>tools/scored_leads.csv</code> with at least 30 rows, sorted by score, where the top 10 are companies Hernan would actually want to reach out to. This file is the input for Day 38.</p>
+        </div>
+        <div class="insight-callout lang-es" style="margin-top: 1.5rem;">
+          <div class="insight-callout__label">Entregable</div>
+          <p>Un <code>tools/scored_leads.csv</code> con al menos 30 filas, ordenadas por puntuación, donde el top 10 son empresas a las que Hernan realmente quiere contactar. Este archivo es la entrada para el Día 38.</p>
+        </div>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>Precision vs recall in machine learning</strong> — ask Claude to explain these concepts using your scoring model as the example. Prompt: "Explain precision vs recall using a lead scoring model as the example. What does a high-precision model look like? A high-recall model? Which matters more for outbound sales?"</span>
+          <span class="lang-es"><strong>Precisión vs recall en machine learning</strong> — pedile a Claude que explique estos conceptos usando tu modelo de puntuación como ejemplo. Prompt: "Explica precision vs recall usando un modelo de puntuación de leads como ejemplo. ¿Cómo es un modelo de alta precisión? ¿Uno de alto recall? ¿Cuál importa más para ventas outbound?"</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is a "false positive" in the context of a lead scoring model?</span>
+            <span class="lang-es">¿Qué es un "falso positivo" en el contexto de un modelo de puntuación de leads?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A company that scored high but isn't actually a good fit — it "fooled" the model into ranking it highly. This wastes outreach time on a company that will never convert. Calibration reduces false positives by identifying which signals are overweighted.</div>
+            <div class="lang-es">Una empresa que puntuó alto pero en realidad no es un buen ajuste — "engañó" al modelo haciéndolo rankearla alto. Esto desperdicia tiempo de outreach en una empresa que nunca va a convertir. La calibración reduce los falsos positivos identificando qué señales tienen demasiado peso.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the calibration workflow?</span>
+            <span class="lang-es">¿Cuál es el flujo de trabajo de calibración?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Run the model → review top and bottom results with a domain expert → identify over/under-weighted signals → adjust weights → repeat. Two or three rounds usually gets you from rough to reliable.</div>
+            <div class="lang-es">Ejecutar el modelo → revisar los resultados del top y bottom con un experto en el dominio → identificar señales con mucho/poco peso → ajustar pesos → repetir. Dos o tres rondas suelen ser suficientes para pasar de borrador a confiable.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">How do you know when the model is calibrated well enough?</span>
+            <span class="lang-es">¿Cómo sabés cuándo el modelo está suficientemente calibrado?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">When the top-ranked companies consistently match what a human expert would prioritize — Hernan looks at the top 10 and agrees with it. You don't need perfection, you need trust: would Hernan use this list to plan his outreach week?</div>
+            <div class="lang-es">Cuando las empresas con mayor ranking coincidan consistentemente con lo que un experto humano priorizaría — Hernan mira el top 10 y está de acuerdo. No necesitás perfección, necesitás confianza: ¿usaría Hernan esta lista para planear su semana de outreach?</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 37 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day38.html">Next: Day 38 — Apollo Push</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(37);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

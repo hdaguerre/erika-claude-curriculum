@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 34 — Visual Brand Pipeline</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 7</span>
+          <span>Day 34 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 7</span>
+        <span class="badge badge--day">Day 34</span>
+      </div>
+      <h1><span class="lang-en">Visual Brand Pipeline</span><span class="lang-es">Pipeline Visual de Marca</span></h1>
+      <div class="lesson-header__meta"><span class="lang-en">Estimated time: ~3.5 hours · Brand Kit Day 3</span><span class="lang-es">Tiempo estimado: ~3.5 horas · Brand Kit Día 3</span></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Connecting MCP + image generation into a pipeline</span><span class="lang-es">1. Conectando MCP + generación de imágenes en un pipeline</span></h3>
+
+          <div class="lang-en">
+            <p>Each tool built separately this week — Figma MCP reads design data, image gen creates visuals, Python scripts manage files. Today they connect.</p>
+            <p>The pipeline:</p>
+            <ol>
+              <li>Figma MCP reads brand frame colors and fonts</li>
+              <li>Claude constructs an image generation prompt using those exact values</li>
+              <li><code>generate_image.py</code> creates the asset and saves it to <code>brand-kit/assets/</code></li>
+            </ol>
+            <p>This is the same orchestration pattern as the GTM pipeline — Claude reads from one source, transforms the data, calls a tool with the result.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cada herramienta construida por separado esta semana — Figma MCP lee datos de diseño, la generación de imágenes crea visuales, los scripts de Python gestionan archivos. Hoy se conectan.</p>
+            <p>El pipeline:</p>
+            <ol>
+              <li>Figma MCP lee los colores y fuentes del frame de marca</li>
+              <li>Claude construye un prompt de generación de imágenes usando esos valores exactos</li>
+              <li><code>generate_image.py</code> crea el asset y lo guarda en <code>brand-kit/assets/</code></li>
+            </ol>
+            <p>Este es el mismo patrón de orquestación que el pipeline GTM — Claude lee de una fuente, transforma los datos, llama a una herramienta con el resultado.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Directing Claude Code as a creative director</span><span class="lang-es">2. Dirigir Claude Code como directora creativa</span></h3>
+
+          <div class="lang-en">
+            <p>You don't generate images manually — you write creative briefs in natural language, and Claude translates them into technical API calls. "I want a LinkedIn banner that feels warm and professional, uses terracotta and cream, and shows abstract flowing shapes" → Claude writes the exact prompt for the image API.</p>
+          </div>
+          <div class="lang-es">
+            <p>No generás imágenes manualmente — escribís briefs creativos en lenguaje natural y Claude los traduce en llamadas técnicas a la API. "Quiero un banner de LinkedIn que se sienta cálido y profesional, use terracota y crema, y muestre formas abstractas fluidas" → Claude escribe el prompt exacto para la API de imágenes.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>This is the pattern for all creative work with Claude Code: you define the aesthetic direction in plain language, Claude handles the technical translation. You're the art director — Claude is the production team.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Este es el patrón para todo el trabajo creativo con Claude Code: vos definís la dirección estética en lenguaje llano, Claude maneja la traducción técnica. Sos la directora de arte — Claude es el equipo de producción.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">Brand Kit Day 3</span><span class="lang-es">Brand Kit Día 3</span></h3>
+
+          <div class="lang-en">
+            <p><strong>Today you complete the visual layer of your Personal Brand Kit.</strong> Your deliverables by end of day:</p>
+            <ul>
+              <li>LinkedIn banner image (1584x396) — generated today</li>
+              <li>Profile photo background or visual element</li>
+              <li>One template for a LinkedIn post visual</li>
+            </ul>
+            <p>Save all three to <code>brand-kit/assets/</code>. Then update your LinkedIn profile with the new banner.</p>
+          </div>
+          <div class="lang-es">
+            <p><strong>Hoy completás la capa visual de tu Personal Brand Kit.</strong> Tus entregables para fin del día:</p>
+            <ul>
+              <li>Imagen de banner de LinkedIn (1584x396) — generada hoy</li>
+              <li>Fondo de foto de perfil o elemento visual</li>
+              <li>Un template para un visual de post de LinkedIn</li>
+            </ul>
+            <p>Guardá los tres en <code>brand-kit/assets/</code>. Luego actualizá tu perfil de LinkedIn con el nuevo banner.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~90 minutes)</span><span class="lang-es">Ejercicio (~90 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code to read your <code>brand-kit/CLAUDE.md</code> and extract the color palette and visual style description. Ask Claude to summarize them in one paragraph.</div>
+              <div class="lang-es">Pedile a Claude Code que lea tu <code>brand-kit/CLAUDE.md</code> y extraiga la paleta de colores y la descripción del estilo visual. Pedile a Claude que los resuma en un párrafo.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"Using the visual style from my CLAUDE.md, write 3 different image generation prompts — one for a LinkedIn banner (1584x396), one for a profile background, one for a post visual. Make the prompts technically specific: include exact color descriptions, style, composition, and dimensions."</em></div>
+              <div class="lang-es">Preguntale a Claude: <em>"Usando el estilo visual de mi CLAUDE.md, escribí 3 prompts de generación de imágenes distintos — uno para un banner de LinkedIn (1584x396), uno para un fondo de perfil, uno para un visual de post. Hacé los prompts técnicamente específicos: incluí descripciones exactas de colores, estilo, composición y dimensiones."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run all 3 prompts through <code>tools/generate_image.py</code>. You should have 3 output files.</div>
+              <div class="lang-es">Ejecutá los 3 prompts a través de <code>tools/generate_image.py</code>. Deberías tener 3 archivos de output.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Review the results — open each image. If any feel off, tell Claude what's wrong and ask it to refine the prompt. Re-run until you have versions you're genuinely happy with. Iteration is normal.</div>
+              <div class="lang-es">Revisá los resultados — abrí cada imagen. Si alguna no te convence, decile a Claude qué está mal y pedile que refine el prompt. Volvé a ejecutar hasta que tengas versiones con las que estés genuinamente conforme. La iteración es normal.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Save the final images to <code>brand-kit/assets/</code> with clear names: <code>linkedin-banner.png</code>, <code>profile-bg.png</code>, <code>post-template.png</code>.</div>
+              <div class="lang-es">Guardá las imágenes finales en <code>brand-kit/assets/</code> con nombres claros: <code>linkedin-banner.png</code>, <code>profile-bg.png</code>, <code>post-template.png</code>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Go live:</strong> upload the LinkedIn banner to your actual LinkedIn profile. This is the first visual piece of your brand kit in the world.</div>
+              <div class="lang-es"><strong>Publicalo:</strong> subí el banner de LinkedIn a tu perfil real de LinkedIn. Esta es la primera pieza visual de tu brand kit en el mundo.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p>
+          <span class="lang-en"><strong>"Prompt engineering for image generation"</strong> — ask Claude to give you a structured framework for writing image prompts. Ask for it as a one-page reference you can save to <code>brand-kit/references/image-prompt-framework.md</code>.</span>
+          <span class="lang-es"><strong>"Prompt engineering para generación de imágenes"</strong> — pedile a Claude que te dé un framework estructurado para escribir prompts de imágenes. Pedíselo como una referencia de una página que puedas guardar en <code>brand-kit/references/image-prompt-framework.md</code>.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the three-step visual brand pipeline built today?</span>
+            <span class="lang-es">¿Cuál es el pipeline visual de marca de tres pasos construido hoy?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Figma MCP reads brand data → Claude constructs image prompts using those values → generate_image.py creates and saves the visual assets to brand-kit/assets/.</div>
+            <div class="lang-es">Figma MCP lee datos de marca → Claude construye prompts de imágenes usando esos valores → generate_image.py crea y guarda los assets visuales en brand-kit/assets/.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is your role in this creative pipeline?</span>
+            <span class="lang-es">¿Cuál es tu rol en este pipeline creativo?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Art director — you define the aesthetic direction in plain language, Claude handles the technical translation to API calls. You give the creative brief, Claude executes it.</div>
+            <div class="lang-es">Directora de arte — vos definís la dirección estética en lenguaje llano, Claude maneja la traducción técnica a llamadas de API. Vos das el brief creativo, Claude lo ejecuta.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What are the three visual brand assets produced today?</span>
+            <span class="lang-es">¿Cuáles son los tres assets visuales de marca producidos hoy?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">LinkedIn banner (1584x396), profile photo background or visual element, and a post visual template — all saved to brand-kit/assets/.</div>
+            <div class="lang-es">Banner de LinkedIn (1584x396), fondo de foto de perfil o elemento visual, y un template de visual para posts — todos guardados en brand-kit/assets/.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">
+      <span class="lang-en">Mark Day 34 Complete</span>
+      <span class="lang-es">Marcar Día 34 Completo</span>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day35.html"><span class="lang-en">Next: Day 35 — Personal Brand Kit</span><span class="lang-es">Siguiente: Día 35 — Personal Brand Kit</span></a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(34);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

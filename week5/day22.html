@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 22 — Pandas &amp; Lead Cleaning</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 5</span>
+          <span>Day 22 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 5</span>
+        <span class="badge badge--day">Day 22</span>
+      </div>
+      <h1>Pandas &amp; Lead Cleaning</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What pandas is and why it matters for lead work</span><span class="lang-es">1. Qué es pandas y por qué importa para el trabajo con leads</span></h3>
+
+          <div class="lang-en">
+            <p>pandas is a Python library for working with tabular data. Think of it as an in-memory Oracle table that you can query, filter, transform, and export — all with Python code. No database connection required.</p>
+            <p>A pandas <strong>DataFrame</strong> is exactly a SQL result set: rows and columns, each column has a name and a data type. When you load a CSV into a DataFrame, you have the full table in memory and can start working with it immediately.</p>
+            <p>Here are the direct SQL translations:</p>
+            <ul>
+              <li><code>pd.read_csv("leads.csv")</code> = <code>SELECT * FROM leads</code> — load the whole table</li>
+              <li><code>df.dropna(subset=["email"])</code> = <code>WHERE email IS NOT NULL</code> — filter out empty values</li>
+              <li><code>df.drop_duplicates()</code> = <code>SELECT DISTINCT *</code> — remove exact duplicate rows</li>
+              <li><code>df[df["email"].str.contains("@")]</code> = <code>WHERE email LIKE '%@%'</code> — filter rows by a condition</li>
+              <li><code>df.to_csv("output.csv")</code> = exporting the result set to a file</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>pandas es una librería de Python para trabajar con datos tabulares. Pensala como una tabla Oracle en memoria que podés consultar, filtrar, transformar y exportar — todo con código Python. Sin necesidad de conexión a base de datos.</p>
+            <p>Un pandas <strong>DataFrame</strong> es exactamente un conjunto de resultados SQL: filas y columnas, cada columna tiene un nombre y un tipo de dato. Cuando cargás un CSV en un DataFrame, tenés la tabla completa en memoria y podés empezar a trabajar con ella de inmediato.</p>
+            <p>Acá están las traducciones directas a SQL:</p>
+            <ul>
+              <li><code>pd.read_csv("leads.csv")</code> = <code>SELECT * FROM leads</code> — cargar toda la tabla</li>
+              <li><code>df.dropna(subset=["email"])</code> = <code>WHERE email IS NOT NULL</code> — filtrar valores vacíos</li>
+              <li><code>df.drop_duplicates()</code> = <code>SELECT DISTINCT *</code> — eliminar filas duplicadas exactas</li>
+              <li><code>df[df["email"].str.contains("@")]</code> = <code>WHERE email LIKE '%@%'</code> — filtrar filas por una condición</li>
+              <li><code>df.to_csv("output.csv")</code> = exportar el conjunto de resultados a un archivo</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Every pandas operation has a SQL equivalent you already know. You're not learning new logic — you're learning a new syntax for the same operations. The mental model is identical: select data, filter it, clean it, output it.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Cada operación de pandas tiene un equivalente SQL que ya conocés. No estás aprendiendo lógica nueva — estás aprendiendo una nueva sintaxis para las mismas operaciones. El modelo mental es idéntico: seleccionás datos, los filtrás, los limpiás, los exportás.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. The lead cleaning pipeline: 5 operations every list needs</span><span class="lang-es">2. El pipeline de limpieza de leads: 5 operaciones que toda lista necesita</span></h3>
+
+          <div class="lang-en">
+            <p>Before any lead list is usable, it needs to go through a standard cleaning sequence. This is the first real tool you'll own:</p>
+            <ol>
+              <li><strong>Load the file</strong> — <code>df = pd.read_csv("leads.csv")</code></li>
+              <li><strong>Inspect shape</strong> — <code>print(df.shape)</code> tells you rows × columns. <code>df.head()</code> shows the first 5 rows. Always look before you clean.</li>
+              <li><strong>Drop rows with missing emails</strong> — <code>df = df.dropna(subset=["email"])</code></li>
+              <li><strong>Drop duplicates</strong> — <code>df = df.drop_duplicates()</code></li>
+              <li><strong>Export the cleaned file</strong> — <code>df.to_csv("cleaned_leads.csv", index=False)</code></li>
+            </ol>
+            <p>After steps 3 and 4, print a count: <code>print(f"Removed {original_count - len(df)} rows")</code>. Always know what your cleaning removed.</p>
+          </div>
+          <div class="lang-es">
+            <p>Antes de que cualquier lista de leads sea usable, necesita pasar por una secuencia de limpieza estándar. Esta es la primera herramienta real que vas a tener:</p>
+            <ol>
+              <li><strong>Cargar el archivo</strong> — <code>df = pd.read_csv("leads.csv")</code></li>
+              <li><strong>Inspeccionar la forma</strong> — <code>print(df.shape)</code> te dice filas × columnas. <code>df.head()</code> muestra las primeras 5 filas. Siempre mirá antes de limpiar.</li>
+              <li><strong>Eliminar filas con emails vacíos</strong> — <code>df = df.dropna(subset=["email"])</code></li>
+              <li><strong>Eliminar duplicados</strong> — <code>df = df.drop_duplicates()</code></li>
+              <li><strong>Exportar el archivo limpio</strong> — <code>df.to_csv("cleaned_leads.csv", index=False)</code></li>
+            </ol>
+            <p>Después de los pasos 3 y 4, imprimí un conteo: <code>print(f"Se eliminaron {original_count - len(df)} filas")</code>. Siempre sabé qué eliminó tu limpieza.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Dirty data is the #1 cause of failed outreach. Emails that bounce, duplicates that get two messages — these kill your sender reputation. A clean list before any campaign is not optional. This script is one of the most valuable things you'll build this week.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Los datos sucios son la causa número 1 del fracaso en outreach. Emails que rebotan, duplicados que reciben dos mensajes — esto destruye tu reputación de remitente. Una lista limpia antes de cualquier campaña no es opcional. Este script es una de las cosas más valiosas que vas a construir esta semana.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~75 minutes)</span><span class="lang-es">Ejercicio (~75 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Please create a sample CSV file at <code>tools/sample_leads.csv</code> with 20 fake B2B leads. Include columns: first_name, last_name, email, company, domain, company_size. Include a few rows with missing emails and a few duplicate rows."</em></div>
+              <div class="lang-es">Pedile a Claude Code: <em>"Por favor creá un archivo CSV de muestra en <code>tools/sample_leads.csv</code> con 20 leads B2B falsos. Incluí las columnas: first_name, last_name, email, company, domain, company_size. Incluí algunas filas con emails vacíos y algunas filas duplicadas."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Once the file exists, ask Claude Code: <em>"Create <code>tools/clean_leads.py</code> that reads sample_leads.csv, drops rows with missing emails, removes exact duplicates, and saves the result to <code>tools/cleaned_leads.csv</code>. Print a summary showing how many rows were removed."</em></div>
+              <div class="lang-es">Una vez que el archivo exista, pedile a Claude Code: <em>"Creá <code>tools/clean_leads.py</code> que lea sample_leads.csv, elimine filas con emails vacíos, remueva duplicados exactos y guarde el resultado en <code>tools/cleaned_leads.csv</code>. Imprimí un resumen mostrando cuántas filas fueron eliminadas."</em></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read the file Claude writes.</strong> Find and identify: the <code>read_csv</code> call, the <code>dropna</code> call, the <code>drop_duplicates</code> call, and the <code>to_csv</code> call. Make sure you can explain what each line does.</div>
+              <div class="lang-es"><strong>Leé el archivo que Claude escribe.</strong> Encontrá e identificá: la llamada a <code>read_csv</code>, la llamada a <code>dropna</code>, la llamada a <code>drop_duplicates</code>, y la llamada a <code>to_csv</code>. Asegurate de poder explicar qué hace cada línea.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run it: <code>python tools/clean_leads.py</code>. You should see a printed summary in the terminal showing rows removed.</div>
+              <div class="lang-es">Ejecutalo: <code>python tools/clean_leads.py</code>. Deberías ver un resumen impreso en la terminal mostrando las filas eliminadas.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Open <code>tools/cleaned_leads.csv</code> in VS Code. Confirm the rows with missing emails are gone and the duplicates are removed. Count the remaining rows — does the number match what the script reported?</div>
+              <div class="lang-es">Abrí <code>tools/cleaned_leads.csv</code> en VS Code. Confirmá que las filas con emails vacíos desaparecieron y que los duplicados fueron removidos. Contá las filas restantes — ¿el número coincide con lo que reportó el script?</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">Pandas Documentation Quickstart — with SQL analogies</span><span class="lang-es">Quickstart de la documentación de Pandas — con analogías SQL</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Summarize the pandas documentation quickstart for a developer who already knows Oracle SQL. For each major pandas concept, give me the SQL equivalent. Keep it practical — focus on reading, filtering, and exporting data."</em> Save or screenshot the response — this is a reference you'll come back to.</span>
+          <span class="lang-es">Preguntale a Claude: <em>"Resumí el quickstart de la documentación de pandas para una desarrolladora que ya conoce Oracle SQL. Para cada concepto principal de pandas, dame el equivalente SQL. Mantelo práctico — enfocate en leer, filtrar y exportar datos."</em> Guardá o sacá una captura de pantalla de la respuesta — es una referencia a la que vas a volver.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What pandas function loads a CSV file into a DataFrame?</span>
+            <span class="lang-es">¿Qué función de pandas carga un archivo CSV en un DataFrame?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>pd.read_csv("filename.csv")</code> — this loads the entire file into a DataFrame in memory. The equivalent SQL operation is <code>SELECT * FROM table</code>.</div>
+            <div class="lang-es"><code>pd.read_csv("filename.csv")</code> — esto carga el archivo completo en un DataFrame en memoria. La operación SQL equivalente es <code>SELECT * FROM tabla</code>.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the pandas equivalent of <code>WHERE email IS NOT NULL</code>?</span>
+            <span class="lang-es">¿Cuál es el equivalente en pandas de <code>WHERE email IS NOT NULL</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>df.dropna(subset=["email"])</code> — the <code>subset</code> parameter tells pandas which specific column(s) to check for null values. Without <code>subset</code>, it drops any row with a null in <em>any</em> column.</div>
+            <div class="lang-es"><code>df.dropna(subset=["email"])</code> — el parámetro <code>subset</code> le dice a pandas qué columna(s) específica(s) verificar para valores nulos. Sin <code>subset</code>, elimina cualquier fila con un nulo en <em>cualquier</em> columna.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What pandas function removes duplicate rows?</span>
+            <span class="lang-es">¿Qué función de pandas elimina filas duplicadas?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>df.drop_duplicates()</code> — by default it removes rows that are identical across all columns, keeping the first occurrence. The SQL equivalent is <code>SELECT DISTINCT *</code>.</div>
+            <div class="lang-es"><code>df.drop_duplicates()</code> — por defecto elimina filas que son idénticas en todas las columnas, manteniendo la primera. El equivalente SQL es <code>SELECT DISTINCT *</code>.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 22 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day23.html">Next: Day 23 — HTTP Requests</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(22);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

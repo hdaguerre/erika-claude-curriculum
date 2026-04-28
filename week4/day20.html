@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 20 — Integration Day | Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+  <style>
+    /* ── Day 20 special styles ───────────────────────────────── */
+
+    /* Subtle gold shimmer on the lesson header for the finale */
+    .lesson-header--finale {
+      background: linear-gradient(135deg, #fff 0%, #FDF8F3 60%, #FAF0E6 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 0 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lesson-header--finale::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(196,112,79,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .lesson-header--finale h1 {
+      font-size: 2.3rem;
+    }
+
+    .badge--finale {
+      background: linear-gradient(135deg, #C4704F 0%, #A85C3E 100%);
+      color: #fff;
+      padding: 0.3em 0.9em;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Challenge intro block */
+    .challenge-intro {
+      background: linear-gradient(135deg, #2D2D2D 0%, #3D3530 100%);
+      border-radius: 8px;
+      padding: 2rem 2.25rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .challenge-intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 90% 10%, rgba(196,112,79,0.22) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .challenge-intro h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .challenge-intro p {
+      color: rgba(255,255,255,0.82);
+      position: relative;
+    }
+
+    .challenge-intro strong { color: #fff; }
+
+    /* Build step cards */
+    .build-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .build-step {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .build-step__num {
+      width: 3rem;
+      height: 3rem;
+      background: var(--accent-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, serif;
+      font-size: 1.2rem;
+      color: var(--accent-dark);
+      font-weight: normal;
+      flex-shrink: 0;
+    }
+
+    .build-step__body h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    .build-step__body p { margin-bottom: 0.5rem; }
+    .build-step__body p:last-child { margin-bottom: 0; }
+
+    .build-step__time {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.2em 0.75em;
+      margin-bottom: 0.65rem;
+      font-weight: 500;
+    }
+
+    /* Big test step gets accent treatment */
+    .build-step--highlight {
+      border-color: var(--accent);
+      border-width: 1.5px;
+    }
+
+    .build-step--highlight .build-step__num {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Reflection section */
+    .reflection-section {
+      background: var(--quiz-bg);
+      border: 1px solid rgba(122,156,197,0.3);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .reflection-section h2,
+    .reflection-section > summary {
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(122,156,197,0.25);
+    }
+
+    /* Collapsible behaviour for reflection-section summary */
+    .reflection-section > summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .reflection-section > summary::after {
+      content: "↓";
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-light);
+      transition: transform 0.22s ease;
+      flex-shrink: 0;
+      font-family: 'Figtree', sans-serif;
+      margin-left: auto;
+      padding-left: 0.5rem;
+    }
+
+    details[open].reflection-section > summary::after {
+      transform: rotate(180deg);
+    }
+
+    details.reflection-section > summary {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom-color: transparent;
+    }
+
+    details[open].reflection-section > summary {
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom-color: rgba(122,156,197,0.25);
+    }
+
+    .reflection-prompts {
+      list-style: none;
+      padding: 0;
+      counter-reset: prompt;
+    }
+
+    .reflection-prompts li {
+      counter-increment: prompt;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(122,156,197,0.15);
+      align-items: flex-start;
+    }
+
+    .reflection-prompts li:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .reflection-prompts li::before {
+      content: counter(prompt);
+      min-width: 28px;
+      height: 28px;
+      background: var(--quiz-border);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* Congratulations section — the emotional finish */
+    .congrats-section {
+      background: linear-gradient(135deg, #2D2D2D 0%, #3D3530 60%, #4A3830 100%);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .congrats-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(196,112,79,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 100%, rgba(196,112,79,0.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .congrats-section::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #E09060 60%, transparent 100%);
+    }
+
+    .congrats-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(196,112,79,0.85);
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .congrats-section h2 {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      line-height: 1.2;
+    }
+
+    .congrats-text {
+      color: rgba(255,255,255,0.82);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+      text-align: left;
+    }
+
+    .congrats-text p {
+      margin-bottom: 1.1rem;
+    }
+
+    .congrats-text p:last-child {
+      margin-bottom: 0;
+      color: rgba(255,255,255,0.95);
+      font-weight: 500;
+    }
+
+    .congrats-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(196,112,79,0.6);
+      margin: 2rem auto;
+      border-radius: 2px;
+    }
+
+    /* Complete button — final version */
+    .complete-area--finale {
+      padding: 3rem 0 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .btn-complete--finale {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, var(--accent) 0%, #B86040 100%);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 1em 2.8em;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 6px 24px rgba(196,112,79,0.4);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-complete--finale:hover {
+      background: linear-gradient(135deg, #B86040 0%, #A05030 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(196,112,79,0.5);
+    }
+
+    .btn-complete--finale:active {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(196,112,79,0.35);
+    }
+
+    .btn-complete--finale::before { content: "✦"; font-size: 0.9em; }
+
+    .finale-note {
+      margin-top: 1.1rem;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 600px) {
+      .build-step {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 1.2rem;
+      }
+      .build-step__num { width: 2.5rem; height: 2.5rem; font-size: 1rem; }
+      .congrats-section { padding: 2rem 1.4rem; }
+      .congrats-section h2 { font-size: 1.5rem; }
+      .challenge-intro { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 4</span>
+          <span>Day 20 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header — Finale -->
+  <header class="lesson-header lesson-header--finale">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 4</span>
+        <span class="badge badge--day">Day 20</span>
+        <span class="badge badge--finale">Integration Day</span>
+      </div>
+      <h1>Mi Taller Content Engine — Final Deliverable</h1>
+      <div class="lesson-header__meta">Estimated time: 3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- The Challenge — special block, not a details/summary section -->
+      <div class="challenge-intro">
+        <h2><span class="lang-en">The Challenge</span><span class="lang-es">El Desafío</span></h2>
+        <div class="lang-en">
+          <p>No new concepts today. Today you <strong>build something complete</strong> using everything from the past four weeks.</p>
+          <p>You're finishing the <strong>Mi Taller Content Engine</strong> — a real, working mini-project that combines all four layers of the WAT framework: a <strong>CLAUDE.md</strong> that sets up context, a <strong>workflow</strong> that describes a real process, a <strong>tool</strong> that executes reliably, and a <strong>skill</strong> that makes Claude more useful for your specific work.</p>
+          <p>By the end of today, you'll have something you can open next week, run a prompt, and get a Spanish-language bakery caption that actually sounds like you.</p>
+        </div>
+        <div class="lang-es">
+          <p>Hoy no hay conceptos nuevos. Hoy <strong>construís algo completo</strong> usando todo lo aprendido en las últimas cuatro semanas.</p>
+          <p>Estás terminando el <strong>Mi Taller Content Engine</strong> — un mini-proyecto real y funcional que combina las cuatro capas del framework WAT: un <strong>CLAUDE.md</strong> que establece el contexto, un <strong>workflow</strong> que describe un proceso real, una <strong>herramienta</strong> que ejecuta de manera confiable, y una <strong>habilidad</strong> que hace a Claude más útil para tu trabajo específico.</p>
+          <p>Al final del día, vas a tener algo que podés abrir la semana que viene, ejecutar un prompt, y obtener una caption de tu panadería en español que suene a vos.</p>
+        </div>
+      </div>
+
+      <!-- Build Steps — special block, not a details/summary section -->
+      <div class="build-steps" style="margin-top: var(--space-6)">
+
+        <div class="build-step">
+          <div class="build-step__num">1</div>
+          <div class="build-step__body">
+            <div class="build-step__time">30 minutes</div>
+            <h3>
+              <span class="lang-en">Review and complete your CLAUDE.md</span>
+              <span class="lang-es">Revisá y completá tu CLAUDE.md</span>
+            </h3>
+            <div class="lang-en">
+              <p>Open <code>mi-taller-code/CLAUDE.md</code>. Read it as if you're Claude seeing it for the first time. Does it cover everything Claude needs to work in your project?</p>
+              <p>It should include: the project purpose (what Mi Taller is), your audience (who you're writing for), your content rules (tone, language, what to avoid), the key files and folders, and how Claude should behave when it's working in this project.</p>
+              <p>Fill in any gaps. Be specific. This file is read at the start of every session — if it's vague, every session starts vague.</p>
+            </div>
+            <div class="lang-es">
+              <p>Abrí <code>mi-taller-code/CLAUDE.md</code>. Leélo como si fueras Claude viéndolo por primera vez. ¿Cubre todo lo que Claude necesita para trabajar en tu proyecto?</p>
+              <p>Debería incluir: el propósito del proyecto (qué es Mi Taller), tu audiencia (para quién escribís), tus reglas de contenido (tono, idioma, qué evitar), los archivos y carpetas clave, y cómo debería comportarse Claude cuando trabaja en este proyecto.</p>
+              <p>Completá los huecos. Sé específica. Este archivo se lee al inicio de cada sesión — si es vago, cada sesión empieza vaga.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-step">
+          <div class="build-step__num">2</div>
+          <div class="build-step__body">
+            <div class="build-step__time">30 minutes</div>
+            <h3>
+              <span class="lang-en">Finalize your workflows</span>
+              <span class="lang-es">Finalizá tus workflows</span>
+            </h3>
+            <div class="lang-en">
+              <p>You should have at least two workflow files: <code>workflows/instagram_caption.md</code> and <code>workflows/recipe_post.md</code>. Review both with fresh eyes.</p>
+              <p>The test: could Claude follow each workflow from start to finish without asking you a single clarifying question? If the answer is no for any step, rewrite that step until it's unambiguous. Good workflows are specific enough to be followed without conversation.</p>
+            </div>
+            <div class="lang-es">
+              <p>Deberías tener al menos dos archivos de workflow: <code>workflows/instagram_caption.md</code> y <code>workflows/recipe_post.md</code>. Revisá los dos con ojos frescos.</p>
+              <p>La prueba: ¿podría Claude seguir cada workflow de principio a fin sin hacerte una sola pregunta de aclaración? Si la respuesta es no para algún paso, reescribí ese paso hasta que sea inequívoco. Los buenos workflows son lo suficientemente específicos como para seguirse sin conversación.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-step">
+          <div class="build-step__num">3</div>
+          <div class="build-step__body">
+            <div class="build-step__time">30 minutes</div>
+            <h3>
+              <span class="lang-en">Complete and test your save_caption.py tool</span>
+              <span class="lang-es">Completá y probá tu herramienta save_caption.py</span>
+            </h3>
+            <div class="lang-en">
+              <p>Open <code>tools/save_caption.py</code> from Day 17. Make sure it runs cleanly. Then test it from your terminal:</p>
+              <p><code>python tools/save_caption.py --caption "Esta es una prueba" --filename "test"</code></p>
+              <p>Did it create a file in <code>saved_captions/</code> with today's date in the filename? If yes, the tool works. If not, read the error message carefully — it will tell you exactly what to fix. Don't move to step 4 until this runs successfully.</p>
+            </div>
+            <div class="lang-es">
+              <p>Abrí <code>tools/save_caption.py</code> del Día 17. Asegurate de que corra sin errores. Después probalo desde tu terminal:</p>
+              <p><code>python tools/save_caption.py --caption "Esta es una prueba" --filename "test"</code></p>
+              <p>¿Creó un archivo en <code>saved_captions/</code> con la fecha de hoy en el nombre? Si sí, la herramienta funciona. Si no, leé el mensaje de error con cuidado — te va a decir exactamente qué arreglar. No pases al paso 4 hasta que esto funcione correctamente.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-step">
+          <div class="build-step__num">4</div>
+          <div class="build-step__body">
+            <div class="build-step__time">30 minutes</div>
+            <h3>
+              <span class="lang-en">Deploy your bakery-caption skill</span>
+              <span class="lang-es">Desplegá tu habilidad bakery-caption</span>
+            </h3>
+            <div class="lang-en">
+              <p>The skill you built on Day 19 lives in the erika project. For today's test, you'll use it from within that project's Claude Code context — the skill is active whenever you're in that project.</p>
+              <p>Quick test: in Claude Code (with the erika project as context), describe a photo of one of your baked goods and ask for a caption. Did the <code>bakery-caption</code> skill activate? Did the output feel like your voice? If not, open <code>skills/bakery-caption/SKILL.md</code> and adjust the instructions until it does.</p>
+            </div>
+            <div class="lang-es">
+              <p>La habilidad que construiste el Día 19 vive en el proyecto erika. Para la prueba de hoy, la vas a usar desde el contexto de Claude Code de ese proyecto — la habilidad está activa siempre que estés en ese proyecto.</p>
+              <p>Prueba rápida: en Claude Code (con el proyecto erika como contexto), describí una foto de uno de tus productos horneados y pedí una caption. ¿Se activó la habilidad <code>bakery-caption</code>? ¿El resultado sonó a tu voz? Si no, abrí <code>skills/bakery-caption/SKILL.md</code> y ajustá las instrucciones hasta que suene bien.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-step build-step--highlight">
+          <div class="build-step__num">5</div>
+          <div class="build-step__body">
+            <div class="build-step__time">45 minutes — the big test</div>
+            <h3>
+              <span class="lang-en">Run the complete workflow end-to-end</span>
+              <span class="lang-es">Ejecutá el workflow completo de punta a punta</span>
+            </h3>
+            <div class="lang-en">
+              <p>Open Claude Code in your <code>mi-taller-code</code> project. Then send this exact prompt:</p>
+              <p style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-style:italic;margin:0.75rem 0;">"I have a photo of my abuela's alfajores I just made. Generate an Instagram caption in Spanish for this post."</p>
+              <p>Watch what happens. Ask yourself:</p>
+              <ul>
+                <li>Did Claude read the CLAUDE.md context?</li>
+                <li>Did it follow the instagram_caption workflow?</li>
+                <li>Did the bakery-caption skill trigger?</li>
+                <li>Does the output sound like <em>you</em> — warm, personal, handmade — or does it sound generic?</li>
+              </ul>
+              <p>If something didn't work as expected, that's not failure — that's exactly what this test is for. Adjust the piece that failed and run it again. Each iteration makes the system stronger.</p>
+            </div>
+            <div class="lang-es">
+              <p>Abrí Claude Code en tu proyecto <code>mi-taller-code</code>. Después enviá este prompt exacto:</p>
+              <p style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-style:italic;margin:0.75rem 0;">"Tengo una foto de los alfajores de mi abuela que acabo de hacer. Generá una caption de Instagram en español para esta publicación."</p>
+              <p>Observá lo que pasa. Preguntate:</p>
+              <ul>
+                <li>¿Leyó Claude el contexto del CLAUDE.md?</li>
+                <li>¿Siguió el workflow de instagram_caption?</li>
+                <li>¿Se activó la habilidad bakery-caption?</li>
+                <li>¿El resultado suena a <em>vos</em> — cálido, personal, artesanal — o suena genérico?</li>
+              </ul>
+              <p>Si algo no funcionó como esperabas, eso no es un fracaso — es exactamente para lo que sirve esta prueba. Ajustá la pieza que falló y ejecutalo de nuevo. Cada iteración hace el sistema más robusto.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Reflection Section -->
+      <details class="reflection-section" style="margin-top: var(--space-6)">
+        <summary><span class="lang-en">Reflection — 15 minutes</span><span class="lang-es">Reflexión — 15 minutos</span></summary>
+        <p style="margin-bottom:1.25rem;color:var(--text-muted);font-size:0.95rem;">
+          <span class="lang-en">Write 5 sentences — in English or Spanish, your choice. These are for you, not for an exam. Be honest.</span>
+          <span class="lang-es">Escribí 5 oraciones — en inglés o español, lo que prefieras. Son para vos, no para un examen. Sé honesta.</span>
+        </p>
+        <ol class="reflection-prompts">
+          <li>
+            <div class="lang-en">What was the hardest concept for me in these 4 weeks?</div>
+            <div class="lang-es">¿Cuál fue el concepto más difícil para mí en estas 4 semanas?</div>
+          </li>
+          <li>
+            <div class="lang-en">What surprised me most about how Claude works?</div>
+            <div class="lang-es">¿Qué me sorprendió más de cómo funciona Claude?</div>
+          </li>
+          <li>
+            <div class="lang-en">What is one specific thing I want to build in the next month?</div>
+            <div class="lang-es">¿Qué es una cosa que quiero construir después?</div>
+          </li>
+          <li>
+            <div class="lang-en">What would I tell someone starting this curriculum tomorrow?</div>
+            <div class="lang-es">¿Qué le diría a alguien que empieza este programa mañana?</div>
+          </li>
+          <li>
+            <div class="lang-en">What am I most proud of from this month?</div>
+            <div class="lang-es">¿De qué estoy más orgullosa de este mes?</div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- Quiz Section -->
+      <details class="quiz-section" style="margin-top: var(--space-6)">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">Name all 4 layers of the WAT framework and what each one does.</span>
+            <span class="lang-es">Nombrá las 4 capas del framework WAT y qué hace cada una.</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">
+              <strong>CLAUDE.md</strong> — sets project context and schema (like Oracle DDL or a session-level schema)<br />
+              <strong>Skills</strong> — define how Claude behaves for specific request types (like stored procedure templates)<br />
+              <strong>Workflows</strong> — SOPs for executing multi-step processes (like query plans with error handling)<br />
+              <strong>Tools</strong> — deterministic Python scripts that execute reliably every time (like stored procedure bodies)
+            </div>
+            <div class="lang-es">
+              <strong>CLAUDE.md</strong> — establece el contexto y el esquema del proyecto (como DDL de Oracle o un esquema a nivel de sesión)<br />
+              <strong>Habilidades</strong> — definen cómo se comporta Claude para tipos específicos de solicitudes (como plantillas de procedimientos almacenados)<br />
+              <strong>Workflows</strong> — POEs para ejecutar procesos de múltiples pasos (como planes de consulta con manejo de errores)<br />
+              <strong>Herramientas</strong> — scripts de Python deterministas que se ejecutan de manera confiable siempre (como los cuerpos de procedimientos almacenados)
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What SQL concept best describes the overall WAT architecture?</span>
+            <span class="lang-es">¿Qué concepto de SQL describe mejor la arquitectura WAT en general?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">
+              <strong>Three-tier architecture:</strong> presentation layer (workflows — the instructions), application layer (agent/Claude — the reasoning and decision-making), and data layer (tools/scripts — the deterministic execution). The same pattern that makes enterprise SQL systems reliable is what makes WAT reliable.
+            </div>
+            <div class="lang-es">
+              <strong>Arquitectura de tres capas:</strong> capa de presentación (workflows — las instrucciones), capa de aplicación (agente/Claude — el razonamiento y la toma de decisiones), y capa de datos (herramientas/scripts — la ejecución determinista). El mismo patrón que hace confiables los sistemas SQL empresariales es lo que hace confiable a WAT.
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">Open-ended: What is one thing you want to build in the next month using what you learned?</span>
+            <span class="lang-es">Pregunta abierta: ¿Qué es una cosa que querés construir en el próximo mes con lo que aprendiste?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">
+              Any specific, grounded answer — not "use AI more." A concrete tool, workflow, or skill. Something like: a tool that auto-saves captions to Notion, a workflow for responding to Instagram DMs, a skill that writes product descriptions for new menu items. The more specific, the more real.
+            </div>
+            <div class="lang-es">
+              Cualquier respuesta específica y concreta — no "usar más IA." Una herramienta, workflow o habilidad tangible. Por ejemplo: una herramienta que guarda captions automáticamente en Notion, un workflow para responder DMs de Instagram, una habilidad que escribe descripciones de productos para nuevos items del menú. Cuanto más específico, más real.
+            </div>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- Congratulations Section -->
+      <div class="congrats-section" style="margin-top: var(--space-6)">
+        <div class="congrats-eyebrow">Week 4 · Day 20 · Curriculum Complete</div>
+        <h2>Well done, Erika.</h2>
+        <div class="congrats-text">
+          <div class="lang-en">
+            <p>You started this month with zero Claude experience and an Oracle SQL background you weren't sure counted for anything.</p>
+            <p>It counted for everything.</p>
+            <p>You now understand tokens, context windows, prompting, Claude Projects, memory, Claude Code, CLAUDE.md, skills, workflows, tools, and APIs. You understand <em>why</em> the architecture works — not just how to click the buttons. You've built a real project. You've produced real Spanish-language content. You've written your first Python tool.</p>
+            <div class="congrats-divider"></div>
+            <p>That's the goal — not to finish a curriculum, but to not need one anymore.</p>
+            <p>You know enough to keep going on your own. Go build something.</p>
+          </div>
+          <div class="lang-es">
+            <p>Empezaste este mes sin experiencia con Claude y con un background de SQL oxidado que no sabías si iba a servir de algo. Sirvió para todo. Ahora entendés tokens, contexto, prompting, proyectos, memoria, Claude Code, CLAUDE.md, habilidades, workflows, herramientas y APIs. Construiste un proyecto real. Produjiste contenido real en español. Y sabés suficiente como para seguir sola. Ese es el objetivo — no terminar un programa, sino no necesitar uno más. Muy bien hecho.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Complete Button -->
+      <div class="complete-area--finale">
+        <button class="btn-complete--finale" onclick="completeDay()">
+          <span class="lang-en">Complete the Curriculum</span>
+          <span class="lang-es">Completar el Programa</span>
+        </button>
+        <div class="finale-note">
+          <span class="lang-en">You'll be redirected to your dashboard to see your completed progress.</span>
+          <span class="lang-es">Serás redirigida al panel para ver tu progreso completado.</span>
+        </div>
+      </div>
+
+    </div><!-- /.container--narrow -->
+  </main>
+
+  <!-- Footer — no next day -->
+  <footer class="lesson-footer">
+    <div class="container" style="font-size:0.88rem;color:var(--text-light);padding:1.5rem 0;">
+      <span class="lang-en">You've completed the curriculum. The dashboard is yours.</span>
+      <span class="lang-es">Completaste el programa. El panel es tuyo.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(20);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

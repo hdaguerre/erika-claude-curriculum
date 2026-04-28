@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 11 — Claude Code Intro</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 3</span>
+          <span>Day 11 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 3</span>
+        <span class="badge badge--day">Day 11</span>
+      </div>
+      <h1>Claude Code vs Claude Desktop</h1>
+      <div class="lesson-header__meta">Estimated time: ~2 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What Claude Code actually is</span><span class="lang-es">1. ¿Qué es Claude Code realmente?</span></h3>
+
+          <div class="lang-en">
+            <p>Claude Code is a <strong>command-line interface (CLI)</strong> — a way to interact with Claude directly from your terminal or VS Code, where Claude can read and write files on your actual computer, run scripts, and work inside a real project folder.</p>
+            <p>Unlike Claude Desktop (where you chat and Claude helps you think), Claude Code is where Claude <em>does things</em>. It can create files, edit code, run commands, and navigate your whole project. It's the difference between asking someone for advice and actually handing them the keyboard.</p>
+          </div>
+          <div class="lang-es">
+            <p>Claude Code es una <strong>interfaz de línea de comandos (CLI)</strong> — una forma de interactuar con Claude directamente desde tu terminal o VS Code, donde Claude puede leer y escribir archivos en tu computadora, ejecutar scripts y trabajar dentro de una carpeta de proyecto real.</p>
+            <p>A diferencia de Claude Desktop (donde chateas y Claude te ayuda a pensar), Claude Code es donde Claude <em>hace cosas</em>. Puede crear archivos, editar código, ejecutar comandos y navegar todo tu proyecto. Es la diferencia entre pedirle consejo a alguien y directamente darle el teclado.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Claude Code is like <strong>SQL*Plus or a command-line database client</strong> — instead of clicking through a GUI, you type commands and the engine executes them directly. Claude Desktop is like using Oracle Application Express (APEX) — a friendly interface. Claude Code is the raw terminal.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Claude Code es como <strong>SQL*Plus o un cliente de base de datos en línea de comandos</strong> — en vez de hacer clic en una interfaz gráfica, escribís comandos y el motor los ejecuta directamente. Claude Desktop es como usar Oracle Application Express (APEX) — una interfaz amigable. Claude Code es la terminal en crudo.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>The GUI (Claude Desktop) is for thinking together. The CLI (Claude Code) is for building together. You need both.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>La interfaz gráfica (Claude Desktop) es para pensar juntos. La línea de comandos (Claude Code) es para construir juntos. Necesitás las dos.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. VS Code — your new workspace</span><span class="lang-es">2. VS Code — tu nuevo espacio de trabajo</span></h3>
+
+          <div class="lang-en">
+            <p>VS Code is a code editor — think of it like SQL Developer or Toad, but built for all programming languages, not just SQL. It has three main panels you'll use every day:</p>
+            <ul>
+              <li><strong>Explorer (left sidebar)</strong> — shows all files and folders in your project, exactly like the folder tree in SQL Developer.</li>
+              <li><strong>Editor (center)</strong> — where you view and edit files. Multiple files can be open as tabs.</li>
+              <li><strong>Terminal (bottom)</strong> — a command line built right into the editor. This is where you'll run Claude Code. Open it with <code>Ctrl+`</code> (backtick) or View → Terminal.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>VS Code es un editor de código — pensalo como SQL Developer o Toad, pero para todos los lenguajes de programación, no solo SQL. Tiene tres paneles principales que vas a usar todos los días:</p>
+            <ul>
+              <li><strong>Explorador (barra lateral izquierda)</strong> — muestra todos los archivos y carpetas de tu proyecto, exactamente como el árbol de carpetas en SQL Developer.</li>
+              <li><strong>Editor (centro)</strong> — donde ves y editás archivos. Pueden estar abiertos varios archivos como pestañas.</li>
+              <li><strong>Terminal (abajo)</strong> — una línea de comandos integrada en el editor. Aquí es donde ejecutarás Claude Code. Abrilo con <code>Ctrl+`</code> (acento grave) o Ver → Terminal.</li>
+            </ul>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>VS Code's terminal is like the <strong>SQL*Plus command prompt</strong> — text in, text out, direct execution. The Explorer sidebar is like the object tree in your SQL client.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>La terminal de VS Code es como el <strong>prompt de SQL*Plus</strong> — texto de entrada, texto de salida, ejecución directa. La barra lateral del Explorador es como el árbol de objetos en tu cliente SQL.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. Today's goal: just look around</span><span class="lang-es">3. Tu objetivo de hoy: solo explorar</span></h3>
+
+          <div class="lang-en">
+            <p>Today you are <strong>not building anything</strong>. You are becoming familiar with the project's geography. Open VS Code, open the erika project folder, and click through every file. Read the CLAUDE.md. Read the README if there is one. Don't change anything — just understand what's here.</p>
+            <p>This is exactly what a senior developer does when they join a new project: they read the code before they write any.</p>
+          </div>
+          <div class="lang-es">
+            <p>Hoy <strong>no vas a construir nada</strong>. Vas a familiarizarte con la geografía del proyecto. Abrí VS Code, abrí la carpeta del proyecto erika y hacé clic en cada archivo. Leé el CLAUDE.md. Leé el README si hay uno. No cambies nada — solo entendé qué hay aquí.</p>
+            <p>Esto es exactamente lo que hace un desarrollador senior cuando llega a un proyecto nuevo: lee el código antes de escribir una sola línea.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 minutes)</span><span class="lang-es">Ejercicio (~45 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Open VS Code.</strong> If you don't have it installed, download it free from code.visualstudio.com. Once open, go to File → Open Folder.</div>
+              <div class="lang-es"><strong>Abrí VS Code.</strong> Si no lo tenés instalado, descargalo gratis desde code.visualstudio.com. Una vez abierto, andá a Archivo → Abrir Carpeta.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Navigate to your erika project folder: <code>C:\Users\[you]\Desktop\claude-projects\erika</code> (or wherever it lives on your machine). Click "Select Folder."</div>
+              <div class="lang-es">Navegá hasta tu carpeta del proyecto erika: <code>C:\Users\[vos]\Desktop\claude-projects\erika</code> (o donde sea que esté en tu máquina). Hacé clic en "Seleccionar Carpeta."</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">In the Explorer panel on the left, <strong>click through every file</strong> in the project. Read at least 3 files fully — especially <code>CLAUDE.md</code>. Notice its structure: what it covers, how it's written, what tone it uses.</div>
+              <div class="lang-es">En el panel Explorador a la izquierda, <strong>hacé clic en cada archivo</strong> del proyecto. Leé al menos 3 archivos completos — especialmente el <code>CLAUDE.md</code>. Fijate en su estructura: qué cubre, cómo está escrito, qué tono usa.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Open the integrated terminal: press <code>Ctrl+`</code> (the backtick key, top-left of keyboard) or go to View → Terminal. A panel opens at the bottom.</div>
+              <div class="lang-es">Abrí la terminal integrada: presioná <code>Ctrl+`</code> (la tecla de acento grave, arriba a la izquierda del teclado) o andá a Ver → Terminal. Se abre un panel abajo.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Type this command to list files in the current folder — on Windows use: <code>dir</code>. On Mac/Linux use: <code>ls</code>. Press Enter. You'll see the file list appear.</div>
+              <div class="lang-es">Escribí este comando para ver los archivos en la carpeta actual — en Windows usá: <code>dir</code>. En Mac/Linux usá: <code>ls</code>. Presioná Enter. Vas a ver la lista de archivos aparecer.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Navigate into a subfolder: type <code>cd curriculum</code> and press Enter. Then type <code>dir</code> (or <code>ls</code>) again to see what's inside.</div>
+              <div class="lang-es">Navegá a una subcarpeta: escribí <code>cd curriculum</code> y presioná Enter. Después escribí <code>dir</code> (o <code>ls</code>) de nuevo para ver qué hay adentro.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Go back up: type <code>cd ..</code> and press Enter. You're back at the root of the project. Type <code>dir</code> one more time to confirm.</div>
+              <div class="lang-es">Volvé atrás: escribí <code>cd ..</code> y presioná Enter. Estás de vuelta en la raíz del proyecto. Escribí <code>dir</code> una vez más para confirmar.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>"Claude Code"</strong> <span class="lang-en">guide by Ruben Hassid</span><span class="lang-es">— guía de Ruben Hassid</span></p>
+        <p><a href="https://lnkd.in/gsRhsFxT" target="_blank" rel="noopener">Read on LinkedIn &rarr;</a></p>
+        <p>
+          <span class="lang-en">This is a practical overview written for people who are new to Claude Code. Read it once through tonight — it will make tomorrow's setup feel familiar.</span>
+          <span class="lang-es">Esta es una introducción práctica escrita para personas que son nuevas en Claude Code. Leéla esta noche — va a hacer que la configuración de mañana se sienta familiar.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is the main difference between Claude Desktop and Claude Code?</span>
+            <span class="lang-es">¿Cuál es la diferencia principal entre Claude Desktop y Claude Code?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Claude Desktop is a chat interface for thinking and discussing — Claude helps you plan and write. Claude Code runs in your terminal, can read and write actual files on your computer, run scripts, and act directly inside your project.</div>
+            <div class="lang-es">Claude Desktop es una interfaz de chat para pensar y discutir — Claude te ayuda a planificar y escribir. Claude Code corre en tu terminal, puede leer y escribir archivos reales en tu computadora, ejecutar scripts y actuar directamente dentro de tu proyecto.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">In VS Code, where is the terminal and how do you open it?</span>
+            <span class="lang-es">En VS Code, ¿dónde está la terminal y cómo la abrís?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">The terminal is at the bottom of VS Code. Open it with <code>Ctrl+`</code> (the backtick key) or go to View &rarr; Terminal.</div>
+            <div class="lang-es">La terminal está en la parte de abajo de VS Code. Abrila con <code>Ctrl+`</code> (la tecla de acento grave) o andá a Ver → Terminal.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What command shows you the files in the current folder?</span>
+            <span class="lang-es">¿Qué comando muestra los archivos en la carpeta actual?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>dir</code> on Windows, or <code>ls</code> on Mac/Linux. Either is correct depending on your system — Erika, you're on Windows so use <code>dir</code>.</div>
+            <div class="lang-es"><code>dir</code> en Windows, o <code>ls</code> en Mac/Linux. Cualquiera es correcto según tu sistema — Erika, vos estás en Windows así que usá <code>dir</code>.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 11 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day12.html">Next: Day 12 — First Commands</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          // Don't allow collapsing the active section — click does nothing
+          e.preventDefault();
+        } else {
+          // Close every other section before this one opens
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(11);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

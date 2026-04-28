@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 23 — HTTP Requests</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 5</span>
+          <span>Day 23 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 5</span>
+        <span class="badge badge--day">Day 23</span>
+      </div>
+      <h1>HTTP Requests</h1>
+      <div class="lesson-header__meta">Estimated time: ~3 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What HTTP requests are</span><span class="lang-es">1. Qué son las peticiones HTTP</span></h3>
+
+          <div class="lang-en">
+            <p>Every time a website loads data or an API returns information, an HTTP request is happening in the background. It's a standardized way for one computer to ask another computer for data — or to send it data and get a result back.</p>
+            <p>The two request types you'll use constantly:</p>
+            <ul>
+              <li><strong>GET</strong> — retrieve data. You're asking for something. No data sent, just a request. Think: SELECT query.</li>
+              <li><strong>POST</strong> — send data and get a result back. You provide input parameters and the API processes them. Think: calling a stored procedure with parameters.</li>
+            </ul>
+            <p><strong>Headers</strong> are metadata you attach to the request — your API key, what format you want back, your identity. Think of them as the connection metadata in a <code>tnsnames.ora</code> file — but sent with every call.</p>
+            <p><strong>JSON</strong> is the standard response format. It looks like a Python dictionary: <code>{"name": "Acme", "size": 200}</code>. When an API returns data, it almost always comes back as JSON.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cada vez que un sitio web carga datos o una API devuelve información, hay una petición HTTP ocurriendo en segundo plano. Es una forma estandarizada para que una computadora le pida datos a otra — o le envíe datos y obtenga un resultado.</p>
+            <p>Los dos tipos de petición que vas a usar constantemente:</p>
+            <ul>
+              <li><strong>GET</strong> — recuperar datos. Estás pidiendo algo. No se envían datos, solo una petición. Pensalo como: una consulta SELECT.</li>
+              <li><strong>POST</strong> — enviar datos y obtener un resultado. Proporcionás parámetros de entrada y la API los procesa. Pensalo como: llamar a un stored procedure con parámetros.</li>
+            </ul>
+            <p><strong>Los headers</strong> son metadatos que adjuntás a la petición — tu API key, el formato que querés recibir, tu identidad. Pensalos como los metadatos de conexión en un archivo <code>tnsnames.ora</code> — pero enviados con cada llamada.</p>
+            <p><strong>JSON</strong> es el formato de respuesta estándar. Se parece a un diccionario Python: <code>{"name": "Acme", "size": 200}</code>. Cuando una API devuelve datos, casi siempre vienen como JSON.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>An API endpoint is like an Oracle <strong>DBLINK</strong> — you're reaching out to a remote database you don't own and asking it to run a specific query and return the result. You can't see their tables or schema. You just call the endpoint (like calling a remote procedure) and get JSON back (like getting a result set). GET = SELECT. POST = execute stored procedure.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Un endpoint de API es como un <strong>DBLINK</strong> de Oracle — estás llegando a una base de datos remota que no es tuya y pidiéndole que ejecute una consulta específica y devuelva el resultado. No podés ver sus tablas ni su esquema. Solo llamás al endpoint (como llamar a un procedimiento remoto) y recibís JSON (como recibir un conjunto de resultados). GET = SELECT. POST = ejecutar stored procedure.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. The <code>requests</code> library in Python</span><span class="lang-es">2. La librería <code>requests</code> en Python</span></h3>
+
+          <div class="lang-en">
+            <p>The <code>requests</code> library is the standard Python tool for making HTTP calls. The pattern is always the same:</p>
+            <pre><code>import requests
+
+response = requests.get("https://api.example.com/data")
+data = response.json()</code></pre>
+            <p>Three lines: import, call, parse. That's it. The response object also has a <code>.status_code</code> property that tells you whether the call succeeded:</p>
+            <ul>
+              <li><strong>200</strong> — OK. Everything worked.</li>
+              <li><strong>401</strong> — Unauthorized. Your credentials are wrong or missing.</li>
+              <li><strong>404</strong> — Not found. The endpoint or resource doesn't exist.</li>
+              <li><strong>429</strong> — Too many requests. You've hit the API's rate limit. Slow down.</li>
+            </ul>
+          </div>
+          <div class="lang-es">
+            <p>La librería <code>requests</code> es la herramienta estándar de Python para hacer llamadas HTTP. El patrón es siempre el mismo:</p>
+            <pre><code>import requests
+
+response = requests.get("https://api.example.com/data")
+data = response.json()</code></pre>
+            <p>Tres líneas: importar, llamar, parsear. Eso es todo. El objeto response también tiene una propiedad <code>.status_code</code> que te dice si la llamada tuvo éxito:</p>
+            <ul>
+              <li><strong>200</strong> — OK. Todo funcionó.</li>
+              <li><strong>401</strong> — No autorizado. Tus credenciales son incorrectas o faltan.</li>
+              <li><strong>404</strong> — No encontrado. El endpoint o recurso no existe.</li>
+              <li><strong>429</strong> — Demasiadas peticiones. Alcanzaste el límite de tasa de la API. Frenate.</li>
+            </ul>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>When you see a 429 error, the API is telling you you're calling it too fast. Don't retry immediately — add a <code>time.sleep(1)</code> between calls. APIs have rate limits to prevent abuse, and if you hit them too aggressively, you can get your key temporarily or permanently blocked.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Cuando veas un error 429, la API te está diciendo que la estás llamando demasiado rápido. No reintentes inmediatamente — agregá un <code>time.sleep(1)</code> entre llamadas. Las APIs tienen límites de tasa para prevenir abuso, y si los golpeás demasiado agresivamente, pueden bloquear tu clave temporalmente o permanentemente.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~75 minutes)</span><span class="lang-es">Ejercicio (~75 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Show me what a simple GET request looks like in Python using the <code>requests</code> library. Include how to check the status code and how to parse the JSON response."</em> Read the example carefully.</div>
+              <div class="lang-es">Pedile a Claude Code: <em>"Mostrame cómo se ve una petición GET simple en Python usando la librería <code>requests</code>. Incluí cómo verificar el código de estado y cómo parsear la respuesta JSON."</em> Leé el ejemplo con cuidado.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude Code: <em>"Write a Python script that calls the Open Library search API at <code>https://openlibrary.org/search.json?q=python+programming</code> and prints the title and author of the first 5 results."</em> This is a free public API — no authentication needed.</div>
+              <div class="lang-es">Pedile a Claude Code: <em>"Escribí un script Python que llame a la API de búsqueda de Open Library en <code>https://openlibrary.org/search.json?q=python+programming</code> e imprima el título y el autor de los primeros 5 resultados."</em> Esta es una API pública gratuita — no necesita autenticación.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run the script and read the JSON it prints. Notice the structure — it's a dictionary with a <code>"docs"</code> key that contains a list of book objects. Each book object has multiple fields.</div>
+              <div class="lang-es">Ejecutá el script y leé el JSON que imprime. Fijate en la estructura — es un diccionario con una clave <code>"docs"</code> que contiene una lista de objetos libro. Cada objeto libro tiene múltiples campos.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Ask Claude: <em>"What does each part of this script do? Explain it to me like I'm a SQL developer who understands stored procedures and DBLINK."</em> Read the explanation and make sure the analogy clicks.</div>
+              <div class="lang-es">Preguntale a Claude: <em>"¿Qué hace cada parte de este script? Explicamelo como si fuera una desarrolladora SQL que entiende stored procedures y DBLINK."</em> Leé la explicación y asegurate de que la analogía tenga sentido.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Try changing the search query in the URL — replace <code>python+programming</code> with a topic you're curious about. Re-run the script and see what comes back.</div>
+              <div class="lang-es">Probá cambiar la búsqueda en la URL — reemplazá <code>python+programming</code> con un tema que te interese. Volvé a ejecutar el script y mirá qué devuelve.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">What is a REST API?</span><span class="lang-es">¿Qué es una API REST?</span></strong></p>
+        <p>
+          <span class="lang-en">Ask Claude: <em>"Explain what a REST API is using the Oracle DBLINK analogy. I'm a SQL developer who's used DBLINKs to connect to remote databases — how does that mental model apply to REST APIs? What's the same, what's different?"</em></span>
+          <span class="lang-es">Preguntale a Claude: <em>"Explicame qué es una API REST usando la analogía del DBLINK de Oracle. Soy desarrolladora SQL que usé DBLINKs para conectarme a bases de datos remotas — ¿cómo aplica ese modelo mental a las APIs REST? ¿Qué es lo mismo, qué es diferente?"</em></span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What HTTP method would you use to READ data from an API?</span>
+            <span class="lang-es">¿Qué método HTTP usarías para LEER datos de una API?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">GET — same as a SELECT query. You're asking the API to return data without modifying anything. <code>requests.get(url)</code> is the Python call.</div>
+            <div class="lang-es">GET — igual que una consulta SELECT. Le estás pidiendo a la API que devuelva datos sin modificar nada. <code>requests.get(url)</code> es la llamada en Python.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What does a 429 status code mean?</span>
+            <span class="lang-es">¿Qué significa un código de estado 429?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Too Many Requests — you've hit the API's rate limit. You're calling it too fast. Slow down by adding <code>time.sleep(1)</code> between calls, or switch to batched requests if the API supports them.</div>
+            <div class="lang-es">Demasiadas Peticiones — alcanzaste el límite de tasa de la API. La estás llamando demasiado rápido. Frenate agregando <code>time.sleep(1)</code> entre llamadas, o cambiá a peticiones en lote si la API las soporta.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What Python library is the standard tool for making HTTP requests?</span>
+            <span class="lang-es">¿Qué librería de Python es la herramienta estándar para hacer peticiones HTTP?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>requests</code> — <code>import requests</code>. It's not built into Python by default, so you may need to install it first: <code>pip install requests</code>. Once installed, the pattern is always: import → call → parse the JSON response.</div>
+            <div class="lang-es"><code>requests</code> — <code>import requests</code>. No viene incluido en Python por defecto, así que puede que necesites instalarlo primero: <code>pip install requests</code>. Una vez instalado, el patrón es siempre: importar → llamar → parsear la respuesta JSON.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 23 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day24.html">Next: Day 24 — First Enrichment Pipeline</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(23);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

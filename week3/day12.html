@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 12 — Setting Up Claude Code</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 3</span>
+          <span>Day 12 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 3</span>
+        <span class="badge badge--day">Day 12</span>
+      </div>
+      <h1>Setting Up Claude Code &amp; Running server.py</h1>
+      <div class="lesson-header__meta">Estimated time: ~2.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. Installing Claude Code</span><span class="lang-es">1. Instalando Claude Code</span></h3>
+
+          <div class="lang-en">
+            <p>Claude Code is installed as an <strong>npm package</strong>. npm is a package manager — a tool for installing software from the command line. It comes bundled with Node.js.</p>
+            <p>The install command is: <code>npm install -g @anthropic-ai/claude-code</code></p>
+            <p>The <code>-g</code> flag means <strong>global</strong> — install it once and it's available everywhere on your computer, not just in one specific folder. Without <code>-g</code>, the package only works in the current project directory.</p>
+          </div>
+          <div class="lang-es">
+            <p>Claude Code se instala como un paquete npm — npm es un gestor de paquetes para JavaScript/Node.js. Instalarlo es un solo comando: <code>npm install -g @anthropic-ai/claude-code</code>. El flag <code>-g</code> significa 'global' — instalarlo para que esté disponible en cualquier lugar, no solo en una carpeta. Una vez instalado, escribís <code>claude</code> en cualquier terminal para iniciarlo. Se conecta a tu cuenta de Anthropic.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Installing npm packages is like <strong>installing Oracle client libraries</strong> — you run an installer once, it sets up the software, and from then on it's available in your environment. The <code>-g</code> flag is like installing to the system PATH rather than a local folder.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Instalar paquetes npm = instalar librerías cliente de Oracle. Ejecutar <code>claude</code> = abrir una sesión de SQL*Plus. Ejecutar <code>python server.py</code> = ejecutar un script de procedimiento almacenado desde la línea de comandos.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Running Claude Code</span><span class="lang-es">2. Ejecutando Claude Code</span></h3>
+          <p>Once installed, type <code>claude</code> in any terminal to start a session. Claude Code reads the files in your current working directory and connects to your Anthropic account. You type commands or questions, and it can read files, create files, run scripts, and help you build.</p>
+          <p>The experience is like pair programming at the command line — Claude sees your whole project and can act on it directly.</p>
+
+          <div class="sql-callout">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Running <code>claude</code> is like <strong>opening a SQL*Plus session</strong>. You connect, you have context (the project folder instead of a database schema), and you can issue commands that get executed immediately.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. Running server.py — your first script execution</span><span class="lang-es">3. Ejecutando server.py — tu primera ejecución de script</span></h3>
+
+          <div class="lang-en">
+            <p>Today you'll run <code>python server.py</code> from the <code>curriculum/web/</code> folder. Let's be precise about what happens when you do this:</p>
+            <ol>
+              <li>Windows finds the Python interpreter on your system</li>
+              <li>Python reads <code>server.py</code> line by line</li>
+              <li>The script changes directory to its own folder</li>
+              <li>It starts a simple web server on port 8080</li>
+              <li>It opens your default browser to <code>http://localhost:8080</code></li>
+              <li>You see your curriculum dashboard in the browser</li>
+            </ol>
+            <p>This is <strong>exactly</strong> how every "tool" in the WAT framework works — a Python script that does one specific, reliable thing when you run it.</p>
+          </div>
+          <div class="lang-es">
+            <p>Hoy vas a ejecutar tu primer script. Cuando corrés <code>python server.py</code> desde la carpeta <code>curriculum/web/</code>, Python lee el archivo server.py, lo ejecuta línea por línea, inicia un servidor web y abre el navegador. Esto es exactamente cómo funciona una 'herramienta' en el framework WAT — un script de Python que hace algo determinístico. Acabás de ejecutar un script. Eso es todo. Eso es lo que hacen todas las herramientas en este proyecto.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>You just ran a script. That's it. That's all tools are — scripts that do one thing reliably. There's no magic. You type <code>python server.py</code>, Python executes it deterministically. This is what makes tools the most reliable layer in any AI workflow.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Ejecutaste un script. Eso es todo. Eso es lo que hacen todas las herramientas en este proyecto: scripts que ejecutás desde la terminal que hacen una cosa específica de manera confiable.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~60 minutes)</span><span class="lang-es">Ejercicio (~60 min)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Open VS Code and open the integrated terminal (<code>Ctrl+`</code>). Check if Node.js is installed: type <code>node --version</code> and press Enter. You should see something like <code>v20.x.x</code>. If you get an error, download Node.js from <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a> — choose the LTS version.</div>
+              <div class="lang-es">Abrí VS Code y la terminal integrada (<code>Ctrl+`</code>). Verificá si Node.js está instalado: escribí <code>node --version</code> y presioná Enter. Deberías ver algo como <code>v20.x.x</code>. Si obtenés un error, descargá Node.js desde <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a> — elegí la versión LTS.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Install Claude Code globally: <code>npm install -g @anthropic-ai/claude-code</code>. This will take a minute or two. You'll see progress output in the terminal.</div>
+              <div class="lang-es">Instalá Claude Code globalmente: <code>npm install -g @anthropic-ai/claude-code</code>. Esto va a tardar uno o dos minutos. Vas a ver el progreso en la terminal.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Confirm the installation: <code>claude --version</code>. You should see a version number. If you get "command not found," close and reopen VS Code to refresh the terminal environment.</div>
+              <div class="lang-es">Confirmá la instalación: <code>claude --version</code>. Deberías ver un número de versión. Si obtenés "command not found", cerrá y volvé a abrir VS Code para actualizar el entorno de la terminal.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Navigate to the curriculum web folder. In the terminal type: <code>cd curriculum\web</code> (Windows) or <code>cd curriculum/web</code> (Mac). Confirm with <code>dir</code> — you should see <code>server.py</code> in the file list.</div>
+              <div class="lang-es">Navegá a la carpeta web del curriculum. En la terminal escribí: <code>cd curriculum\web</code> (Windows) o <code>cd curriculum/web</code> (Mac). Confirmá con <code>dir</code> — deberías ver <code>server.py</code> en la lista de archivos.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Run the server: <code>python server.py</code>. Your browser should open automatically to <code>http://localhost:8080</code>. You'll see your curriculum dashboard. That's your own web app, served from your own computer.</div>
+              <div class="lang-es">Ejecutá el servidor: <code>python server.py</code>. Tu navegador debería abrirse automáticamente en <code>http://localhost:8080</code>. Vas a ver tu dashboard del curriculum. Esa es tu propia aplicación web, servida desde tu propia computadora.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Click around the dashboard. Click on Day 11 — mark it complete if you haven't yet. Watch the progress bar update. This is working software you're running locally.</div>
+              <div class="lang-es">Explorá el dashboard. Hacé clic en el Día 11 — marcalo como completo si todavía no lo hiciste. Observá cómo se actualiza la barra de progreso. Este es software funcionando que estás ejecutando de manera local.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">When done, stop the server: press <code>Ctrl+C</code> in the terminal. The server stops. The browser page will no longer load. You can start it again any time with <code>python server.py</code>.</div>
+              <div class="lang-es">Cuando termines, detené el servidor: presioná <code>Ctrl+C</code> en la terminal. El servidor se detiene. La página del navegador ya no va a cargar. Podés iniciarlo de nuevo en cualquier momento con <code>python server.py</code>.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- NO READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">No Reading Tonight</span><span class="lang-es">Sin Lectura Esta Noche</span></summary>
+        <p>
+          <span class="lang-en">You installed Claude Code and ran your first Python script. That's the milestone for today. Go celebrate that — no reading assigned.</span>
+          <span class="lang-es">Instalaste Claude Code y ejecutaste tu primer script de Python. Ese es el hito de hoy. Andate a celebrar — no hay lectura asignada.</span>
+        </p>
+        <p>
+          <span class="lang-en">If you want to go further: type <code>claude</code> in the terminal (from the erika project root) and just say hello. See how it responds when it has context about your project.</span>
+          <span class="lang-es">Si querés ir más lejos: escribí <code>claude</code> en la terminal (desde la raíz del proyecto erika) y simplemente saludá. Fijate cómo responde cuando tiene contexto sobre tu proyecto.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What does the <code>-g</code> flag do in <code>npm install -g</code>?</span>
+            <span class="lang-es">¿Qué hace el flag <code>-g</code> en <code>npm install -g</code>?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">It installs the package <strong>globally</strong>, making it available anywhere on your computer, not just in the current project folder. Without <code>-g</code>, you'd only be able to use Claude Code inside one specific directory.</div>
+            <div class="lang-es">Instala el paquete de manera <strong>global</strong>, haciéndolo disponible en cualquier parte de tu computadora, no solo en la carpeta del proyecto actual. Sin <code>-g</code>, solo podrías usar Claude Code dentro de un directorio específico.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Walk through what happened step by step when you ran <code>python server.py</code>.</span>
+            <span class="lang-es">Describí paso a paso qué pasó cuando ejecutaste <code>python server.py</code>.</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">Python found and read <code>server.py</code>, executed it line by line, the script changed to its own directory, started a web server on port 8080, and opened your browser to <code>http://localhost:8080</code>.</div>
+            <div class="lang-es">Python encontró y leyó <code>server.py</code>, lo ejecutó línea por línea, el script cambió a su propio directorio, inició un servidor web en el puerto 8080 y abrió el navegador en <code>http://localhost:8080</code>.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is an npm package?</span>
+            <span class="lang-es">¿Qué es un paquete npm?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A piece of reusable software you can install and use from the command line — like an Oracle client library but for Node.js/JavaScript. npm (Node Package Manager) is the tool that downloads and installs them.</div>
+            <div class="lang-es">Un fragmento de software reutilizable que podés instalar y usar desde la línea de comandos — como una librería cliente de Oracle pero para Node.js/JavaScript. npm (Node Package Manager) es la herramienta que los descarga e instala.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 12 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day13.html">Next: Day 13 — CLAUDE.md</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(12);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

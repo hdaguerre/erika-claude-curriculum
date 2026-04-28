@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 35 — Personal Brand Kit</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 7</span>
+          <span>Day 35 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 7</span>
+        <span class="badge badge--day">Day 35</span>
+        <span class="badge badge--deliverable">★ Deliverable</span>
+      </div>
+      <h1><span class="lang-en">Personal Brand Kit</span><span class="lang-es">Personal Brand Kit</span></h1>
+      <div class="lesson-header__meta"><span class="lang-en">Estimated time: ~4 hours · Week 7 Major Deliverable</span><span class="lang-es">Tiempo estimado: ~4 horas · Entregable Mayor de la Semana 7</span></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What a Personal Brand Kit is and why it matters</span><span class="lang-es">1. Qué es un Personal Brand Kit y por qué importa</span></h3>
+
+          <div class="lang-en">
+            <p>A brand kit is the full package that makes you consistent and recognizable across platforms: voice, visuals, content strategy, and the AI infrastructure that generates new content in your style. Most people have none of it. You now have all of it — and it runs on Claude.</p>
+            <p>The kit has 4 components:</p>
+            <ol>
+              <li><code>brand-kit/CLAUDE.md</code> — your voice, values, and writing rules</li>
+              <li><code>brand-kit/skills/brand-voice/</code> — the skill that generates content in your voice</li>
+              <li><code>brand-kit/assets/</code> — your visual assets</li>
+              <li>A content calendar of 5 LinkedIn post drafts ready to schedule</li>
+            </ol>
+          </div>
+          <div class="lang-es">
+            <p>Un brand kit es el paquete completo que te hace consistente y reconocible en todas las plataformas: voz, visuales, estrategia de contenido, y la infraestructura de IA que genera nuevo contenido en tu estilo. La mayoría de la gente no tiene nada de esto. Vos ahora tenés todo — y corre sobre Claude.</p>
+            <p>El kit tiene 4 componentes:</p>
+            <ol>
+              <li><code>brand-kit/CLAUDE.md</code> — tu voz, valores y reglas de escritura</li>
+              <li><code>brand-kit/skills/brand-voice/</code> — la skill que genera contenido con tu voz</li>
+              <li><code>brand-kit/assets/</code> — tus assets visuales</li>
+              <li>Un calendario de contenido con 5 borradores de posts de LinkedIn listos para programar</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Reviewing and finalizing everything</span><span class="lang-es">2. Revisar y finalizar todo</span></h3>
+
+          <div class="lang-en">
+            <p>Quality check on each component: Does the CLAUDE.md actually sound like you? Does the brand-voice skill produce content you'd actually post? Do the visuals feel cohesive? Is the LinkedIn profile updated?</p>
+            <p>If anything feels off, fix it today — this is the deliverable. It should be something you're proud to show.</p>
+          </div>
+          <div class="lang-es">
+            <p>Control de calidad de cada componente: ¿El CLAUDE.md realmente suena como vos? ¿La skill de brand-voice produce contenido que vos realmente publicarías? ¿Los visuales se sienten cohesivos? ¿Está actualizado el perfil de LinkedIn?</p>
+            <p>Si algo no te convence, arreglalo hoy — este es el entregable. Tiene que ser algo de lo que estés orgullosa de mostrar.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~120 minutes)</span><span class="lang-es">Ejercicio (~120 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en">Open <code>brand-kit/CLAUDE.md</code> and read it critically — out loud if it helps. Does it sound like the real you? Update any parts that feel generic, vague, or inaccurate. The test: would your closest friend recognize this as your voice?</div>
+              <div class="lang-es">Abrí <code>brand-kit/CLAUDE.md</code> y leélo críticamente — en voz alta si ayuda. ¿Suena como la Erika real? Actualizá las partes que se sientan genéricas, vagas o inexactas. La prueba: ¿tu amiga más cercana reconocería esto como tu voz?</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Test the brand-voice skill 5 times with different topics. Use these exact prompts one at a time:
+                <ul>
+                  <li>"I completed my first month of learning Claude Code"</li>
+                  <li>"Python is surprisingly similar to PL/SQL"</li>
+                  <li>"What I learned about web scraping this week"</li>
+                  <li>"The difference between a data analyst and a GTM engineer"</li>
+                  <li>"What happens when you give an AI actual access to your tools"</li>
+                </ul>
+                Keep the 2 posts that feel most authentically you. These go in your content calendar.
+              </div>
+              <div class="lang-es">Probá la skill de brand-voice 5 veces con distintos temas. Usá estos prompts exactos de a uno:
+                <ul>
+                  <li>"Completé mi primer mes aprendiendo Claude Code"</li>
+                  <li>"Python es sorprendentemente similar a PL/SQL"</li>
+                  <li>"Lo que aprendí sobre web scraping esta semana"</li>
+                  <li>"La diferencia entre una analista de datos y una GTM engineer"</li>
+                  <li>"Qué pasa cuando le das a una IA acceso real a tus herramientas"</li>
+                </ul>
+                Quedarte con los 2 posts que se sientan más auténticamente vos. Estos van en tu calendario de contenido.
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en">Review all images in <code>brand-kit/assets/</code>. Open each one and ask: does this look like it belongs to the same brand? If any feel inconsistent, run new prompts using what you learned in Day 33 and replace them.</div>
+              <div class="lang-es">Revisá todas las imágenes en <code>brand-kit/assets/</code>. Abrí cada una y preguntate: ¿esto parece pertenecer a la misma marca? Si alguna se siente inconsistente, ejecutá nuevos prompts usando lo que aprendiste en el Día 33 y reemplazálas.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Final LinkedIn update — 3 things:</strong> (1) Upload your new banner from brand-kit/assets/. (2) Rewrite your About section using your brand voice. (3) Pin something to your Featured section — a post, a project, or your best piece of content.</div>
+              <div class="lang-es"><strong>Actualización final de LinkedIn — 3 cosas:</strong> (1) Subí tu nuevo banner desde brand-kit/assets/. (2) Reescribí tu sección Acerca de usando tu voz de marca. (3) Fijá algo en tu sección Destacados — un post, un proyecto, o tu mejor pieza de contenido.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Present your kit:</strong> Walk Hernan through it — 5 minutes. Show him: the CLAUDE.md, run the brand-voice skill live, open the assets folder, show the updated LinkedIn profile. Explain what each piece does and how they connect.</div>
+              <div class="lang-es"><strong>Presentá tu kit:</strong> Mostráselo a Hernan — 5 minutos. Mostrale: el CLAUDE.md, ejecutá la skill de brand-voice en vivo, abrí la carpeta de assets, mostrá el perfil de LinkedIn actualizado. Explicá qué hace cada pieza y cómo se conectan.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Reflection (no assigned reading today)</span><span class="lang-es">Reflexión (sin lectura asignada hoy)</span></summary>
+        <p>
+          <span class="lang-en">No assigned reading today. Instead, spend 15 minutes writing in a notes file — save it as <code>brand-kit/week7-reflection.md</code>. Write about: what surprised you most this week, what felt harder than expected, and what you want to build next. This is for you, not for anyone else.</span>
+          <span class="lang-es">Sin lectura asignada hoy. En cambio, dedicá 15 minutos a escribir en un archivo de notas — guardalo como <code>brand-kit/week7-reflection.md</code>. Escribí sobre: qué te sorprendió más esta semana, qué se sintió más difícil de lo esperado, y qué querés construir a continuación. Esto es para vos, no para nadie más.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What are the 4 components of your Personal Brand Kit?</span>
+            <span class="lang-es">¿Cuáles son los 4 componentes de tu Personal Brand Kit?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">CLAUDE.md for voice and values, brand-voice skill for content generation, visual assets in brand-kit/assets/, and scheduled-ready LinkedIn post drafts.</div>
+            <div class="lang-es">CLAUDE.md para la voz y valores, skill brand-voice para la generación de contenido, assets visuales en brand-kit/assets/, y borradores de posts de LinkedIn listos para programar.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">What is the point of having a brand-voice skill in Claude Code?</span>
+            <span class="lang-es">¿Para qué sirve tener una skill de brand-voice en Claude Code?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">It generates content in your voice consistently — so every LinkedIn post, caption, or bio sounds like you, not like generic AI output. The skill encodes who you are so Claude always writes as you.</div>
+            <div class="lang-es">Genera contenido con tu voz de manera consistente — para que cada post de LinkedIn, caption o bio suene como vos, no como output genérico de IA. La skill codifica quién sos para que Claude siempre escriba como vos.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the difference between having a LinkedIn profile and having a Personal Brand Kit?</span>
+            <span class="lang-es">¿Cuál es la diferencia entre tener un perfil de LinkedIn y tener un Personal Brand Kit?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A profile is static content. A brand kit includes the infrastructure — the AI skills, prompts, and assets — to continuously produce more content in your voice. A profile sits there. A kit generates.</div>
+            <div class="lang-es">Un perfil es contenido estático. Un brand kit incluye la infraestructura — las skills de IA, prompts y assets — para producir continuamente más contenido con tu voz. Un perfil está ahí sentado. Un kit genera.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">
+      <span class="lang-en">Mark Day 35 Complete</span>
+      <span class="lang-es">Marcar Día 35 Completo</span>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="../week8/day36.html"><span class="lang-en">Next: Day 36 — ICP Scoring Model</span><span class="lang-es">Siguiente: Día 36 — Modelo de Scoring ICP</span></a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(35);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

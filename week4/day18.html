@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 18 — APIs | Erika's Claude Curriculum</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 4</span>
+          <span>Day 18 of 20</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 4</span>
+        <span class="badge badge--day">Day 18</span>
+      </div>
+      <h1>APIs — Endpoints, Authentication, and the Remote Stored Procedure</h1>
+      <div class="lesson-header__meta">Estimated time: 3 hours</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- Concepts Section -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What is an API?</span><span class="lang-es">1. ¿Qué es una API?</span></h3>
+          <div class="lang-en">
+            <p>An API (Application Programming Interface) is a way to talk to another system over the internet. Instead of opening a website and clicking buttons, you send a structured request to a URL — called an <strong>endpoint</strong> — and get a structured response back, usually in JSON format.</p>
+            <p>APIs power everything in the modern software world. When Claude fetches web content, it's using an API. When a tool pulls data from Google Sheets, that's an API. When your phone shows you the weather, it called an API. You've always been surrounded by them — now you understand what they are.</p>
+          </div>
+          <div class="lang-es">
+            <p>Una API (Interfaz de Programación de Aplicaciones) es una forma de hablar con otro sistema a través de internet. En lugar de abrir un sitio web y hacer clic en botones, enviás una solicitud estructurada a una URL (llamada endpoint) y recibís una respuesta estructurada (generalmente JSON). Las APIs alimentan todo: cuando Claude obtiene contenido web, usa una API. Cuando extraés datos de Google Sheets, eso es una API.</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>An API is a <strong>remote stored procedure on someone else's server</strong>. The endpoint URL = the procedure name on that remote server. You call it, pass it parameters, and get a result set back. You don't see the code inside — you just call it with the right inputs and trust the output.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>Una API = un procedimiento almacenado remoto. La URL del endpoint = el nombre del procedimiento en un servidor remoto. La clave API = las credenciales de conexión a la base de datos. El cuerpo de la solicitud = los parámetros del procedimiento. La respuesta JSON = el conjunto de resultados. Las cabeceras de autenticación = las credenciales de inicio de sesión en tu cadena de conexión.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. How API calls work</span><span class="lang-es">2. Cómo funcionan las llamadas a una API</span></h3>
+          <div class="lang-en">
+            <p>Every API call has the same four parts:</p>
+            <ul>
+              <li><strong>Endpoint</strong> — the URL you send the request to, e.g. <code>https://api.anthropic.com/v1/messages</code></li>
+              <li><strong>Method</strong> — <code>GET</code> to fetch data, <code>POST</code> to send data and get a response</li>
+              <li><strong>Headers</strong> — metadata sent with every request, including your authentication key</li>
+              <li><strong>Body</strong> (optional) — the data you're sending, formatted as JSON</li>
+            </ul>
+            <p>The API responds with a <strong>status code</strong> (200 = success, 401 = unauthorized, 404 = not found, 429 = rate limited) and a <strong>payload</strong> — the actual data you asked for.</p>
+          </div>
+          <div class="lang-es">
+            <p>Cada llamada a una API tiene: un endpoint (la URL a la que enviás), un método (GET para obtener, POST para enviar), cabeceras (metadatos — incluyendo tu clave de autenticación), y a veces un cuerpo (datos que enviás). La API responde con un código de estado (200 = éxito, 404 = no encontrado, 401 = no autorizado) y una carga útil (los datos).</p>
+          </div>
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight — Status Codes</div>
+            <p>Status codes are how APIs communicate errors. <code>401</code> means your key is wrong or missing. <code>429</code> means you're calling too fast. <code>500</code> means something broke on their end. When a tool fails, check the status code first — it tells you exactly where the problem is.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">3. Authentication — the API key</span><span class="lang-es">3. Autenticación — la clave API</span></h3>
+          <div class="lang-en">
+            <p>Most APIs require a <strong>key</strong> — a secret string that proves you're authorized to use them. You include it in every request's headers. Without it, the API returns <code>401 Unauthorized</code>.</p>
+            <p>This key lives in a <code>.env</code> file in your project root. <strong>Never put it directly in your code.</strong> Why? Because code gets shared, committed to git, and accidentally exposed. A <code>.env</code> file stays local.</p>
+            <p>When a tool needs to call an API, it reads the key from <code>.env</code> using the <code>python-dotenv</code> library — two lines of code that keep your credentials safe.</p>
+          </div>
+          <div class="lang-es">
+            <p>La mayoría de las APIs requieren una clave — una cadena secreta que demuestra que estás autorizada a usarlas. Esta clave vive en un archivo <code>.env</code> (NUNCA en el código). Cuando un script de herramienta necesita llamar a una API, lee la clave desde <code>.env</code> usando una librería como <code>python-dotenv</code>.</p>
+          </div>
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>The API key = the <strong>database connection credentials</strong>. You don't embed your Oracle password in a SQL script — you store it in a connection configuration and reference it by name. The <code>.env</code> file is exactly that: your credential store. The <code>python-dotenv</code> library = the connection manager that loads those credentials at runtime.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">4. The Anthropic API — Claude as an API</span><span class="lang-es">4. La API de Anthropic — Claude como API</span></h3>
+          <div class="lang-en">
+            <p>Claude itself is available as an API. This is how developers build apps powered by Claude — they send requests to <code>api.anthropic.com</code> and get Claude's responses back as JSON.</p>
+            <p>You've been using Claude through the Desktop app. The API is the same intelligence, accessed programmatically. The model is the same. The reasoning is the same. The only difference is that instead of typing in a chat window, you're sending a structured JSON request from code.</p>
+            <p>Here's what that looks like — and notice how familiar it feels:</p>
+          </div>
+          <div class="lang-es">
+            <p>Claude en sí mismo está disponible como API. Así es como los desarrolladores construyen aplicaciones impulsadas por Claude. El endpoint es api.anthropic.com. Estuviste usando Claude a través de la app Desktop — la API es la misma inteligencia accedida programáticamente.</p>
+            <p>Esto es exactamente lo que Erika ha estado escribiendo en Claude Desktop — pero en formato JSON en lugar de en lenguaje natural. La API es la misma inteligencia accedida programáticamente.</p>
+          </div>
+          <pre style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.1rem;font-family:'Cascadia Code','Fira Mono',Consolas,monospace;font-size:0.82rem;line-height:1.6;overflow-x:auto;color:var(--text);margin:1rem 0;">{
+  "model": "claude-opus-4-5",
+  "max_tokens": 1024,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Genera una descripción de mis alfajores en Instagram"
+    }
+  ]
+}</pre>
+          <div class="lang-en">
+            <p>That <code>content</code> field? That's the message you've been typing in Claude Desktop. The whole time, it was just a structured JSON object.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Exercise Section -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~45 to 60 minutes)</span><span class="lang-es">Ejercicio (~45 a 60 minutos)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>You don't need to write code today — you need to understand.</strong> Open a browser and search for "Anthropic API documentation" or go to <a href="https://docs.anthropic.com" target="_blank" rel="noopener">docs.anthropic.com</a> directly.</div>
+              <div class="lang-es"><strong>Hoy no necesitás escribir código — necesitás entender.</strong> Abrí un navegador y buscá "Anthropic API documentation" o andá directamente a <a href="https://docs.anthropic.com" target="_blank" rel="noopener">docs.anthropic.com</a>.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Find the "Messages" API endpoint.</strong> Read the full request structure. Answer these questions before moving on:
+                <ul style="margin-top:0.5rem;">
+                  <li>What fields are required in every request?</li>
+                  <li>What is the <code>model</code> field? What values can it take?</li>
+                  <li>What is the <code>messages</code> array? What does each message object look like?</li>
+                  <li>What does the response object look like? Where is Claude's actual answer in the JSON?</li>
+                </ul>
+              </div>
+              <div class="lang-es"><strong>Encontrá el endpoint de la API "Messages".</strong> Leé la estructura completa de la solicitud. Respondé estas preguntas antes de seguir:
+                <ul style="margin-top:0.5rem;">
+                  <li>¿Qué campos son obligatorios en cada solicitud?</li>
+                  <li>¿Qué es el campo <code>model</code>? ¿Qué valores puede tener?</li>
+                  <li>¿Qué es el array <code>messages</code>? ¿Cómo se ve cada objeto de mensaje?</li>
+                  <li>¿Cómo se ve el objeto de respuesta? ¿Dónde está la respuesta real de Claude en el JSON?</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Notice the connection.</strong> The <code>messages</code> array in the API is literally what you type in Claude Desktop. You've been "calling the API" conceptually the entire time — just through a graphical interface instead of code.</div>
+              <div class="lang-es"><strong>Fijate en la conexión.</strong> El array <code>messages</code> en la API es literalmente lo que escribís en Claude Desktop. Estuviste "llamando a la API" conceptualmente todo el tiempo — solo a través de una interfaz gráfica en lugar de código.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Optional (if comfortable):</strong> Create a <code>.env</code> file in the root of your <code>mi-taller-code</code> project. Add this line:<br />
+              <code>ANTHROPIC_API_KEY=your_key_here</code><br />
+              <span style="font-size:0.9rem;color:var(--text-muted);">Don't worry about getting a real key yet. This is just about learning the pattern: credentials live in <code>.env</code>, never in code.</span>
+              <br /><br />
+              Also read the <a href="https://pypi.org/project/python-dotenv/" target="_blank" rel="noopener">python-dotenv documentation</a> to see how two lines of code can load that key into any Python script.</div>
+              <div class="lang-es"><strong>Opcional (si te sentís cómoda):</strong> Creá un archivo <code>.env</code> en la raíz de tu proyecto <code>mi-taller-code</code>. Agregá esta línea:<br />
+              <code>ANTHROPIC_API_KEY=tu_clave_aquí</code><br />
+              <span style="font-size:0.9rem;color:var(--text-muted);">No te preocupés por conseguir una clave real todavía. Esto es solo para aprender el patrón: las credenciales viven en <code>.env</code>, nunca en el código.</span>
+              <br /><br />
+              También leé la <a href="https://pypi.org/project/python-dotenv/" target="_blank" rel="noopener">documentación de python-dotenv</a> para ver cómo dos líneas de código pueden cargar esa clave en cualquier script de Python.</div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- Reading Section -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong>"1M followers with AI" by Ruben Hassid</strong></p>
+        <p>
+          <span class="lang-en">This is aspirational reading — a concrete example of what's possible when you combine AI tools with content strategy. You're building the foundation for exactly this kind of workflow. Read it as a vision of where you can take <code>mi-taller-code</code>.</span>
+          <span class="lang-es">Esta es una lectura aspiracional — un ejemplo concreto de lo que es posible cuando combinás herramientas de IA con estrategia de contenido. Estás construyendo la base para exactamente este tipo de flujo de trabajo. Leéla como una visión de adónde podés llevar <code>mi-taller-code</code>.</span>
+        </p>
+        <p><a href="https://lnkd.in/g7yEtpCr" target="_blank" rel="noopener">Read the article →</a></p>
+      </details>
+
+      <!-- Quiz Section -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What is an API endpoint?</span>
+            <span class="lang-es">¿Qué es un endpoint de una API?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <strong>URL you send requests to</strong> in order to interact with another system programmatically. Instead of clicking buttons on a website, you send a structured HTTP request to the endpoint and receive a structured JSON response back.</div>
+            <div class="lang-es">Una <strong>URL a la que enviás solicitudes</strong> para interactuar con otro sistema de forma programática. En lugar de hacer clic en botones en un sitio web, enviás una solicitud HTTP estructurada al endpoint y recibís una respuesta JSON estructurada.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Where should an API key be stored? Where should it <em>never</em> be?</span>
+            <span class="lang-es">¿Dónde debería guardarse una clave API? ¿Dónde <em>nunca</em> debería estar?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><strong>Store it in: <code>.env</code></strong> — a local file that stays on your machine and is never committed to git.<br /><br />
+            <strong>Never in:</strong> your code (hardcoded), a <code>.py</code> file, a markdown file, or any file that gets shared or committed to a repository. Once a key is exposed, it must be rotated immediately.</div>
+            <div class="lang-es"><strong>Guardala en: <code>.env</code></strong> — un archivo local que se queda en tu máquina y nunca se sube a git.<br /><br />
+            <strong>Nunca en:</strong> tu código (hardcodeada), un archivo <code>.py</code>, un archivo markdown, o cualquier archivo que se comparta o suba a un repositorio. Una vez que una clave queda expuesta, hay que rotarla de inmediato.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What is the SQL analogy for an API?</span>
+            <span class="lang-es">¿Cuál es la analogía SQL de una API?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">A <strong>remote stored procedure on another server</strong>. You call it with parameters (the request body), authenticate with credentials (the API key = your connection credentials), and receive a result (the JSON response). You don't see the code inside — you just call it correctly and trust the output.</div>
+            <div class="lang-es">Un <strong>procedimiento almacenado remoto en otro servidor</strong>. Lo llamás con parámetros (el cuerpo de la solicitud), te autenticás con credenciales (la clave API = tus credenciales de conexión) y recibís un resultado (la respuesta JSON). No ves el código adentro — solo lo llamás correctamente y confiás en el resultado.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div><!-- /.container--narrow -->
+  </div>
+
+  <!-- Complete Button -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 18 Complete</button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lesson-footer">
+    <div class="container">
+      <a href="day19.html">Up next: Day 19 — The Skill Creator, building a skill from scratch</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(18);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>

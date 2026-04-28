@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 29 — Apollo API Basics</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../progress.js"></script>
+  <script src="../language.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="container">
+      <a class="nav-back" href="../index.html">Back to Dashboard</a>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+          <span class="lang-toggle-sep" aria-hidden="true">·</span>
+          <button class="lang-toggle-btn" data-lang="es" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+        </div>
+        <div class="nav-meta">
+          <span class="nav-week-badge">Week 6</span>
+          <span>Day 29 of 40</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <div class="container--narrow">
+      <div class="lesson-header__eyebrow">
+        <span class="badge badge--week">Week 6</span>
+        <span class="badge badge--day">Day 29</span>
+      </div>
+      <h1>Apollo API Basics</h1>
+      <div class="lesson-header__meta">Estimated time: ~3.5 hours</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="lesson-content">
+    <div class="container--narrow">
+
+      <!-- CONCEPTS -->
+      <details class="content-section" open>
+        <summary><span class="lang-en">Concepts</span><span class="lang-es">Conceptos</span></summary>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">1. What Apollo is and what its API does</span><span class="lang-es">1. Qué es Apollo y qué hace su API</span></h3>
+
+          <div class="lang-en">
+            <p>Apollo.io is a B2B data and outreach platform — think of it as a database of ~275 million contacts combined with email sequencing tools. GTM teams use it to find prospects, enrich data, and run outbound campaigns all in one place.</p>
+            <p>The Apollo API lets you push contacts into the system programmatically. Instead of importing a CSV manually through the UI, your Python script sends each enriched lead directly to Apollo via an HTTP POST — no human clicks required. This is how a proper pipeline works: clean → enrich → push to CRM/outreach tool, all automated.</p>
+          </div>
+          <div class="lang-es">
+            <p>Apollo.io es una plataforma de datos B2B y outreach — pensalo como una base de datos de ~275 millones de contactos combinada con herramientas de secuenciación de emails. Los equipos GTM lo usan para encontrar prospectos, enriquecer datos y ejecutar campañas de outbound todo en un solo lugar.</p>
+            <p>La API de Apollo te permite empujar contactos al sistema de forma programática. En vez de importar un CSV manualmente a través de la UI, tu script Python envía cada lead enriquecido directamente a Apollo via HTTP POST — sin clicks humanos requeridos. Así es como funciona un pipeline correcto: limpiar → enriquecer → empujar al CRM/herramienta de outreach, todo automatizado.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Apollo's contact database is a remote table. Your <code>push_contact(row)</code> function is equivalent to:<br><code>MERGE INTO apollo.contacts USING (:email) ON (email = :email)<br>WHEN NOT MATCHED THEN INSERT (first_name, last_name, email, organization_name, website_url)<br>VALUES (:first_name, :last_name, :email, :org, :url);</code><br>If the contact exists, Apollo may update it. If not, it inserts — classic MERGE behavior.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>La base de datos de contactos de Apollo es una tabla remota. Tu función <code>push_contact(row)</code> es equivalente a:<br><code>MERGE INTO apollo.contacts USING (:email) ON (email = :email)<br>WHEN NOT MATCHED THEN INSERT (first_name, last_name, email, organization_name, website_url)<br>VALUES (:first_name, :last_name, :email, :org, :url);</code><br>Si el contacto existe, Apollo puede actualizarlo. Si no, inserta — comportamiento clásico de MERGE.</p>
+          </div>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Key Insight</div>
+            <p>Key endpoint: <code>POST https://api.apollo.io/v1/contacts</code> with the header <code>X-Api-Key: your_key</code> and a JSON body containing the contact fields. Apollo returns a contact ID if the record was created successfully.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Idea Clave</div>
+            <p>Endpoint clave: <code>POST https://api.apollo.io/v1/contacts</code> con el header <code>X-Api-Key: tu_clave</code> y un cuerpo JSON con los campos del contacto. Apollo retorna un contact ID si el registro fue creado exitosamente.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">2. Apollo API auth + key endpoints</span><span class="lang-es">2. Auth de la API de Apollo + endpoints clave</span></h3>
+
+          <div class="lang-en">
+            <p><strong>Authentication:</strong> Apollo uses an API key passed as a header: <code>X-Api-Key: your_key</code>. Unlike some APIs that use Bearer tokens, Apollo's key goes directly in the request headers.</p>
+            <p><strong>Required input fields:</strong> <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>organization_name</code>, <code>website_url</code>. These map directly to columns in your enriched CSV — which is exactly why you built that CSV the way you did.</p>
+            <p><strong>Rate limits:</strong> Apollo's free tier is strict. The safest approach is to add a small delay between API calls (1–2 seconds) and never run the script on thousands of rows without upgrading to a paid plan. Always test with mocks first, then with a small batch of real data.</p>
+          </div>
+          <div class="lang-es">
+            <p><strong>Autenticación:</strong> Apollo usa una API key pasada como header: <code>X-Api-Key: tu_clave</code>. A diferencia de algunas APIs que usan tokens Bearer, la clave de Apollo va directamente en los headers de la petición.</p>
+            <p><strong>Campos de input requeridos:</strong> <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>organization_name</code>, <code>website_url</code>. Estos mapean directamente a columnas en tu CSV enriquecido — que es exactamente por qué construiste ese CSV de esa manera.</p>
+            <p><strong>Rate limits:</strong> El tier gratuito de Apollo es estricto. El enfoque más seguro es agregar un pequeño delay entre llamadas a la API (1–2 segundos) y nunca ejecutar el script en miles de filas sin actualizar a un plan pago. Siempre probá con mocks primero, luego con un lote pequeño de datos reales.</p>
+          </div>
+
+          <div class="sql-callout lang-en">
+            <div class="sql-callout__label">SQL Connection</div>
+            <p>Rate limiting is like <strong>bulk insert batching</strong>. When you INSERT thousands of Oracle rows at once, you batch them and commit periodically to avoid log overflow. Same principle: send to Apollo in small batches, pause between them, respect the system's limits.</p>
+          </div>
+          <div class="sql-callout lang-es">
+            <div class="sql-callout__label">Conexión SQL</div>
+            <p>El rate limiting es como el <strong>batching de inserts masivos</strong>. Cuando insertás miles de filas en Oracle de golpe, las agrupás en batches y hacés commit periódicamente para evitar overflow del log. Mismo principio: enviar a Apollo en batches pequeños, pausar entre ellos, respetar los límites del sistema.</p>
+          </div>
+        </div>
+
+        <div class="concept-block">
+          <h3><span class="lang-en">Brand Kit Day 2 — Build your brand-voice skill</span><span class="lang-es">Brand Kit Día 2 — Construí tu skill de brand-voice</span></h3>
+
+          <div class="insight-callout lang-en">
+            <div class="insight-callout__label">Brand Kit Task</div>
+            <p>Open <code>brand-kit/CLAUDE.md</code> and ask Claude Code to build a skill at <code>brand-kit/skills/brand-voice/SKILL.md</code>. The skill should trigger when you ask Claude to write a LinkedIn post, bio, or caption. It should load your CLAUDE.md, review your voice and topics, and produce content that sounds like you.</p>
+            <p>Test it: ask Claude <em>"/brand-voice — write a LinkedIn post about what I learned this week."</em> Save the version you like to your brand-kit notes.</p>
+          </div>
+          <div class="insight-callout lang-es">
+            <div class="insight-callout__label">Tarea Brand Kit</div>
+            <p>Abrí <code>brand-kit/CLAUDE.md</code> y pedile a Claude Code que construya un skill en <code>brand-kit/skills/brand-voice/SKILL.md</code>. El skill debería activarse cuando le pedís a Claude que escriba un post de LinkedIn, bio o caption. Debería cargar tu CLAUDE.md, revisar tu voz y temas, y producir contenido que suene como vos.</p>
+            <p>Probalo: pedile a Claude <em>"/brand-voice — write a LinkedIn post about what I learned this week."</em> Guardá la versión que te guste en tus notas del brand-kit.</p>
+          </div>
+        </div>
+
+      </details>
+
+      <!-- EXERCISE -->
+      <details class="exercise-section">
+        <summary><span class="lang-en">Exercise (~2.5 hours)</span><span class="lang-es">Ejercicio (~2.5 horas)</span></summary>
+        <ol class="exercise-steps">
+          <li>
+            <div>
+              <div class="lang-en"><strong>Get your Apollo API key.</strong> Go to <a href="https://app.apollo.io" target="_blank" rel="noopener">app.apollo.io</a> → Settings → Integrations → API. Copy your API key. Add it to your <code>.env</code> file: <code>APOLLO_API_KEY=your_key_here</code></div>
+              <div class="lang-es"><strong>Obtené tu API key de Apollo.</strong> Andá a <a href="https://app.apollo.io" target="_blank" rel="noopener">app.apollo.io</a> → Settings → Integrations → API. Copiá tu API key. Agregala a tu archivo <code>.env</code>: <code>APOLLO_API_KEY=your_key_here</code></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Ask Claude Code to build the push script.</strong> Run: <em>"Create tools/push_to_apollo.py with a function push_contact(row) that takes a dict and POSTs to Apollo contacts API. Do NOT run on live data — test with a mock HTTP call first."</em> The mock-first instruction is important: it keeps fake data out of your Apollo account.</div>
+              <div class="lang-es"><strong>Pedile a Claude Code que construya el script de push.</strong> Ejecutá: <em>"Create tools/push_to_apollo.py with a function push_contact(row) that takes a dict and POSTs to Apollo contacts API. Do NOT run on live data — test with a mock HTTP call first."</em> La instrucción de mock-first es importante: mantiene los datos falsos fuera de tu cuenta de Apollo.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Read the function.</strong> Open <code>tools/push_to_apollo.py</code> in VS Code. Identify: (1) where the API key is loaded from <code>.env</code>, (2) the URL and headers, (3) the JSON body fields. Confirm you understand what data goes where before running anything live.</div>
+              <div class="lang-es"><strong>Leé la función.</strong> Abrí <code>tools/push_to_apollo.py</code> en VS Code. Identificá: (1) dónde se carga la API key desde <code>.env</code>, (2) la URL y los headers, (3) los campos del cuerpo JSON. Confirmá que entendés qué datos van a dónde antes de ejecutar nada en vivo.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div class="lang-en"><strong>Brand Kit: build the brand-voice skill.</strong> Open Claude Code in your project. Run: <em>"Open brand-kit/CLAUDE.md and build a skill at brand-kit/skills/brand-voice/SKILL.md. The skill should trigger on LinkedIn post, bio, or caption requests, load my CLAUDE.md, and produce content in my voice."</em> Then test it with: <em>"/brand-voice — write a LinkedIn post about what I learned this week."</em></div>
+              <div class="lang-es"><strong>Brand Kit: construí el skill brand-voice.</strong> Abrí Claude Code en tu proyecto. Ejecutá: <em>"Open brand-kit/CLAUDE.md and build a skill at brand-kit/skills/brand-voice/SKILL.md. The skill should trigger on LinkedIn post, bio, or caption requests, load my CLAUDE.md, and produce content in my voice."</em> Luego probalo con: <em>"/brand-voice — write a LinkedIn post about what I learned this week."</em></div>
+            </div>
+          </li>
+        </ol>
+      </details>
+
+      <!-- READING -->
+      <details class="reading-section">
+        <summary><span class="lang-en">Tonight's Reading</span><span class="lang-es">Lectura de Esta Noche</span></summary>
+        <p><strong><span class="lang-en">Apollo API docs — Contacts section</span><span class="lang-es">Docs de la API de Apollo — sección Contacts</span></strong></p>
+        <p>
+          <span class="lang-en">Go to <a href="https://apolloio.github.io/apollo-api-docs/" target="_blank" rel="noopener">Apollo API docs</a> and read the Contacts section — specifically the "Create a contact" endpoint. Note the required fields, optional fields, and what the response object looks like. If the docs feel dense, ask Claude to explain the contact creation endpoint in plain language.</span>
+          <span class="lang-es">Andá a los <a href="https://apolloio.github.io/apollo-api-docs/" target="_blank" rel="noopener">docs de la API de Apollo</a> y leé la sección de Contacts — específicamente el endpoint "Create a contact." Notá los campos requeridos, los opcionales y cómo se ve el objeto de respuesta. Si los docs se sienten densos, pedile a Claude que te explique el endpoint de creación de contactos en lenguaje simple.</span>
+        </p>
+      </details>
+
+      <!-- QUIZ -->
+      <details class="quiz-section">
+        <summary><span class="lang-en">Quick Check</span><span class="lang-es">Verificación Rápida</span></summary>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">1</span>
+            <span class="lang-en">What Apollo endpoint creates a contact?</span>
+            <span class="lang-es">¿Qué endpoint de Apollo crea un contacto?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en"><code>POST https://api.apollo.io/v1/contacts</code> — with your API key in the <code>X-Api-Key</code> header and the contact fields in a JSON body.</div>
+            <div class="lang-es"><code>POST https://api.apollo.io/v1/contacts</code> — con tu API key en el header <code>X-Api-Key</code> y los campos del contacto en un cuerpo JSON.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">2</span>
+            <span class="lang-en">Why test with mocks before sending live data to Apollo?</span>
+            <span class="lang-es">¿Por qué probar con mocks antes de enviar datos reales a Apollo?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">To avoid creating real records in Apollo from fake or test data — cleanup is painful and can corrupt your contact database. Always verify the logic works correctly before touching live systems.</div>
+            <div class="lang-es">Para evitar crear registros reales en Apollo con datos falsos o de prueba — la limpieza es dolorosa y puede corromper tu base de datos de contactos. Siempre verificá que la lógica funcione correctamente antes de tocar sistemas en vivo.</div>
+          </div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="quiz-question">
+            <span class="quiz-q-num">3</span>
+            <span class="lang-en">What does the brand-voice skill do?</span>
+            <span class="lang-es">¿Qué hace el skill brand-voice?</span>
+          </div>
+          <button class="quiz-reveal-btn" onclick="revealAnswer(this)">
+            <span class="lang-en">Show answer</span><span class="lang-es">Ver respuesta</span>
+          </button>
+          <div class="quiz-answer">
+            <div class="lang-en">It triggers when you ask Claude to write a LinkedIn post, bio, or caption. It loads your brand-kit CLAUDE.md, reviews your voice guidelines and topics, and produces content that sounds like you — not like generic AI copy.</div>
+            <div class="lang-es">Se activa cuando le pedís a Claude que escriba un post de LinkedIn, bio o caption. Carga tu brand-kit CLAUDE.md, revisa tus pautas de voz y temas, y produce contenido que suena como vos — no como copy genérico de IA.</div>
+          </div>
+        </div>
+
+      </details>
+
+    </div>
+  </div>
+
+  <!-- COMPLETE BUTTON -->
+  <div class="complete-area">
+    <button class="btn-complete" onclick="completeDay()">Mark Day 29 Complete</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="lesson-footer">
+    <div class="container--narrow">
+      <a href="day30.html">Next: Day 30 — Week 6 Integration</a>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion: exactly one section open at a time
+    document.querySelectorAll('.lesson-content details').forEach(function(detail) {
+      detail.querySelector('summary').addEventListener('click', function(e) {
+        if (detail.open) {
+          e.preventDefault();
+        } else {
+          document.querySelectorAll('.lesson-content details').forEach(function(other) {
+            if (other !== detail) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    function revealAnswer(btn) {
+      var answer = btn.nextElementSibling;
+      answer.classList.toggle("visible");
+      var showing = answer.classList.contains("visible");
+      btn.querySelector('.lang-en').textContent = showing ? "Hide answer" : "Show answer";
+      btn.querySelector('.lang-es').textContent = showing ? "Ocultar" : "Ver respuesta";
+    }
+
+    function completeDay() {
+      markComplete(29);
+      window.location.href = "../index.html";
+    }
+  </script>
+
+</body>
+</html>
